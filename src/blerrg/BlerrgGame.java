@@ -9,6 +9,7 @@ import org.newdawn.slick.state.StateBasedGame;
 public class BlerrgGame extends StateBasedGame {
 	
 	public final static int STARTSTATE = 0;
+	public final static int PLAYINGSTATE = 0;
 	
 	public final int ScreenWidth;
 	public final int ScreenHeight;
@@ -21,6 +22,7 @@ public class BlerrgGame extends StateBasedGame {
 	
 	public void initStatesList(GameContainer arg0) throws SlickException {
 		addState(new StartState());
+		addState(new PlayingState());
 	}
 
 	public static void main(String[] args) {

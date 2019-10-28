@@ -1,0 +1,7 @@
+## Resolved Issues ##
+- **[1]** Create skeleton, executable game
+- **[2]** Create playing state
+
+## Open Issues ##
+
+- **[3]** Render character and move him
