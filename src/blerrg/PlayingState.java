@@ -26,6 +26,10 @@ public class PlayingState extends BasicGameState {
 	public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
 		BlerrgGame bg = (BlerrgGame)game;
 		
+		bg.cameraX = bg.player.getPosition().getX() - bg.ScreenWidth/2;
+		bg.cameraY = bg.player.getPosition().getY() - bg.ScreenHeight/2;
+		g.translate(-bg.cameraX, -bg.cameraY);
+		
 		//Render Entities
 		for (Tile t : bg.tiles) { t.render(g); }
 		bg.player.render(g);

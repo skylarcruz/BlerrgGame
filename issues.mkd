@@ -2,8 +2,8 @@
 - **[1]** Create skeleton, executable game
 - **[2]** Create playing state
 - **[3]** Render character and move him
+- **[4]** Scrolling camera
 
 ## Open Issues ##
 
-- **[4]** Scrolling camera
 

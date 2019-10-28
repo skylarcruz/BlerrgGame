@@ -19,6 +19,9 @@ public class BlerrgGame extends StateBasedGame {
 	public final int ScreenWidth;
 	public final int ScreenHeight;
 	
+	public float cameraX;
+	public float cameraY;
+	
 	//PLAYER
 	public final static String CHARACTER_PLACEHOLDER = "blerrg/resource/character_placeholder.png";
 	
