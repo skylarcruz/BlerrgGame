@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="16" height="16" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="8">
+ <tileset firstgid="1" source="Dungeon.tsx"/>
+ <layer id="1" name="Floor" width="16" height="16">
+  <properties>
+   <property name="TileType" value="Floor"/>
+  </properties>
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAE+NgYGDgGMWjeBSPSAwAuACD0gAEAAA=
+  </data>
+ </layer>
+ <layer id="2" name="Walls" width="16" height="16">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAE2NgIB9wUagXXT8XGibVblLcg8t+UgA19ZOjl1T9+MKXkrgcyQA9TElJw4MBAABGcXxNAAQAAA==
+  </data>
+ </layer>
+</map>
