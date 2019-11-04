@@ -29,6 +29,8 @@ public class BlerrgGame extends StateBasedGame {
 	public final static String TILE_1 = "blerrg/resource/tile1.png";
 	
 	Player player;
+	
+	//TODO: Replace with world model
 	ArrayList<Tile> tiles;
 
 	public BlerrgGame(String title, int width, int height) throws SlickException {
