@@ -1,5 +1,6 @@
-package maps;
+package worldModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.newdawn.slick.Color;
@@ -11,10 +12,9 @@ import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.tiled.TiledMap;
 
 import blerrg.Tile;
-import gameModel.TiledTestGame;
-//import characters.GameCharacter;
+import blerrg.Tile.TileType;
 import jig.Vector;
-import maps.Tile.TileType;
+
 
 public class TileMap {
 
@@ -22,18 +22,15 @@ public class TileMap {
 	public Tile tiles[][];
 	
 	//Scaling factor for tile images and bounds
+	//TODO: Implement as static variable in Tile class
 	float tileScale = 1.0f;
 	
 	Integer rows, columns;
 	Integer frameHeight, frameWidth;
 	
 	Vector mapOrigin = new Vector(0,0);
-	
-	//Will be defined in level files
-	List<Tile> catSpawnTiles;
-	public Tile entryTile, exitTile;
-	
-	
+
+		
 	/**
 	 * Proper Constructor. Attempts to load the map from the provided filename
 	 * @param mapName - name of the map to be loaded from file.
@@ -49,6 +46,10 @@ public class TileMap {
 	}
 	
 
+	//Super basic constructor, just for testing.
+	public TileMap() {
+		createTestMap(0, 50, 50);
+	}
 	
 	
 	private void ScaleMapToSize(int p_width, int p_height) {
@@ -61,10 +62,12 @@ public class TileMap {
 		System.out.println("Scaling: Map("+mapWidth+", "+mapHeight+")");
 		System.out.println("Frame: ("+p_width+", "+p_height+")");
 		
-		Tile.Scale = Math.min((float)p_height/mapHeight , (float)p_width/mapWidth);
+		//Set the tile scale based on the frame size
+		Tile.scale = Math.min((float)p_height/mapHeight , (float)p_width/mapWidth);
+		Tile.size = (int) (Tile.TILE_BASE_SIZE*Tile.scale);
 		
-		centerMap( p_width, p_height, (int)(columns*Tile.TILE_BASE_SIZE*Tile.Scale), 
-				(int)(rows*Tile.TILE_BASE_SIZE*Tile.Scale) );
+//		centerMap( p_width, p_height, (int)(columns*Tile.TILE_BASE_SIZE*Tile.Scale), 
+//				(int)(rows*Tile.TILE_BASE_SIZE*Tile.Scale) );
 		
 	}
 	
@@ -93,6 +96,27 @@ public class TileMap {
 	}
 
 	
+	//TODO: Map should be created in worldModel, method in TileMap
+		public void createTestMap(int map, int rows, int cols) {
+			
+			//TODO: "map" is unused currently, but can be used to select a map
+			
+			//initialize tiles
+			//tiles = new ArrayList<Tile>(2500);
+			tiles = new Tile[rows][cols];
+			
+			//Initialize the individual tiles with proper type, row and column
+			for (int row = 0; row < rows; row++) {
+				for (int col = 0; col < cols; col++) {
+					//Create Tiles
+					Tile newTile = new Tile(row*Tile.size, col*Tile.size, row, col, 0);
+					//tiles.add(newTile);
+					tiles[row][col] = newTile;
+				}
+			}
+		}
+	
+	
 	
 	/**
 	 * Obtains a tile at a given position within the tile grid
@@ -101,6 +125,7 @@ public class TileMap {
 	 * @return The Tile object at the given position
 	 */
 	public Tile getTileAt(int col, int row) {
+		
 		
 		//Ensure Tile Position is within bounds
 		if(row >= tiles.length || col >= tiles[0].length) {
@@ -137,14 +162,15 @@ public class TileMap {
 	}
 	
 	
+	// Generates tiles using a TiledMap object
 	public void populateTiles(TiledMap t_map) {
 		
 		
 		//int tileSize = 64;
 		//Scale the tile size. This depends on the frame size
-		int tileSize = (int) (Tile.TILE_BASE_SIZE*Tile.Scale);
+		int tileSize = (int) (Tile.TILE_BASE_SIZE*Tile.scale);
 		
-		//Get the number of layers
+		//Get the number of layers in the tiled map
 		int layerCount = t_map.getLayerCount();
 		
 		
@@ -198,7 +224,7 @@ public class TileMap {
 					System.out.println("GID: "+t_gid+", type= "+type);
 					
 					//Get the newest tile image, scaled
-					Image t_image = t_map.getTileImage(c, r, layer_num).getScaledCopy(Tile.Scale);
+					Image t_image = t_map.getTileImage(c, r, layer_num).getScaledCopy(Tile.scale);
 					
 					
 					Tile t;
@@ -208,10 +234,11 @@ public class TileMap {
 						t = tiles[c][r];
 						
 						//update the tile type
-						t.setType(type);
+						//t.setType(type);
+						t.type = type;
 						
 						//add the image on top of previous images
-						if(t.tileType != TileType.FLOOR) {
+						if(t.type != TileType.FLOOR) {
 							t.addImageWithBoundingBox(t_image);
 						}
 						else {
@@ -221,7 +248,10 @@ public class TileMap {
 					}
 					else {
 						//No tile exists, create new tile
-						t = new Tile(type, t_image);
+						t = new Tile(mapOrigin.getX() + tileSize/2 + c*tileSize,
+								mapOrigin.getY() + tileSize/2 + r*tileSize,
+								r, c, 0);
+						
 						tiles[c][r] = t;
 						t.setPosition(mapOrigin.getX() + tileSize/2 + c*tileSize,
 								mapOrigin.getY() + tileSize/2 + r*tileSize);
@@ -330,7 +360,7 @@ public class TileMap {
 	
 	
 	
-	public void render(GameContainer arg0, Graphics g) 
+	public void render(Graphics g) 
 			throws SlickException {
 		// TODO Auto-generated method stub
 		
@@ -365,7 +395,7 @@ public class TileMap {
 			
 				Tile t = tiles[col][row];
 				
-				switch(t.tileType) {
+				switch(t.type) {
 				
 				case FLOOR:
 					System.out.print(" O ");

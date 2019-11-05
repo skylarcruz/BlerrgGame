@@ -9,6 +9,7 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import jig.Entity;
 import jig.ResourceManager;
+import worldModel.WorldModel;
 
 
 public class BlerrgGame extends StateBasedGame {
@@ -32,6 +33,8 @@ public class BlerrgGame extends StateBasedGame {
 	
 	//TODO: Replace with world model
 	ArrayList<Tile> tiles;
+	
+	WorldModel world;
 
 	public BlerrgGame(String title, int width, int height) throws SlickException {
 		super(title);
@@ -53,18 +56,20 @@ public class BlerrgGame extends StateBasedGame {
 		ResourceManager.loadImage(TILE_1);
 	}
 	
-	public void createMap(int map) {
-		//initialize entities
-		tiles = new ArrayList<Tile>(2500);
-		
-		for (int row = 0; row < 50; row++) {
-			for (int col = 0; col < 50; col++) {
-				//Create Tiles
-				Tile newTile = new Tile(row*32, col*32, 0);
-				tiles.add(newTile);
-			}
-		}
-	}
+	
+//	//TODO: Map should be created in worldModel, method in TileMap
+//	public void createMap(int map) {
+//		//initialize entities
+//		tiles = new ArrayList<Tile>(2500);
+//		
+//		for (int row = 0; row < 50; row++) {
+//			for (int col = 0; col < 50; col++) {
+//				//Create Tiles
+//				Tile newTile = new Tile(row*32, col*32, 0);
+//				tiles.add(newTile);
+//			}
+//		}
+//	}
 
 	public static void main(String[] args) {
 		AppGameContainer app;

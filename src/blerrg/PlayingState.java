@@ -8,6 +8,7 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 import jig.Vector;
+import worldModel.WorldModel;
 
 public class PlayingState extends BasicGameState {
 
@@ -18,20 +19,32 @@ public class PlayingState extends BasicGameState {
 	@Override
 	public void enter(GameContainer container, StateBasedGame game) throws SlickException {
 		BlerrgGame bg = (BlerrgGame)game;
+		
+		//TODO: Add to world Model
 		bg.player = new Player(bg.ScreenWidth/2, bg.ScreenHeight/2, 0, 0, 0);
-		bg.createMap(0);
+		
+		//TODO: Implement in world model, create world model here
+		bg.world = new WorldModel();
+		
+		//Now handled in WorldModel constructor(Temporarily)
+		//bg.createMap(0);
+		
 	}
 
 	@Override
 	public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
 		BlerrgGame bg = (BlerrgGame)game;
 		
+		//Translate Camera to achieve scrolling
 		bg.cameraX = bg.player.getPosition().getX() - bg.ScreenWidth/2;
 		bg.cameraY = bg.player.getPosition().getY() - bg.ScreenHeight/2;
 		g.translate(-bg.cameraX, -bg.cameraY);
 		
-		//Render Entities
-		for (Tile t : bg.tiles) { t.render(g); }
+		//Render Tiles
+//		for (Tile t : bg.tiles) { t.render(g); }
+		bg.world.render(g);
+		
+		//Render player
 		bg.player.render(g);
 	}
 
