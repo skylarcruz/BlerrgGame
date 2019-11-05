@@ -122,10 +122,13 @@ public class StartState extends BasicGameState {
 			}
 			else if (newPlayer == "3") {
 				bg.bgServer.sendToClient("NewPlayer:3", "3");
+				bg.bgServer.sendToClient("incCount", "2");
 				newPlayer = null;
 			}
 			else if (newPlayer == "4") {
 				bg.bgServer.sendToClient("NewPlayer:4", "4");
+				bg.bgServer.sendToClient("incCount", "2");
+				bg.bgServer.sendToClient("incCount", "3");
 				newPlayer = null;
 			}
 			else if (startFlag == true) {
@@ -166,12 +169,18 @@ public class StartState extends BasicGameState {
 			if (update.equals("null") == false) {
 				if (update.equals("NewPlayer:2")) {
 					bg.clientNum = 2;
+					bg.clientCount = 1;
 				}
 				else if (update.equals("NewPlayer:3")) {
 					bg.clientNum = 3;
+					bg.clientCount = 2;
 				}
 				else if (update.equals("NewPlayer:4")) {
 					bg.clientNum = 4;
+					bg.clientCount = 3;
+				}
+				else if (update.equals("incCount")) {
+					bg.clientCount += 1;
 				}
 				else if (update.equals("gameStart"))
 					bg.enterState(BlerrgGame.PLAYINGSTATE);

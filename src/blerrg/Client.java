@@ -25,8 +25,8 @@ public class Client {
       //stdIn = new BufferedReader(new InputStreamReader(System.in));
   }
   
-  public void updateServer() {
-	  // Send stuff to Server
+  public void updateServer(String msg) {
+	  out.println(msg);
   }
   
   public String getUpdates() throws IOException {

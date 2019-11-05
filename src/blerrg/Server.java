@@ -94,4 +94,17 @@ public class Server {
 		  p4Out.println(msg);
 	  }
   }
+  
+  public String get2Updates() throws IOException {
+	  String input2 = p2In.readLine();
+	  return input2;
+  }
+  public String get3Updates() throws IOException {
+	  String input3 = p3In.readLine();
+	  return input3;
+  }
+  public String get4Updates() throws IOException {
+	  String input4 = p4In.readLine();
+	  return input4;
+  }
 }
