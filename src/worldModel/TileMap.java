@@ -18,7 +18,7 @@ import jig.Vector;
 
 public class TileMap {
 
-	//Actual tile objects
+	//Actual tile objects - this is effectively the grid
 	public Tile tiles[][];
 	
 	//Scaling factor for tile images and bounds
@@ -48,7 +48,9 @@ public class TileMap {
 
 	//Super basic constructor, just for testing.
 	public TileMap() {
-		createTestMap(0, 50, 50);
+		//createTestMap(0, 50, 50);
+		
+		loadMap("blerrg/resource/TiledMaps/Level_1.tmx");
 	}
 	
 	
@@ -97,24 +99,24 @@ public class TileMap {
 
 	
 	//TODO: Map should be created in worldModel, method in TileMap
-		public void createTestMap(int map, int rows, int cols) {
-			
-			//TODO: "map" is unused currently, but can be used to select a map
-			
-			//initialize tiles
-			//tiles = new ArrayList<Tile>(2500);
-			tiles = new Tile[rows][cols];
-			
-			//Initialize the individual tiles with proper type, row and column
-			for (int row = 0; row < rows; row++) {
-				for (int col = 0; col < cols; col++) {
-					//Create Tiles
-					Tile newTile = new Tile(row*Tile.size, col*Tile.size, row, col, 0);
-					//tiles.add(newTile);
-					tiles[row][col] = newTile;
-				}
+	public void createTestMap(int map, int rows, int cols) {
+		
+		//TODO: "map" is unused currently, but can be used to select a map
+		
+		//initialize tiles
+		//tiles = new ArrayList<Tile>(2500);
+		tiles = new Tile[rows][cols];
+		
+		//Initialize the individual tiles with proper type, row and column
+		for (int row = 0; row < rows; row++) {
+			for (int col = 0; col < cols; col++) {
+				//Create Tiles
+				Tile newTile = new Tile(row*Tile.size, col*Tile.size, row, col, 0);
+				//tiles.add(newTile);
+				tiles[row][col] = newTile;
 			}
 		}
+	}
 	
 	
 	
@@ -183,16 +185,7 @@ public class TileMap {
 		for(int layer_num=0; layer_num < layerCount; layer_num++) {
 			//Get the width and height of the layer in tiles
 			
-			//TODO: This part is not working for some reason.
-			//Not parsing correctly
-			
-			//Attempting to process for each layer, but isn't working
-//			int width = Integer.parseInt(
-//					t_map.getLayerProperty(layer_num, "width", "-1"));
-//			int height = Integer.parseInt(
-//					t_map.getLayerProperty(layer_num, "height", "-1"));
-//			
-			
+
 			int width = t_map.getWidth();
 			int height = t_map.getHeight();
 			
@@ -333,7 +326,7 @@ public class TileMap {
 			tiles = new Tile[rows][columns];
 	
 			//Scale map to fit the window
-			ScaleMapToSize(frameWidth, frameHeight);
+			//ScaleMapToSize(frameWidth, frameHeight);
 		
 			
 			

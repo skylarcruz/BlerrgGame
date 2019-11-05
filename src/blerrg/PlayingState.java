@@ -26,9 +26,6 @@ public class PlayingState extends BasicGameState {
 		//TODO: Implement in world model, create world model here
 		bg.world = new WorldModel();
 		
-		//Now handled in WorldModel constructor(Temporarily)
-		//bg.createMap(0);
-		
 	}
 
 	@Override

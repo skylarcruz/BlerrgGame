@@ -5,7 +5,11 @@ import org.newdawn.slick.SlickException;
 
 public class WorldModel {
 
+	//Handle for the tile map
 	public TileMap map;
+	
+	//Handle for objects within the game
+	
 	
 	public WorldModel() {
 		

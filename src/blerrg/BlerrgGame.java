@@ -57,19 +57,7 @@ public class BlerrgGame extends StateBasedGame {
 	}
 	
 	
-//	//TODO: Map should be created in worldModel, method in TileMap
-//	public void createMap(int map) {
-//		//initialize entities
-//		tiles = new ArrayList<Tile>(2500);
-//		
-//		for (int row = 0; row < 50; row++) {
-//			for (int col = 0; col < 50; col++) {
-//				//Create Tiles
-//				Tile newTile = new Tile(row*32, col*32, 0);
-//				tiles.add(newTile);
-//			}
-//		}
-//	}
+
 
 	public static void main(String[] args) {
 		AppGameContainer app;
