@@ -170,7 +170,7 @@ public class TileMap {
 		
 		//int tileSize = 64;
 		//Scale the tile size. This depends on the frame size
-		int tileSize = (int) (Tile.TILE_BASE_SIZE*Tile.scale);
+		//int tileSize = (int) (Tile.TILE_BASE_SIZE*Tile.scale);
 		
 		//Get the number of layers in the tiled map
 		int layerCount = t_map.getLayerCount();
@@ -241,13 +241,13 @@ public class TileMap {
 					}
 					else {
 						//No tile exists, create new tile
-						t = new Tile(mapOrigin.getX() + tileSize/2 + c*tileSize,
-								mapOrigin.getY() + tileSize/2 + r*tileSize,
+						t = new Tile(mapOrigin.getX()/* + tileSize/2 */+ c*Tile.size,
+								mapOrigin.getY()/* + tileSize/2 */+ r*Tile.size,
 								r, c, 0);
 						
 						tiles[c][r] = t;
-						t.setPosition(mapOrigin.getX() + tileSize/2 + c*tileSize,
-								mapOrigin.getY() + tileSize/2 + r*tileSize);
+						t.setPosition(mapOrigin.getX()/* + tileSize/2 */+ c*Tile.size,
+								mapOrigin.getY()/* + tileSize/2 */+ r*Tile.size);
 						
 						t.row = r;
 						t.col = c;
@@ -320,7 +320,11 @@ public class TileMap {
 			int tileHeight = t_map.getTileHeight();
 			int tileWidth = t_map.getTileWidth();
 			
-			//Create the tile set
+			if(tileHeight != 32) {
+				Tile.scale = 32/tileHeight;
+			}
+			
+			//Initialize the tile set
 			rows = t_map.getHeight();
 			columns = t_map.getWidth();
 			tiles = new Tile[rows][columns];
