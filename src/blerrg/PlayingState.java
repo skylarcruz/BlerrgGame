@@ -1,6 +1,7 @@
 package blerrg;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -14,7 +15,10 @@ import jig.Vector;
 public class PlayingState extends BasicGameState {
 	
 	private String msg;
+	private String cUpdate;
 	private String in2;
+	private String in3;
+	private String in4;
 
 	@Override
 	public void init(GameContainer container, StateBasedGame game) throws SlickException {		
@@ -37,9 +41,28 @@ public class PlayingState extends BasicGameState {
 	public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
 		BlerrgGame bg = (BlerrgGame)game;
 		
-		bg.cameraX = bg.player.getPosition().getX() - bg.ScreenWidth/2;
-		bg.cameraY = bg.player.getPosition().getY() - bg.ScreenHeight/2;
-		g.translate(-bg.cameraX, -bg.cameraY);
+		if (bg.isServer) {
+			bg.cameraX = bg.player.getPosition().getX() - bg.ScreenWidth/2;
+			bg.cameraY = bg.player.getPosition().getY() - bg.ScreenHeight/2;
+			g.translate(-bg.cameraX, -bg.cameraY);
+		}
+		else {
+			if (bg.clientNum == 2) {
+				bg.cameraX = bg.player2.getPosition().getX() - bg.ScreenWidth/2;
+				bg.cameraY = bg.player2.getPosition().getY() - bg.ScreenHeight/2;
+				g.translate(-bg.cameraX, -bg.cameraY);
+			}
+			else if (bg.clientNum == 3) {
+				bg.cameraX = bg.player3.getPosition().getX() - bg.ScreenWidth/2;
+				bg.cameraY = bg.player3.getPosition().getY() - bg.ScreenHeight/2;
+				g.translate(-bg.cameraX, -bg.cameraY);
+			}
+			else if (bg.clientNum == 4) {
+				bg.cameraX = bg.player4.getPosition().getX() - bg.ScreenWidth/2;
+				bg.cameraY = bg.player4.getPosition().getY() - bg.ScreenHeight/2;
+				g.translate(-bg.cameraX, -bg.cameraY);
+			}
+		}
 		
 		//Render Entities
 		for (Tile t : bg.tiles) { t.render(g); }
@@ -56,6 +79,8 @@ public class PlayingState extends BasicGameState {
 	public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
 		Input input = container.getInput();
 		BlerrgGame bg = (BlerrgGame)game;
+		
+		cUpdate = "";
 		
 		//START PLAYER MOVEMENT
 		boolean a = input.isKeyDown(Input.KEY_A) ? true : false;
@@ -171,7 +196,138 @@ public class PlayingState extends BasicGameState {
 					bg.player2.setVelocity(new Vector(0, 0));
 				}
 			}
+			
+			// Get Player3Updates
+			if (bg.clientCount >= 2) {
+				try {
+					in3 = bg.bgServer.get3Updates();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				if (in3.equals("stop") == false)
+					bg.player3.setStopped(false);
+				if (in3.equals("aw")) {
+					bg.player3.setVelocity(new Vector(-0.20f, -0.20f));
+					bg.player3.setDirection(7);
+				} else if (in3.equals("as")) {
+					bg.player3.setVelocity(new Vector(-0.20f, +0.20f));
+					bg.player3.setDirection(5);
+				} else if (in3.equals("a")) {
+					bg.player3.setVelocity(new Vector(-0.25f, 0));
+					bg.player3.setDirection(6);
+				} else if (in3.equals("dw")) {
+					bg.player3.setVelocity(new Vector(+0.20f, -0.20f));
+					bg.player3.setDirection(1);
+				} else if (in3.equals("ds")) {
+					bg.player3.setVelocity(new Vector(+0.20f, +0.20f));
+					bg.player3.setDirection(3);
+				} else if (in3.equals("d")) {
+					bg.player3.setVelocity(new Vector(+0.25f, 0));
+					bg.player3.setDirection(2);			
+				} else if (in3.equals("wa")) {
+					bg.player3.setVelocity(new Vector(-0.20f, -0.20f));
+					bg.player3.setDirection(7);
+				} else if (in3.equals("wd")) {
+					bg.player3.setVelocity(new Vector(+0.20f, -0.20f));
+					bg.player3.setDirection(1);
+				} else if (in3.equals("w")){
+					bg.player3.setVelocity(new Vector(0, -0.25f));
+					bg.player3.setDirection(0);
+				} else if (in3.equals("sa")) {
+					bg.player3.setVelocity(new Vector(-0.20f, +0.20f));
+					bg.player3.setDirection(5);
+				} else if (in3.equals("sd")) {
+					bg.player3.setVelocity(new Vector(+0.20f, +0.20f));
+					bg.player3.setDirection(3);
+				} else if (in3.equals("s")) {
+					bg.player3.setVelocity(new Vector(0, +0.25f));
+					bg.player3.setDirection(4);
+				} else if (in3.equals("stop")){
+					bg.player3.setStopped(true);
+					bg.player3.setVelocity(new Vector(0, 0));
+				}
+			}
+			
+			// Get Player4Updates
+			if (bg.clientCount == 3) {
+				try {
+					in4 = bg.bgServer.get4Updates();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				if (in4.equals("stop") == false)
+					bg.player4.setStopped(false);
+				if (in4.equals("aw")) {
+					bg.player4.setVelocity(new Vector(-0.20f, -0.20f));
+					bg.player4.setDirection(7);
+				} else if (in4.equals("as")) {
+					bg.player4.setVelocity(new Vector(-0.20f, +0.20f));
+					bg.player4.setDirection(5);
+				} else if (in4.equals("a")) {
+					bg.player4.setVelocity(new Vector(-0.25f, 0));
+					bg.player4.setDirection(6);
+				} else if (in4.equals("dw")) {
+					bg.player4.setVelocity(new Vector(+0.20f, -0.20f));
+					bg.player4.setDirection(1);
+				} else if (in4.equals("ds")) {
+					bg.player4.setVelocity(new Vector(+0.20f, +0.20f));
+					bg.player4.setDirection(3);
+				} else if (in4.equals("d")) {
+					bg.player4.setVelocity(new Vector(+0.25f, 0));
+					bg.player4.setDirection(2);			
+				} else if (in4.equals("wa")) {
+					bg.player4.setVelocity(new Vector(-0.20f, -0.20f));
+					bg.player4.setDirection(7);
+				} else if (in4.equals("wd")) {
+					bg.player4.setVelocity(new Vector(+0.20f, -0.20f));
+					bg.player4.setDirection(1);
+				} else if (in4.equals("w")){
+					bg.player4.setVelocity(new Vector(0, -0.25f));
+					bg.player4.setDirection(0);
+				} else if (in4.equals("sa")) {
+					bg.player4.setVelocity(new Vector(-0.20f, +0.20f));
+					bg.player4.setDirection(5);
+				} else if (in4.equals("sd")) {
+					bg.player4.setVelocity(new Vector(+0.20f, +0.20f));
+					bg.player4.setDirection(3);
+				} else if (in4.equals("s")) {
+					bg.player4.setVelocity(new Vector(0, +0.25f));
+					bg.player4.setDirection(4);
+				} else if (in4.equals("stop")){
+					bg.player4.setStopped(true);
+					bg.player4.setVelocity(new Vector(0, 0));
+				}
+			}
+			
+			// Get Updates for Client
+			cUpdate = cUpdate + "p1X:" + String.valueOf(bg.player.getX()) + "|";
+			cUpdate = cUpdate + "p1Y:" + String.valueOf(bg.player.getY()) + "|";
+			if (bg.clientCount >= 1) {
+				cUpdate = cUpdate + "p2X:" + String.valueOf(bg.player2.getX()) + "|";
+				cUpdate = cUpdate + "p2Y:" + String.valueOf(bg.player2.getY()) + "|";
+			}
+			if (bg.clientCount >= 2) {
+				cUpdate = cUpdate + "p3X:" + String.valueOf(bg.player3.getX()) + "|";
+				cUpdate = cUpdate + "p3Y:" + String.valueOf(bg.player3.getY()) + "|";
+			}
+			if (bg.clientCount == 3) {
+				cUpdate = cUpdate + "p4X:" + String.valueOf(bg.player4.getX()) + "|";
+				cUpdate = cUpdate + "p4Y:" + String.valueOf(bg.player4.getY()) + "|";
+			}
+			
+			if (bg.clientCount >= 1)
+				bg.bgServer.sendToClient(cUpdate, "2");
+			if (bg.clientCount >= 2)
+				bg.bgServer.sendToClient(cUpdate, "3");
+			if (bg.clientCount == 3)
+				bg.bgServer.sendToClient(cUpdate, "4");
 		}
+		
+		// Input from Clients
 		
 		if (bg.isClient) {
 			if (a) { 
@@ -211,12 +367,62 @@ public class PlayingState extends BasicGameState {
 			}
 			
 			bg.bgClient.updateServer(msg);
+			
+			// getUpdates from Server
+			try {
+				cUpdate = bg.bgClient.getUpdates();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			String arr[] = cUpdate.split("\\|");
+			
+			for (int i = 0; i < arr.length; i++) {
+				if (arr[i].matches("p1X(.*)")) {
+					String split2[] = arr[i].split(":");
+					bg.player.setX(Float.parseFloat(split2[1]));
+				}
+				else if (arr[i].matches("p1Y(.*)")) {
+					String split2[] = arr[i].split(":");
+					bg.player.setY(Float.parseFloat(split2[1]));
+				}
+				else if (arr[i].matches("p2X(.*)")) {
+					String split2[] = arr[i].split(":");
+					bg.player2.setX(Float.parseFloat(split2[1]));
+				}
+				else if (arr[i].matches("p2Y(.*)")) {
+					String split2[] = arr[i].split(":");
+					bg.player2.setY(Float.parseFloat(split2[1]));
+				}
+				else if (arr[i].matches("p3X(.*)")) {
+					String split2[] = arr[i].split(":");
+					bg.player3.setX(Float.parseFloat(split2[1]));
+				}
+				else if (arr[i].matches("p3Y(.*)")) {
+					String split2[] = arr[i].split(":");
+					bg.player3.setY(Float.parseFloat(split2[1]));
+				}
+				else if (arr[i].matches("p4X(.*)")) {
+					String split2[] = arr[i].split(":");
+					bg.player4.setX(Float.parseFloat(split2[1]));
+				}
+				else if (arr[i].matches("p4Y(.*)")) {
+					String split2[] = arr[i].split(":");
+					bg.player4.setY(Float.parseFloat(split2[1]));
+				}
+			}
+			
 		}
 		
 		//Update entities
 		bg.player.update(delta);
 		if (bg.clientCount >= 1)
 			bg.player2.update(delta);
+		if (bg.clientCount >= 2)
+			bg.player3.update(delta);
+		if (bg.clientCount == 3)
+			bg.player4.update(delta);
 	}
 
 	@Override
