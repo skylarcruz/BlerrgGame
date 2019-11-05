@@ -19,6 +19,12 @@ public class PlayingState extends BasicGameState {
 	public void enter(GameContainer container, StateBasedGame game) throws SlickException {
 		BlerrgGame bg = (BlerrgGame)game;
 		bg.player = new Player(bg.ScreenWidth/2, bg.ScreenHeight/2, 0, 0, 0);
+		if (BlerrgGame.clientCount >= 1)
+			bg.player2 = new Player(bg.ScreenWidth/2 + 50, bg.ScreenHeight/2, 0, 0, 0);
+		if (BlerrgGame.clientCount >= 2)
+			bg.player3 = new Player(bg.ScreenWidth/2, bg.ScreenHeight/2 + 50, 0, 0, 0);
+		if (BlerrgGame.clientCount == 3)
+			bg.player4 = new Player(bg.ScreenWidth/2 + 50, bg.ScreenHeight/2 + 50, 0, 0, 0);
 		bg.createMap(0);
 	}
 
@@ -33,6 +39,12 @@ public class PlayingState extends BasicGameState {
 		//Render Entities
 		for (Tile t : bg.tiles) { t.render(g); }
 		bg.player.render(g);
+		if (BlerrgGame.clientCount >= 1)
+			bg.player2.render(g);
+		if (BlerrgGame.clientCount >= 2)
+			bg.player3.render(g);
+		if (BlerrgGame.clientCount == 3)
+			bg.player4.render(g);
 	}
 
 	@Override
