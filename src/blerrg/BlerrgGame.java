@@ -20,29 +20,24 @@ public class BlerrgGame extends StateBasedGame {
 	public final int ScreenWidth;
 	public final int ScreenHeight;
 	
-	public float cameraX;
-	public float cameraY;
 	
 	//PLAYER
 	public final static String CHARACTER_PLACEHOLDER = "blerrg/resource/character_placeholder.png";
 	
 	//TILES
 	public final static String TILE_1 = "blerrg/resource/tile1.png";
-	
-	Player player;
-	
-	//TODO: Replace with world model
-	ArrayList<Tile> tiles;
-	
+
 	WorldModel world;
 
+	
+	
 	public BlerrgGame(String title, int width, int height) throws SlickException {
 		super(title);
 		ScreenWidth = width;
 		ScreenHeight = height;
 		
 		Entity.setCoarseGrainedCollisionBoundary(Entity.AABB);
-//		tiles = new ArrayList<Tile>(2500);
+
 	}
 	
 	public void initStatesList(GameContainer arg0) throws SlickException {
