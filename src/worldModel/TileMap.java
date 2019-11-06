@@ -111,7 +111,7 @@ public class TileMap {
 		for (int row = 0; row < rows; row++) {
 			for (int col = 0; col < cols; col++) {
 				//Create Tiles
-				Tile newTile = new Tile(row*Tile.size, col*Tile.size, row, col, 0);
+				Tile newTile = new Tile(row*Tile.size, col*Tile.size, row, col, TileType.FLOOR);
 				//tiles.add(newTile);
 				tiles[row][col] = newTile;
 			}
@@ -185,7 +185,6 @@ public class TileMap {
 		for(int layer_num=0; layer_num < layerCount; layer_num++) {
 			//Get the width and height of the layer in tiles
 			
-
 			int width = t_map.getWidth();
 			int height = t_map.getHeight();
 			
@@ -211,48 +210,26 @@ public class TileMap {
 					
 					//use the gid to determine tile type and image
 					// multiple gids will correspond to the same type
-					//TileType type = Tile.typeFromGID(t_gid);
+					TileType t_type = Tile.typeFromGID(t_gid);
 					
 					
-					System.out.println("GID: "+t_gid+", type= "+type);
+					System.out.println("GID: "+t_gid+", type= "+t_type);
 					
 					//Get the newest tile image, scaled
 					Image t_image = t_map.getTileImage(c, r, layer_num).getScaledCopy(Tile.scale);
 					
 					
-					Tile t;
-					//Check If a tile is already in this position
-					if(tiles[c][r] != null) {
-						//Set t to point to the tile
-						t = tiles[c][r];
+					Tile t = new Tile(mapOrigin.getX() + c*Tile.size,
+								mapOrigin.getY() + r*Tile.size,
+								r, c, t_type);
 						
-						//update the tile type
-						//t.setType(type);
-						t.type = type;
+					//Set the image
+					t.setImage(t_image);
+					
+					tiles[c][r] = t;
+
 						
-						//add the image on top of previous images
-						if(t.type != TileType.FLOOR) {
-							t.addImageWithBoundingBox(t_image);
-						}
-						else {
-							t.addImageWithBoundingBox(t_image);
-						}
-						
-					}
-					else {
-						//No tile exists, create new tile
-						t = new Tile(mapOrigin.getX()/* + tileSize/2 */+ c*Tile.size,
-								mapOrigin.getY()/* + tileSize/2 */+ r*Tile.size,
-								r, c, 0);
-						
-						tiles[c][r] = t;
-						t.setPosition(mapOrigin.getX()/* + tileSize/2 */+ c*Tile.size,
-								mapOrigin.getY()/* + tileSize/2 */+ r*Tile.size);
-						
-						t.row = r;
-						t.col = c;
-						
-					}
+					
 					
 					
 				}
@@ -353,6 +330,24 @@ public class TileMap {
 		}
 		
 		
+	}
+	
+	
+	//Returns a list of all tiles that cannot be passed through(solid)
+	public ArrayList<Tile> getSolidTiles(){
+		
+		ArrayList<Tile> solids = new ArrayList<Tile>();
+		
+		for(Tile[] row: tiles) {
+			for(Tile t: row) {
+				
+				if(t.type == Tile.TileType.WALL) {
+					solids.add(t);
+				}
+			}
+		}
+		
+		return solids;
 	}
 	
 	

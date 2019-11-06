@@ -1,20 +1,28 @@
 package worldModel;
 
+import java.util.ArrayList;
+
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
+
+import jig.Entity;
 
 public class WorldModel {
 
 	//Handle for the tile map
 	public TileMap map;
 	
-	//Handle for objects within the game
+	public ArrayList<Entity> collidables;
+	
+	public ArrayList<Entity> specialObjects;
 	
 	
 	public WorldModel() {
 		
 		//simple test map for now
 		map = new TileMap();
+		
+		//Add wall tiles to collidables
 		
 	}
 	
