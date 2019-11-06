@@ -60,13 +60,15 @@ public class WorldModel {
 	public void update(int delta) {
 		
 		//Test for collisions
-//		for(Entity statCol: staticCollidables) {
-//			
-//			Collision c = player.collides(statCol);
-//			if(c != null) {
-//				System.out.println("Collision!");
-//			}
-//		}
+		for(Entity statCol: staticCollidables) {
+			
+			Collision c = player.collides(statCol);
+			if(c != null) {
+				System.out.println("Collision!");
+				
+				
+			}
+		}
 		
 		//update entities(Just player for now)
 		player.update(delta);
