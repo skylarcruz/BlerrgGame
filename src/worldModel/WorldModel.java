@@ -1,6 +1,7 @@
 package worldModel;
 
 import java.util.ArrayList;
+import java.util.Vector;
 
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
@@ -60,18 +61,33 @@ public class WorldModel {
 	public void update(int delta) {
 		
 		//Test for collisions
+		collisionTesting(delta);
+		
+		//update entities(Just player for now)
+		player.update(delta);
+	}
+	
+	
+	public void collisionTesting(int delta) {
+		
 		for(Entity statCol: staticCollidables) {
 			
 			Collision c = player.collides(statCol);
 			if(c != null) {
 				System.out.println("Collision!");
 				
+				//Details:
+				System.out.println("---------");
+				System.out.println("MinPen: "+c.getMinPenetration().toString());
+				System.out.println("---------");
 				
+				//Move player back by the minimum penetration
+				jig.Vector back = c.getMinPenetration().scale(1.0f);
+				player.translate(back);
+				player.setVelocity(back);
 			}
 		}
 		
-		//update entities(Just player for now)
-		player.update(delta);
 	}
 	
 	
