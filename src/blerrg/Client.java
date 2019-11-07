@@ -5,16 +5,12 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.net.UnknownHostException;
 
 public class Client {
-	
-	private String userInput;
 	
 	private Socket echoSocket;
 	private PrintWriter out;
 	private BufferedReader in;
-	//private BufferedReader stdIn;
 
   public Client() throws IOException {
       String hostName = "127.0.0.1";
@@ -22,7 +18,6 @@ public class Client {
       echoSocket = new Socket(hostName, portNumber);
       out = new PrintWriter(echoSocket.getOutputStream(), true);
       in = new BufferedReader(new InputStreamReader(echoSocket.getInputStream()));
-      //stdIn = new BufferedReader(new InputStreamReader(System.in));
   }
   
   public void updateServer(String msg) {

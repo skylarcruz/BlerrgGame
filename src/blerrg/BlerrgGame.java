@@ -22,12 +22,12 @@ public class BlerrgGame extends StateBasedGame {
 	public float cameraX;
 	public float cameraY;
 	
-	public static int clientCount = 0;
-	public Server bgServer;
-	public boolean isServer = false;
-	public Client bgClient;
-	public boolean isClient = false;
-	public int clientNum = 0;
+	int clientCount = 0;
+	Server bgServer;
+	boolean isServer = false;
+	Client bgClient;
+	boolean isClient = false;
+	int clientNum = 0;
 	
 	//PLAYER
 	public final static String CHARACTER_PLACEHOLDER = "blerrg/resource/character_placeholder.png";
@@ -86,5 +86,9 @@ public class BlerrgGame extends StateBasedGame {
 		} catch (SlickException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public int getClientCount() {
+		return clientCount;
 	}
 }

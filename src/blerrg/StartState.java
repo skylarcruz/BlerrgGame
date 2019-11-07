@@ -30,20 +30,18 @@ public class StartState extends BasicGameState {
 	public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
 		BlerrgGame bg = (BlerrgGame)game;
 		
-		//g.drawString("Press Space to start", bg.ScreenWidth/2 - 30, bg.ScreenHeight/2);
-		
 		if (state == "init") {
 			g.drawString("Press S to start as server", bg.ScreenWidth/2 - 30, bg.ScreenHeight/2);
 			g.drawString("Press C to connect as client", bg.ScreenWidth/2 - 30, bg.ScreenHeight/2 + 30);
 		}
 		if (state == "server") {
-			if (getClient == false && BlerrgGame.clientCount < 3)
+			if (getClient == false && bg.clientCount < 3)
 				g.drawString("Press C to wait for new client", bg.ScreenWidth/2 - 30, bg.ScreenHeight/2);
-			else if (BlerrgGame.clientCount < 3)
+			else if (bg.clientCount < 3)
 				g.drawString("Waiting for clients...", bg.ScreenWidth/2 - 30, bg.ScreenHeight/2);
 			else
 				g.drawString("No More Players", bg.ScreenWidth/2 - 30, bg.ScreenHeight/2);
-			g.drawString(BlerrgGame.clientCount + " Clients Connected", bg.ScreenWidth/2 - 30, bg.ScreenHeight/2 + 30);
+			g.drawString(bg.clientCount + " Clients Connected", bg.ScreenWidth/2 - 30, bg.ScreenHeight/2 + 30);
 			g.drawString("Press Space to Start", bg.ScreenWidth/2 - 30, bg.ScreenHeight/2 + 60);
 		}
 		if (state == "clientConnect") {
@@ -60,11 +58,13 @@ public class StartState extends BasicGameState {
 		
 		if (getClient == true) {
 			try {
-				newPlayer = bg.bgServer.getClient();
+				newPlayer = bg.bgServer.getClient(bg.clientCount);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			if (newPlayer != null)
+				bg.clientCount += 1;
 			getClient = false;
 		}
 		
@@ -93,13 +93,6 @@ public class StartState extends BasicGameState {
 			if (input.isKeyPressed(Input.KEY_C)) {
 				state = "clientConnect";
 				isConnecting = true;
-//				bg.isClient = true;
-//				try {
-//					bg.bgClient = new Client();
-//				} catch (IOException e) {
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//				}
 			}
 		}
 		

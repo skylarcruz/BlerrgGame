@@ -1,7 +1,7 @@
 package blerrg;
 
 import java.io.IOException;
-import java.util.Arrays;
+//import java.util.Arrays;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -10,6 +10,7 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
+//import jig.ResourceManager;
 import jig.Vector;
 
 public class PlayingState extends BasicGameState {
@@ -28,11 +29,11 @@ public class PlayingState extends BasicGameState {
 	public void enter(GameContainer container, StateBasedGame game) throws SlickException {
 		BlerrgGame bg = (BlerrgGame)game;
 		bg.player = new Player(bg.ScreenWidth/2, bg.ScreenHeight/2, 0, 0, 0);
-		if (BlerrgGame.clientCount >= 1)
+		if (bg.clientCount >= 1)
 			bg.player2 = new Player(bg.ScreenWidth/2 + 50, bg.ScreenHeight/2, 0, 0, 0);
-		if (BlerrgGame.clientCount >= 2)
+		if (bg.clientCount >= 2)
 			bg.player3 = new Player(bg.ScreenWidth/2, bg.ScreenHeight/2 + 50, 0, 0, 0);
-		if (BlerrgGame.clientCount == 3)
+		if (bg.clientCount == 3)
 			bg.player4 = new Player(bg.ScreenWidth/2 + 50, bg.ScreenHeight/2 + 50, 0, 0, 0);
 		bg.createMap(0);
 	}
@@ -67,11 +68,11 @@ public class PlayingState extends BasicGameState {
 		//Render Entities
 		for (Tile t : bg.tiles) { t.render(g); }
 		bg.player.render(g);
-		if (BlerrgGame.clientCount >= 1)
+		if (bg.clientCount >= 1)
 			bg.player2.render(g);
-		if (BlerrgGame.clientCount >= 2)
+		if (bg.clientCount >= 2)
 			bg.player3.render(g);
-		if (BlerrgGame.clientCount == 3)
+		if (bg.clientCount == 3)
 			bg.player4.render(g);
 	}
 
@@ -152,50 +153,42 @@ public class PlayingState extends BasicGameState {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				
-				if (in2.equals("stop") == false)
-					bg.player2.setStopped(false);
-				if (in2.equals("aw")) {
-					bg.player2.setVelocity(new Vector(-0.20f, -0.20f));
-					bg.player2.setDirection(7);
-				} else if (in2.equals("as")) {
-					bg.player2.setVelocity(new Vector(-0.20f, +0.20f));
-					bg.player2.setDirection(5);
-				} else if (in2.equals("a")) {
-					bg.player2.setVelocity(new Vector(-0.25f, 0));
-					bg.player2.setDirection(6);
-				} else if (in2.equals("dw")) {
-					bg.player2.setVelocity(new Vector(+0.20f, -0.20f));
-					bg.player2.setDirection(1);
-				} else if (in2.equals("ds")) {
-					bg.player2.setVelocity(new Vector(+0.20f, +0.20f));
-					bg.player2.setDirection(3);
-				} else if (in2.equals("d")) {
-					bg.player2.setVelocity(new Vector(+0.25f, 0));
-					bg.player2.setDirection(2);			
-				} else if (in2.equals("wa")) {
-					bg.player2.setVelocity(new Vector(-0.20f, -0.20f));
-					bg.player2.setDirection(7);
-				} else if (in2.equals("wd")) {
-					bg.player2.setVelocity(new Vector(+0.20f, -0.20f));
-					bg.player2.setDirection(1);
-				} else if (in2.equals("w")){
-					bg.player2.setVelocity(new Vector(0, -0.25f));
-					bg.player2.setDirection(0);
-				} else if (in2.equals("sa")) {
-					bg.player2.setVelocity(new Vector(-0.20f, +0.20f));
-					bg.player2.setDirection(5);
-				} else if (in2.equals("sd")) {
-					bg.player2.setVelocity(new Vector(+0.20f, +0.20f));
-					bg.player2.setDirection(3);
-				} else if (in2.equals("s")) {
-					bg.player2.setVelocity(new Vector(0, +0.25f));
-					bg.player2.setDirection(4);
-				} else if (in2.equals("stop")){
-					bg.player2.setStopped(true);
-					bg.player2.setVelocity(new Vector(0, 0));
-				}
-			}
+				String arr[] = in2.split("\\|");
+				for (int i = 0; i < arr.length; i++) {
+					if (arr[i].matches("(.*):(.*)")) {
+						String task[] = arr[i].split(":");
+						switch(task[0]) {
+						    // Movement Action
+							case "mov":
+								if (task[1].equals("stop") == false)
+									bg.player2.setStopped(false);
+								switch(task[1]) {
+									case "U":  bg.player2.setVelocity(new Vector(0, -0.25f));
+								       		   bg.player2.setDirection(0); break;
+									case "UR": bg.player2.setVelocity(new Vector(+0.20f, -0.20f));
+								               bg.player2.setDirection(1); break;
+									case "R":  bg.player2.setVelocity(new Vector(+0.25f, 0));
+								       		   bg.player2.setDirection(2); break;	
+									case "DR": bg.player2.setVelocity(new Vector(+0.20f, +0.20f));
+								               bg.player2.setDirection(3); break;
+									case "D":  bg.player2.setVelocity(new Vector(0, +0.25f));
+								               bg.player2.setDirection(4); break;
+									case "DL": bg.player2.setVelocity(new Vector(-0.20f, +0.20f));
+									           bg.player2.setDirection(5); break;
+									case "L":  bg.player2.setVelocity(new Vector(-0.25f, 0));
+								               bg.player2.setDirection(6); break;
+									case "UL": bg.player2.setVelocity(new Vector(-0.20f, -0.20f));
+								               bg.player2.setDirection(7); break;
+									case "stop": bg.player2.setStopped(true);
+							                     bg.player2.setVelocity(new Vector(0, 0)); break;
+						            default:   bg.player2.setStopped(true);
+						                       bg.player2.setVelocity(new Vector(0, 0)); break;
+								} break;
+							default: break;
+						} // end of task[0] switch
+					} // end of if
+				} // end of for loop
+			} // end of Player2 Updates
 			
 			// Get Player3Updates
 			if (bg.clientCount >= 2) {
@@ -206,49 +199,42 @@ public class PlayingState extends BasicGameState {
 					e.printStackTrace();
 				}
 				
-				if (in3.equals("stop") == false)
-					bg.player3.setStopped(false);
-				if (in3.equals("aw")) {
-					bg.player3.setVelocity(new Vector(-0.20f, -0.20f));
-					bg.player3.setDirection(7);
-				} else if (in3.equals("as")) {
-					bg.player3.setVelocity(new Vector(-0.20f, +0.20f));
-					bg.player3.setDirection(5);
-				} else if (in3.equals("a")) {
-					bg.player3.setVelocity(new Vector(-0.25f, 0));
-					bg.player3.setDirection(6);
-				} else if (in3.equals("dw")) {
-					bg.player3.setVelocity(new Vector(+0.20f, -0.20f));
-					bg.player3.setDirection(1);
-				} else if (in3.equals("ds")) {
-					bg.player3.setVelocity(new Vector(+0.20f, +0.20f));
-					bg.player3.setDirection(3);
-				} else if (in3.equals("d")) {
-					bg.player3.setVelocity(new Vector(+0.25f, 0));
-					bg.player3.setDirection(2);			
-				} else if (in3.equals("wa")) {
-					bg.player3.setVelocity(new Vector(-0.20f, -0.20f));
-					bg.player3.setDirection(7);
-				} else if (in3.equals("wd")) {
-					bg.player3.setVelocity(new Vector(+0.20f, -0.20f));
-					bg.player3.setDirection(1);
-				} else if (in3.equals("w")){
-					bg.player3.setVelocity(new Vector(0, -0.25f));
-					bg.player3.setDirection(0);
-				} else if (in3.equals("sa")) {
-					bg.player3.setVelocity(new Vector(-0.20f, +0.20f));
-					bg.player3.setDirection(5);
-				} else if (in3.equals("sd")) {
-					bg.player3.setVelocity(new Vector(+0.20f, +0.20f));
-					bg.player3.setDirection(3);
-				} else if (in3.equals("s")) {
-					bg.player3.setVelocity(new Vector(0, +0.25f));
-					bg.player3.setDirection(4);
-				} else if (in3.equals("stop")){
-					bg.player3.setStopped(true);
-					bg.player3.setVelocity(new Vector(0, 0));
-				}
-			}
+				String arr[] = in3.split("\\|");
+				for (int i = 0; i < arr.length; i++) {
+					if (arr[i].matches("(.*):(.*)")) {
+						String task[] = arr[i].split(":");
+						switch(task[0]) {
+						    // Movement Action
+							case "mov":
+								if (task[1].equals("stop") == false)
+									bg.player3.setStopped(false);
+								switch(task[1]) {
+									case "U":  bg.player3.setVelocity(new Vector(0, -0.25f));
+								       		   bg.player3.setDirection(0); break;
+									case "UR": bg.player3.setVelocity(new Vector(+0.20f, -0.20f));
+								               bg.player3.setDirection(1); break;
+									case "R":  bg.player3.setVelocity(new Vector(+0.25f, 0));
+								       		   bg.player3.setDirection(2); break;	
+									case "DR": bg.player3.setVelocity(new Vector(+0.20f, +0.20f));
+								               bg.player3.setDirection(3); break;
+									case "D":  bg.player3.setVelocity(new Vector(0, +0.25f));
+								               bg.player3.setDirection(4); break;
+									case "DL": bg.player3.setVelocity(new Vector(-0.20f, +0.20f));
+									           bg.player3.setDirection(5); break;
+									case "L":  bg.player3.setVelocity(new Vector(-0.25f, 0));
+								               bg.player3.setDirection(6); break;
+									case "UL": bg.player3.setVelocity(new Vector(-0.20f, -0.20f));
+								               bg.player3.setDirection(7); break;
+									case "stop": bg.player3.setStopped(true);
+							                     bg.player3.setVelocity(new Vector(0, 0)); break;
+						            default:   bg.player3.setStopped(true);
+						                       bg.player3.setVelocity(new Vector(0, 0)); break;
+								} break;
+							default: break;
+						} // end of task[0] switch
+					} // end of if
+				} // end of for loop
+			} // End of Player 3 Updates
 			
 			// Get Player4Updates
 			if (bg.clientCount == 3) {
@@ -259,49 +245,42 @@ public class PlayingState extends BasicGameState {
 					e.printStackTrace();
 				}
 				
-				if (in4.equals("stop") == false)
-					bg.player4.setStopped(false);
-				if (in4.equals("aw")) {
-					bg.player4.setVelocity(new Vector(-0.20f, -0.20f));
-					bg.player4.setDirection(7);
-				} else if (in4.equals("as")) {
-					bg.player4.setVelocity(new Vector(-0.20f, +0.20f));
-					bg.player4.setDirection(5);
-				} else if (in4.equals("a")) {
-					bg.player4.setVelocity(new Vector(-0.25f, 0));
-					bg.player4.setDirection(6);
-				} else if (in4.equals("dw")) {
-					bg.player4.setVelocity(new Vector(+0.20f, -0.20f));
-					bg.player4.setDirection(1);
-				} else if (in4.equals("ds")) {
-					bg.player4.setVelocity(new Vector(+0.20f, +0.20f));
-					bg.player4.setDirection(3);
-				} else if (in4.equals("d")) {
-					bg.player4.setVelocity(new Vector(+0.25f, 0));
-					bg.player4.setDirection(2);			
-				} else if (in4.equals("wa")) {
-					bg.player4.setVelocity(new Vector(-0.20f, -0.20f));
-					bg.player4.setDirection(7);
-				} else if (in4.equals("wd")) {
-					bg.player4.setVelocity(new Vector(+0.20f, -0.20f));
-					bg.player4.setDirection(1);
-				} else if (in4.equals("w")){
-					bg.player4.setVelocity(new Vector(0, -0.25f));
-					bg.player4.setDirection(0);
-				} else if (in4.equals("sa")) {
-					bg.player4.setVelocity(new Vector(-0.20f, +0.20f));
-					bg.player4.setDirection(5);
-				} else if (in4.equals("sd")) {
-					bg.player4.setVelocity(new Vector(+0.20f, +0.20f));
-					bg.player4.setDirection(3);
-				} else if (in4.equals("s")) {
-					bg.player4.setVelocity(new Vector(0, +0.25f));
-					bg.player4.setDirection(4);
-				} else if (in4.equals("stop")){
-					bg.player4.setStopped(true);
-					bg.player4.setVelocity(new Vector(0, 0));
-				}
-			}
+				String arr[] = in4.split("\\|");
+				for (int i = 0; i < arr.length; i++) {
+					if (arr[i].matches("(.*):(.*)")) {
+						String task[] = arr[i].split(":");
+						switch(task[0]) {
+						    // Movement Action
+							case "mov":
+								if (task[1].equals("stop") == false)
+									bg.player4.setStopped(false);
+								switch(task[1]) {
+									case "U":  bg.player4.setVelocity(new Vector(0, -0.25f));
+								       		   bg.player4.setDirection(0); break;
+									case "UR": bg.player4.setVelocity(new Vector(+0.20f, -0.20f));
+								               bg.player4.setDirection(1); break;
+									case "R":  bg.player4.setVelocity(new Vector(+0.25f, 0));
+								       		   bg.player4.setDirection(2); break;	
+									case "DR": bg.player4.setVelocity(new Vector(+0.20f, +0.20f));
+								               bg.player4.setDirection(3); break;
+									case "D":  bg.player4.setVelocity(new Vector(0, +0.25f));
+								               bg.player4.setDirection(4); break;
+									case "DL": bg.player4.setVelocity(new Vector(-0.20f, +0.20f));
+									           bg.player4.setDirection(5); break;
+									case "L":  bg.player4.setVelocity(new Vector(-0.25f, 0));
+								               bg.player4.setDirection(6); break;
+									case "UL": bg.player4.setVelocity(new Vector(-0.20f, -0.20f));
+								               bg.player4.setDirection(7); break;
+									case "stop": bg.player4.setStopped(true);
+							                     bg.player4.setVelocity(new Vector(0, 0)); break;
+						            default:   bg.player4.setStopped(true);
+						                       bg.player4.setVelocity(new Vector(0, 0)); break;
+								} break;
+							default: break;
+						} // end of task[0] switch
+					} // end of if
+				} // end of for loop
+			} // End of Player 4 Updates
 			
 			// Get Updates for Client
 			cUpdate = cUpdate + "p1X:" + String.valueOf(bg.player.getX()) + "|";
@@ -330,41 +309,43 @@ public class PlayingState extends BasicGameState {
 		// Input from Clients
 		
 		if (bg.isClient) {
+			msg = "";
+			//Get Movement
 			if (a) { 
 				if (w) { // up-left
-					msg = "aw";
+					msg += "mov:UL|";
 				} else if (s) { // down-left
-					msg = "as";
+					msg += "mov:DL|";
 				} else { // left
-					msg = "a";
+					msg += "mov:L|";
 				}
 			} else if (d) {
 				if (w) { // up-right
-					msg = "dw";
+					msg += "mov:UR|";
 				} else if (s) { // down-right
-					msg = "ds";
+					msg += "mov:DR|";
 				} else { // right
-					msg = "d";
+					msg += "mov:R|";
 				}			
 			} else if (w) {
 				if (a) { // up-left
-					msg = "wa";
+					msg += "mov:UL|";
 				} else if (d) { // up-right
-					msg = "wd";
+					msg += "mov:UR|";
 				} else { // up
-					msg = "w";
+					msg += "mov:U|";
 				}
 			} else if (s) {
 				if (a) { // down-left
-					msg = "sa";
+					msg += "mov:DL|";
 				} else if (d) { // down-right
-					msg = "sd";
+					msg += "mov:DR|";
 				} else { // down
-					msg = "s";
+					msg += "mov:D|";
 				}
 			} else {
-				msg = "stop";
-			}
+				msg += "mov:stop|";
+			} // End of Movement
 			
 			bg.bgClient.updateServer(msg);
 			
@@ -375,41 +356,21 @@ public class PlayingState extends BasicGameState {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-
 			String arr[] = cUpdate.split("\\|");
-			
 			for (int i = 0; i < arr.length; i++) {
-				if (arr[i].matches("p1X(.*)")) {
-					String split2[] = arr[i].split(":");
-					bg.player.setX(Float.parseFloat(split2[1]));
-				}
-				else if (arr[i].matches("p1Y(.*)")) {
-					String split2[] = arr[i].split(":");
-					bg.player.setY(Float.parseFloat(split2[1]));
-				}
-				else if (arr[i].matches("p2X(.*)")) {
-					String split2[] = arr[i].split(":");
-					bg.player2.setX(Float.parseFloat(split2[1]));
-				}
-				else if (arr[i].matches("p2Y(.*)")) {
-					String split2[] = arr[i].split(":");
-					bg.player2.setY(Float.parseFloat(split2[1]));
-				}
-				else if (arr[i].matches("p3X(.*)")) {
-					String split2[] = arr[i].split(":");
-					bg.player3.setX(Float.parseFloat(split2[1]));
-				}
-				else if (arr[i].matches("p3Y(.*)")) {
-					String split2[] = arr[i].split(":");
-					bg.player3.setY(Float.parseFloat(split2[1]));
-				}
-				else if (arr[i].matches("p4X(.*)")) {
-					String split2[] = arr[i].split(":");
-					bg.player4.setX(Float.parseFloat(split2[1]));
-				}
-				else if (arr[i].matches("p4Y(.*)")) {
-					String split2[] = arr[i].split(":");
-					bg.player4.setY(Float.parseFloat(split2[1]));
+				if (arr[i].matches("(.*):(.*)")) {
+					String task[] = arr[i].split(":");
+					switch(task[0]) {
+						case "p1X": bg.player.setX(Float.parseFloat(task[1])); break;
+						case "p1Y": bg.player.setY(Float.parseFloat(task[1])); break;
+						case "p2X": bg.player2.setX(Float.parseFloat(task[1])); break;
+						case "p2Y": bg.player2.setY(Float.parseFloat(task[1])); break;
+						case "p3X": bg.player3.setX(Float.parseFloat(task[1])); break;
+						case "p3Y": bg.player3.setY(Float.parseFloat(task[1])); break;
+						case "p4X": bg.player4.setX(Float.parseFloat(task[1])); break;
+						case "p4Y": bg.player4.setY(Float.parseFloat(task[1])); break;
+						default: break;
+					}
 				}
 			}
 			
