@@ -14,7 +14,7 @@ public class Client {
 
   public Client() throws IOException {
       String hostName = "127.0.0.1";
-      int portNumber = 22222;
+      int portNumber = 42069;
       echoSocket = new Socket(hostName, portNumber);
       out = new PrintWriter(echoSocket.getOutputStream(), true);
       in = new BufferedReader(new InputStreamReader(echoSocket.getInputStream()));

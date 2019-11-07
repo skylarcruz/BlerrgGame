@@ -25,7 +25,7 @@ public class Server {
 	
   public Server() throws IOException {
 	  System.out.println("Start of main");
-      int portNumber = 22222;
+      int portNumber = 42069;
       serverSocket = new ServerSocket(portNumber);
   }
   
