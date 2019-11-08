@@ -30,9 +30,13 @@ public class WorldModel {
 	public int frameHeight;
 	
 	public Player player;
+	public Player player2;
+	public Player player3;
+	public Player player4;
 	
+	public Player thisPlayer;
 	
-	public WorldModel(int screenWidth, int screenHeight) {
+	public WorldModel(int screenWidth, int screenHeight, BlerrgGame bg) {
 		
 		//simple test map for now
 		map = new TileMap();
@@ -49,6 +53,19 @@ public class WorldModel {
 		player = new Player(screenWidth/2, screenHeight/2, 0, 0, 0);
 		characters.add(player);
 		
+		if (bg.clientCount >= 1) {
+			player2 = new Player(bg.ScreenWidth/2 + 50, bg.ScreenHeight/2, 0, 0, 0);
+			characters.add(player2);
+		}
+		if (bg.clientCount >= 2) {
+			player3 = new Player(bg.ScreenWidth/2, bg.ScreenHeight/2 + 50, 0, 0, 0);
+			characters.add(player3);
+		}
+		if (bg.clientCount == 3) {
+			player4 = new Player(bg.ScreenWidth/2 + 50, bg.ScreenHeight/2 + 50, 0, 0, 0);
+			characters.add(player4);
+		}
+		
 		
 		//Add wall tiles to collidables
 		for(Tile t: map.getSolidTiles()) {
@@ -56,6 +73,16 @@ public class WorldModel {
 		}
 	}
 	
+	
+	public void assignPlayer(int clientNum) {
+		switch(clientNum) {
+		case 1: thisPlayer = player; break;
+		case 2: thisPlayer = player2; break;
+		case 3: thisPlayer = player3; break;
+		case 4: thisPlayer = player4; break;
+		default: thisPlayer = player; break;
+		}
+	}
 	
 	//Update the game model. All updates should go through this method
 	public void update(int delta) {
@@ -92,7 +119,9 @@ public class WorldModel {
 	
 	
 	
-	public void render(Graphics g) {
+	public void render(StateBasedGame game, Graphics g) {
+		
+		BlerrgGame bg = (BlerrgGame)game;
 		
 		try {
 			
@@ -100,7 +129,11 @@ public class WorldModel {
 			
 			map.render(g);
 			
-			player.render(g);
+			//player.render(g);
+			
+			for(Entity character: characters) {
+				character.render(g);
+			}
 			
 		} catch (SlickException e) {
 			// TODO Auto-generated catch block
@@ -117,8 +150,8 @@ public class WorldModel {
 
 	public void translateCamera(Graphics g) {
 		//Translate Camera to achieve scrolling
-		cameraX = player.getPosition().getX() - frameWidth/2;
-		cameraY = player.getPosition().getY() - frameHeight/2;
+		cameraX = thisPlayer.getPosition().getX() - frameWidth/2;
+		cameraY = thisPlayer.getPosition().getY() - frameHeight/2;
 		g.translate(-cameraX, -cameraY);
 	}
 	

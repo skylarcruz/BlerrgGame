@@ -21,11 +21,27 @@ public class BlerrgGame extends StateBasedGame {
 	public final int ScreenHeight;
 	
 	
+	int clientCount = 0;
+	Server bgServer;
+	boolean isServer = false;
+	Client bgClient;
+	boolean isClient = false;
+	int clientNum = 0;
+	
 	//PLAYER
 	public final static String CHARACTER_PLACEHOLDER = "blerrg/resource/character_placeholder.png";
 	
 	//TILES
 	public final static String TILE_1 = "blerrg/resource/tile1.png";
+//<<<<<<< HEAD
+//=======
+//	
+//	Player player;
+//	Player player2;
+//	Player player3;
+//	Player player4;
+//	//ArrayList<Tile> tiles;
+//>>>>>>> refs/heads/dev
 
 	WorldModel world;
 
@@ -58,14 +74,17 @@ public class BlerrgGame extends StateBasedGame {
 		AppGameContainer app;
 		try {
 			app = new AppGameContainer(new BlerrgGame(":: Blerrg ::", 1280, 720));
+			app.setAlwaysRender(true);
 			app.setDisplayMode(1280, 720, false);
+			app.setVSync(true);
 			app.setShowFPS(true);
 			app.start();
 		} catch (SlickException e) {
 			e.printStackTrace();
 		}
 	}
-
 	
-
+	public int getClientCount() {
+		return clientCount;
+	}
 }
