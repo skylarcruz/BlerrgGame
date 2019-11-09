@@ -21,7 +21,7 @@ public class BlerrgGame extends StateBasedGame {
 	public final int ScreenHeight;
 	
 	
-	int clientCount = 0;
+	public int clientCount = 0;
 	Server bgServer;
 	boolean isServer = false;
 	Client bgClient;

@@ -5,7 +5,9 @@ import java.util.Vector;
 
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.state.StateBasedGame;
 
+import blerrg.BlerrgGame;
 import blerrg.Player;
 import blerrg.Tile;
 import jig.Collision;

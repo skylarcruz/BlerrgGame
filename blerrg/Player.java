@@ -190,7 +190,7 @@ public class Player extends Entity {
 				} // end of task[0] switch
 			} // end of if
 		} // end of for loop
-	} // end of Player2 Updates
+
 	}
 	
 	
