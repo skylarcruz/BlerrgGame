@@ -154,7 +154,8 @@ public class StartState extends BasicGameState {
 			}
 			
 			if (iTest < 5) {
-				System.out.println(update.length());
+				System.out.println("Update length: "+update.length());
+				System.out.println("Update: "+update);
 				iTest += 1;
 			}
 		

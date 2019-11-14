@@ -28,6 +28,8 @@ public class Player extends Entity {
 	
 	public void processInput(Input input) {
 		
+		System.out.println("Processing Input directly");
+		
 		//START PLAYER MOVEMENT
 		boolean a = input.isKeyDown(Input.KEY_A) ? true : false;
 		boolean w = input.isKeyDown(Input.KEY_W) ? true : false;
@@ -105,6 +107,9 @@ public class Player extends Entity {
 	
 	//Used by clients to create a request string from the current input
 	public String requestFromInput(Input input) {
+		
+		
+		
 		String msg = "";
 		
 		boolean a = input.isKeyDown(Input.KEY_A) ? true : false;
@@ -150,11 +155,29 @@ public class Player extends Entity {
 			msg += "mov:stop|";
 		} // End of Movement
 		
+		if(!msg.equalsIgnoreCase("")) {
+			System.out.println("Client Input Request: "+msg);			
+		}
+		
 		return msg;
 	}
 	
 	//Recieves a string from a client, updates this player accordingly
 	public void processClientRequest(String in) {
+	
+		//make sure request was not null
+		if(in == null) {
+			System.out.println("No client request");
+			return;
+		}
+		
+		if(in.contentEquals("")) {
+			System.out.println("Blank client request");
+			return;
+		}
+		
+		System.out.println("Recieved request: "+in);
+	
 		String arr[] = in.split("\\|");
 		for (int i = 0; i < arr.length; i++) {
 			if (arr[i].matches("(.*):(.*)")) {

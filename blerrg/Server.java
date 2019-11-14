@@ -55,6 +55,7 @@ public class Server {
 	  return pNum;
   }
   
+  
   public void sendToClient(String msg, String p) {
 	  if (p == "2") {
 		  p2Out.println(msg);

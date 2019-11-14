@@ -212,7 +212,7 @@ public class TileMap {
 					TileType t_type = Tile.typeFromGID(t_gid);
 					
 					
-					System.out.println("GID: "+t_gid+", type= "+t_type);
+					//System.out.println("GID: "+t_gid+", type= "+t_type);
 					
 					//Get the newest tile image, scaled
 					Image t_image = t_map.getTileImage(c, r, layer_num).getScaledCopy(Tile.scale);

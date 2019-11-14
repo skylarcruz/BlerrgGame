@@ -12,7 +12,10 @@ import jig.ResourceManager;
 import worldModel.WorldModel;
 
 
+
 public class BlerrgGame extends StateBasedGame {
+	
+	public final static boolean DEBUG = true;
 	
 	public final static int STARTSTATE = 0;
 	public final static int PLAYINGSTATE = 0;
@@ -86,5 +89,22 @@ public class BlerrgGame extends StateBasedGame {
 	
 	public int getClientCount() {
 		return clientCount;
+	}
+	
+	
+	public static void debugPrint(Object... args) {
+		if(DEBUG) {
+			
+			StringBuilder sb = new StringBuilder();
+			
+			for(Object arg : args) {
+				//get string of object
+				sb.append(String.valueOf(arg));
+			}
+		
+			System.out.println(sb.toString());
+		}
+		
+		
 	}
 }

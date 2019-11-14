@@ -25,7 +25,12 @@ public class Client {
   }
   
   public String getUpdates() throws IOException {
+	  
+	  //check input
+	  
 	  String input = in.readLine();
+	  
+	  BlerrgGame.debugPrint("Client recieved update: ", input);
 	  return input;
   }
 }

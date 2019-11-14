@@ -87,13 +87,23 @@ public class WorldModel {
 	}
 	
 	//Update the game model. All updates should go through this method
-	public void update(int delta) {
-		
+	public void update(StateBasedGame game, int delta) {
+		BlerrgGame bg = (BlerrgGame)game;
 		//Test for collisions
 		collisionTesting(delta);
 		
 		//update entities(Just player for now)
+		//player.update(delta);
+		
+		//Update entities
 		player.update(delta);
+		if (bg.clientCount >= 1)
+			player2.update(delta);
+		if (bg.clientCount >= 2)
+			player3.update(delta);
+		if (bg.clientCount == 3)
+			player4.update(delta);
+		
 	}
 	
 	
