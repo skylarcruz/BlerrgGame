@@ -7,9 +7,11 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.tiled.TiledMap;
 
+import blerrg.BlerrgGame;
 import blerrg.Tile;
 import blerrg.Tile.TileType;
 import jig.Vector;
@@ -96,6 +98,7 @@ public class TileMap {
 		
 	}
 
+	
 	
 	//TODO: Map should be created in worldModel, method in TileMap
 	public void createTestMap(int map, int rows, int cols) {
@@ -275,6 +278,34 @@ public class TileMap {
 		
 	}
 	
+	public ArrayList<Tile> tilesInArea(float minX, float minY, float maxX, float maxY){
+		
+		ArrayList<Tile> tna = new ArrayList<Tile>();
+		
+		
+		
+		//calculate column
+		int roughMinCol = Math.floorDiv((int)minX, Tile.size) - 1;
+		if(roughMinCol < 0) roughMinCol = 0;
+		
+		int roughMaxCol = (int) (maxX / Tile.size) + 1;
+		if(roughMaxCol > (columns - 1)) roughMaxCol = columns - 1;
+		
+		int roughMinRow = Math.floorDiv((int)minY, Tile.size) - 1;
+		if(roughMinRow < 0) roughMinRow = 0;
+		
+		int roughMaxRow = (int) (maxY / Tile.size) + 1;
+		if(roughMaxRow > (rows - 1)) roughMaxRow = rows - 1;
+		
+		//[row][col]
+		for(int r=roughMinRow; r <= roughMaxRow; r++) {
+			for(int c=roughMinCol; c <= roughMaxCol; c++) {
+					tna.add(tiles[c][r]);
+			}
+		}
+		
+		return tna;
+	}
 	
 	
 	/***

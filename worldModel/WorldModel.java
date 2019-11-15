@@ -18,7 +18,11 @@ public class WorldModel {
 	//Handle for the tile map
 	public TileMap map;
 	
+	QuadTree quadTree;
+	
 	public ArrayList<Entity> staticCollidables;
+	
+	public ArrayList<Entity> dynamicCollidables;
 	
 	public ArrayList<Entity> specialObjects;
 	
@@ -42,6 +46,9 @@ public class WorldModel {
 		
 		//simple test map for now
 		map = new TileMap();
+		
+		quadTree = new QuadTree((int)(map.columns*Tile.TILE_BASE_SIZE),
+				(int)(map.rows*Tile.TILE_BASE_SIZE));
 		
 		frameWidth = screenWidth;
 		frameHeight = screenHeight;
@@ -69,10 +76,15 @@ public class WorldModel {
 		}
 		
 		
-		//Add wall tiles to collidables
+		//Add wall tiles to the quadtree
 		for(Tile t: map.getSolidTiles()) {
-			staticCollidables.add(t);
+			//staticCollidables.add(t);
+			
+			quadTree.addEntity(t);
 		}
+		
+		
+		quadTree.printTree();
 	}
 	
 	
@@ -109,23 +121,61 @@ public class WorldModel {
 	
 	public void collisionTesting(int delta) {
 		
-		for(Entity statCol: staticCollidables) {
+		//Check all characters
+		for(Entity character: characters) {
+			//get nearby entities
+			ArrayList<Entity> nearEnts = quadTree.nearbyEntities(character);
 			
-			Collision c = player.collides(statCol);
-			if(c != null) {
-				System.out.println("Collision!");
+//			if(!nearEnts.isEmpty()) {
+//				BlerrgGame.debugPrint("Nearby Entities: ", nearEnts.size());
+//			}
+			
+			for(Entity ent: nearEnts) {
+				Collision c = character.collides(ent);
 				
-				//Details:
-				System.out.println("---------");
-				System.out.println("MinPen: "+c.getMinPenetration().toString());
-				System.out.println("---------");
-				
-				//Move player back by the minimum penetration
-				jig.Vector back = c.getMinPenetration().scale(1.0f);
-				player.translate(back);
-				player.setVelocity(back);
+				if(c != null) {
+					System.out.println("Collision!");
+					
+					//Resolve the collision, this depends on the type of object
+					
+					//Details:
+					System.out.println("---------");
+					System.out.println("MinPen: "+c.getMinPenetration().toString());
+					System.out.println("---------");
+					
+					//Move player back by the minimum penetration
+					jig.Vector back = c.getMinPenetration().scale(1.0f);
+					//character.translate(back);
+					
+					//for now, assume character is player
+					((Player)character).setVelocity(back);
+					
+					//Stop checking for collisions with this character
+					break;
+				}
 			}
 		}
+		
+		
+		//Check dynamic collidables
+		
+//		for(Entity statCol: staticCollidables) {
+//			
+//			Collision c = player.collides(statCol);
+//			if(c != null) {
+//				System.out.println("Collision!");
+//				
+//				//Details:
+//				System.out.println("---------");
+//				System.out.println("MinPen: "+c.getMinPenetration().toString());
+//				System.out.println("---------");
+//				
+//				//Move player back by the minimum penetration
+//				jig.Vector back = c.getMinPenetration().scale(1.0f);
+//				player.translate(back);
+//				player.setVelocity(back);
+//			}
+//		}
 		
 	}
 	
@@ -135,11 +185,19 @@ public class WorldModel {
 		
 		BlerrgGame bg = (BlerrgGame)game;
 		
-		try {
+		//try {
 			
 			translateCamera(g);
 			
-			map.render(g);
+			//map.render(g);
+			
+			//get tiles in the area of the camera
+			ArrayList<Tile> visTiles = 
+					map.tilesInArea(thisPlayer.getX() - frameWidth/2, thisPlayer.getY() - frameHeight/2,
+							thisPlayer.getX()+frameWidth/2, thisPlayer.getY()+frameHeight/2);
+			for(Tile t: visTiles) {
+				t.render(g);
+			}
 			
 			//player.render(g);
 			
@@ -147,10 +205,10 @@ public class WorldModel {
 				character.render(g);
 			}
 			
-		} catch (SlickException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//		} catch (SlickException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 		
 		
 		

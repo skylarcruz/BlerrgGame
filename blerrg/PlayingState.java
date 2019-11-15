@@ -74,13 +74,13 @@ public class PlayingState extends BasicGameState {
 		// Return updated positions to the clients
 		if (bg.isServer) {
 			serverUpdate(container, bg, delta);
-			System.out.println("Server update - client count: "+bg.clientCount);
+			//System.out.println("Server update - client count: "+bg.clientCount);
 		}
 		
 		
 		// Input from Clients
 		if (bg.isClient) {
-			System.out.println("Client update  - client count: "+bg.clientCount);
+			//System.out.println("Client update  - client count: "+bg.clientCount);
 			
 			//Process input and send data to the server
 			String msg = bg.world.thisPlayer.requestFromInput(container.getInput());

@@ -28,7 +28,7 @@ public class Player extends Entity {
 	
 	public void processInput(Input input) {
 		
-		System.out.println("Processing Input directly");
+		//System.out.println("Processing Input directly");
 		
 		//START PLAYER MOVEMENT
 		boolean a = input.isKeyDown(Input.KEY_A) ? true : false;
