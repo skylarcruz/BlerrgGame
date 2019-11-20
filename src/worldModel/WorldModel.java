@@ -106,21 +106,14 @@ public class WorldModel {
 		//Test for collisions
 		collisionTesting(delta);
 		
-		//update entities(Just player for now)
-		//player.update(delta);
-		
-		//Update entities
-		player.update(delta);
-		if (bg.clientCount >= 1)
-			player2.update(delta);
-		if (bg.clientCount >= 2)
-			player3.update(delta);
-		if (bg.clientCount == 3)
-			player4.update(delta);
-		
-		for (Player.Projectile p : thisPlayer.projectiles) {
-			p.update(delta);
-		}		
+		//Update entities		
+		for(Entity character: characters) {
+			Player test = (Player) character;
+			test.update(delta);
+			for(Player.Projectile p : test.projectiles) {
+				p.update(delta);
+			}
+		}
 	}
 	
 	
@@ -207,11 +200,15 @@ public class WorldModel {
 		
 		for(Entity character: characters) {
 			character.render(g);
+			Player test = (Player) character;
+			for(Player.Projectile p : test.projectiles) {
+				p.render(g);
+			}
 		}
 		
-		for(Player.Projectile p : thisPlayer.projectiles) {
-			p.render(g);
-		}
+//		for(Player.Projectile p : thisPlayer.projectiles) {
+//			p.render(g);
+//		}
 		
 	}
 

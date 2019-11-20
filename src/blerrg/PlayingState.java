@@ -79,7 +79,7 @@ public class PlayingState extends BasicGameState {
 			//System.out.println("Client update  - client count: "+bg.clientCount);
 			
 			//Process input and send data to the server
-			String msg = bg.world.thisPlayer.requestFromInput(container.getInput());
+			String msg = bg.world.thisPlayer.requestFromInput(container.getInput(), bg);
 			bg.bgClient.updateServer(msg);
 			
 			
@@ -87,24 +87,37 @@ public class PlayingState extends BasicGameState {
 			try {
 				cUpdate = bg.bgClient.getUpdates();
 	
+				String p[];
 				String arr[] = cUpdate.split("\\|");
 				
 				for (int i = 0; i < arr.length; i++) {
 					if (arr[i].matches("(.*):(.*)")) {
 						String task[] = arr[i].split(":");
-						switch(task[0]) {
-							case "p1X": bg.world.player.setX(Float.parseFloat(task[1])); break;
-							case "p1Y": bg.world.player.setY(Float.parseFloat(task[1])); break;
-							
-							case "p2X": bg.world.player2.setX(Float.parseFloat(task[1])); break;
-							case "p2Y": bg.world.player2.setY(Float.parseFloat(task[1])); break;
-							
-							case "p3X": bg.world.player3.setX(Float.parseFloat(task[1])); break;
-							case "p3Y": bg.world.player3.setY(Float.parseFloat(task[1])); break;
-							
-							case "p4X": bg.world.player4.setX(Float.parseFloat(task[1])); break;
-							case "p4Y": bg.world.player4.setY(Float.parseFloat(task[1])); break;
-							default: break;
+						p = task[1].split("&");
+						switch(task[0].charAt(0)) {
+						  // Get X Positions
+						  case 'X': switch (task[0]) {
+							case "Xp1": bg.world.player.setX(Float.parseFloat(task[1])); break;
+							case "Xp2": bg.world.player2.setX(Float.parseFloat(task[1])); break;
+							case "Xp3": bg.world.player3.setX(Float.parseFloat(task[1])); break;
+							case "Xp4": bg.world.player4.setX(Float.parseFloat(task[1])); break; }
+						  // Get Y Positions
+						  case 'Y': switch (task[0]) {
+						    case "Yp1": bg.world.player.setY(Float.parseFloat(task[1])); break;
+						    case "Yp2": bg.world.player2.setY(Float.parseFloat(task[1])); break;
+						    case "Yp3": bg.world.player3.setY(Float.parseFloat(task[1])); break;
+						    case "Yp4": bg.world.player4.setY(Float.parseFloat(task[1])); break;}
+						  // Get Shots Fired
+						  case 'F': switch (task[0]) {
+						    case "Fp1": bg.world.player.shoot(Float.parseFloat(p[0]), Float.parseFloat(p[1]), 
+							            bg.world.player.getX(), bg.world.player.getY()); break;
+						    case "Fp2": bg.world.player.shoot(Float.parseFloat(p[0]), Float.parseFloat(p[1]), 
+									    bg.world.player2.getX(), bg.world.player2.getY()); break;
+						    case "Fp3": bg.world.player.shoot(Float.parseFloat(p[0]), Float.parseFloat(p[1]), 
+									    bg.world.player3.getX(), bg.world.player3.getY()); break;
+						    case "Fp4": bg.world.player.shoot(Float.parseFloat(p[0]), Float.parseFloat(p[1]), 
+									    bg.world.player4.getX(), bg.world.player4.getY()); break;}
+						default: break;
 						}
 					}
 				}
@@ -127,20 +140,12 @@ public class PlayingState extends BasicGameState {
 		//Update the world
 		bg.world.update(game, delta);
 		
-//		//Update entities
-//		bg.world.player.update(delta);
-//		if (bg.clientCount >= 1)
-//			bg.world.player2.update(delta);
-//		if (bg.clientCount >= 2)
-//			bg.world.player3.update(delta);
-//		if (bg.clientCount == 3)
-//			bg.world.player4.update(delta);
 	}
 
 	
 	public void serverUpdate(GameContainer container, BlerrgGame bg, int delta) {
 		
-		bg.world.player.processInput(container.getInput(), bg);
+		cUpdate += bg.world.player.processInput(container.getInput(), bg, cUpdate);
 		//END PLAYER MOVEMENT
 		
 	
@@ -154,7 +159,7 @@ public class PlayingState extends BasicGameState {
 				
 				BlerrgGame.debugPrint("Server recieved: "+in2);
 				
-				bg.world.player2.processClientRequest(in2);
+				cUpdate += bg.world.player2.processClientRequest(in2, cUpdate, "2");
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -165,7 +170,7 @@ public class PlayingState extends BasicGameState {
 			if (bg.clientCount >= 2) {
 				try {
 					in3 = bg.bgServer.get3Updates();
-					bg.world.player3.processClientRequest(in3);
+					cUpdate += bg.world.player3.processClientRequest(in3, cUpdate, "3");
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -176,7 +181,7 @@ public class PlayingState extends BasicGameState {
 				if (bg.clientCount == 3) {
 					try {
 						in4 = bg.bgServer.get4Updates();
-						bg.world.player4.processClientRequest(in4);
+						cUpdate +=  bg.world.player4.processClientRequest(in4, cUpdate, "4");
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -188,19 +193,19 @@ public class PlayingState extends BasicGameState {
 		}
 			
 		// Send updated positions to all clients
-		cUpdate = cUpdate + "p1X:" + String.valueOf(bg.world.player.getX()) + "|";
-		cUpdate = cUpdate + "p1Y:" + String.valueOf(bg.world.player.getY()) + "|";
+		cUpdate = cUpdate + "Xp1:" + String.valueOf(bg.world.player.getX()) + "|";
+		cUpdate = cUpdate + "Yp1:" + String.valueOf(bg.world.player.getY()) + "|";
 		if (bg.clientCount >= 1) {
-			cUpdate = cUpdate + "p2X:" + String.valueOf(bg.world.player2.getX()) + "|";
-			cUpdate = cUpdate + "p2Y:" + String.valueOf(bg.world.player2.getY()) + "|";
+			cUpdate = cUpdate + "Xp2:" + String.valueOf(bg.world.player2.getX()) + "|";
+			cUpdate = cUpdate + "Yp2:" + String.valueOf(bg.world.player2.getY()) + "|";
 		}
 		if (bg.clientCount >= 2) {
-			cUpdate = cUpdate + "p3X:" + String.valueOf(bg.world.player3.getX()) + "|";
-			cUpdate = cUpdate + "p3Y:" + String.valueOf(bg.world.player3.getY()) + "|";
+			cUpdate = cUpdate + "Xp3:" + String.valueOf(bg.world.player3.getX()) + "|";
+			cUpdate = cUpdate + "Yp3:" + String.valueOf(bg.world.player3.getY()) + "|";
 		}
 		if (bg.clientCount == 3) {
-			cUpdate = cUpdate + "p4X:" + String.valueOf(bg.world.player4.getX()) + "|";
-			cUpdate = cUpdate + "p4Y:" + String.valueOf(bg.world.player4.getY()) + "|";
+			cUpdate = cUpdate + "Xp4:" + String.valueOf(bg.world.player4.getX()) + "|";
+			cUpdate = cUpdate + "Yp4:" + String.valueOf(bg.world.player4.getY()) + "|";
 		}
 		
 		if (bg.clientCount >= 1)

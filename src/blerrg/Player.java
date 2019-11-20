@@ -31,7 +31,7 @@ public class Player extends Entity {
 	}
 	
 	
-	public void processInput(Input input, StateBasedGame game) {
+	public String processInput(Input input, StateBasedGame game, String cU) {
 		
 		BlerrgGame bg = (BlerrgGame)game;
 				
@@ -43,6 +43,8 @@ public class Player extends Entity {
 			float mouseX = input.getMouseX() + bg.world.cameraX;
 			float mouseY = input.getMouseY() + bg.world.cameraY;
 			shoot(mouseX, mouseY, getX(), getY());
+			cU += "Fp1:" + String.valueOf(mouseX) + "&" +
+				    String.valueOf(mouseY) + "|";
 		}
 		//END PLAYER SHOOTING
 		
@@ -118,13 +120,14 @@ public class Player extends Entity {
 			
 		}
 		//END PLAYER MOVEMENT
+		return cU;
 	}
 	
 	
 	//Used by clients to create a request string from the current input
-	public String requestFromInput(Input input) {
+	public String requestFromInput(Input input, StateBasedGame game) {
 		
-		
+		BlerrgGame bg = (BlerrgGame)game;
 		
 		String msg = "";
 		
@@ -170,6 +173,14 @@ public class Player extends Entity {
 		} else {
 			msg += "mov:stop|";
 		} // End of Movement
+
+		// Get Shots Fired
+		if (input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+			float mouseX = input.getMouseX() + bg.world.cameraX;
+			float mouseY = input.getMouseY() + bg.world.cameraY;
+			msg += "fire:" + String.valueOf(mouseX) + "&" + 
+					String.valueOf(mouseY) + "|";
+		}
 		
 		if(!msg.equalsIgnoreCase("")) {
 			System.out.println("Client Input Request: "+msg);			
@@ -179,21 +190,22 @@ public class Player extends Entity {
 	}
 	
 	//Recieves a string from a client, updates this player accordingly
-	public void processClientRequest(String in) {
+	public String processClientRequest(String in, String cU, String num) {
 	
 		//make sure request was not null
 		if(in == null) {
 			System.out.println("No client request");
-			return;
+			return cU;
 		}
 		
 		if(in.contentEquals("")) {
 			System.out.println("Blank client request");
-			return;
+			return cU;
 		}
 		
 		System.out.println("Recieved request: "+in);
 	
+		String p[];
 		String arr[] = in.split("\\|");
 		for (int i = 0; i < arr.length; i++) {
 			if (arr[i].matches("(.*):(.*)")) {
@@ -225,11 +237,18 @@ public class Player extends Entity {
 				            default:   setStopped(true);
 				                       setVelocity(new Vector(0, 0)); break;
 						} break;
+					// Fire Action
+					case "fire":
+						p = task[1].split("&");
+						shoot(Float.parseFloat(p[0]), Float.parseFloat(p[1]), 
+								getX(), getY()); 
+						cU += "Fp" + num + ":" + p[0] + "&" +
+							       p[1] + "|"; break;
 					default: break;
 				} // end of task[0] switch
 			} // end of if
 		} // end of for loop
-
+		return cU;
 	}
 	
 	
