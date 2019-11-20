@@ -14,3 +14,4 @@
 	<classpathentry kind="lib" path="/JIG/lib/slick.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
+
