@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="16" tileheight="16" infinite="0" nextlayerid="5" nextobjectid="1">
+ <tileset firstgid="1" source="Dungeon.tsx"/>
+ <layer id="2" name="Floor" width="100" height="100">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAE+3DwQkAAAwDoXtm/4kLnUPBVVNVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf8BfVPJmECcAAA=
+  </data>
+ </layer>
+ <layer id="3" name="OuterWall" width="100" height="100">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAE+1aW47jMAzrCTZf0/sfdTfAZJEaTSzJpES3JhA0SGNKNv2Q1G6Px2P7d/38fnrur75b19i1oIFdi2e1Ewv/8W3rQ72v36iHcn+/bb/ams8Me55zGzVfmJoix267uEfyWp5ffYfS4wfA0YKxt7R8KH6kHoi5jdSDucdfjQGDt8fN1IM9z1CIjBuLl7lfIfqTccZ6x8fD6821Vc+PzPizZ6val8r1UZELWOxlxsLvnmWvj8qczGq3au/MXh/VubHHfkVskaWHSp3C6wPT54r8XEWHA9FzjoHs9aGkw4GoT4y+ZK0PtTVxxmiOgQRbD2UdDqDyVtR1x/88fT4fr2Pc3reYpWavXteJ5PSId0cRnYPfpEfkfQ+vpSaEbnvHyYCyHugxtPBW57W9/kbOBdSZmYGzLYVYBL0+RtpVxmcKWuxg6WFpu13cV6Da/gHLftXGu21sPKKnQs7imTdsMNeHhUNZi4q5wjjP39kY+T7SDjWPrnhmiXejPNHzH8l31X4kLo7YzdpP0Os/Mw5h5fnv7GTrkbHmWHmkxfaojUw9RnmttY9zjofSRkEPVN2WkbN75xFCF3YuXx3vWtpGYhzmXsaMgzNibFbNZXQeje6ZDIxws/s88o7VbmZ9zsob5bacLei8ggElH5nrQ6mfDLsMX5nrw8urXMtCvG/lVKkfzaZHtE2PT0GPai0OVPu99HhFtd8KekTt/zFcEWT4fseH1qN6jo2i0v9qPdS0OFDVh1aPcz303f9Fe/8btfjX1mitNdsd0T3orl3Pn55vnvYjdqJgznmGHqNQ2a/uOFlYesQ4WVh6xDhZWHrEOFlYesQ4WaiKr+4wsx7ZsV4UKvkHipP5Phvq+flVjnj3LGN+rfqVj5f5PgvVfi89XmHxg3n2qegRbYNEtf0dzJhmtjVSbX+Hkh7RNggoaLGDHfPPoImKFjsU9bC2Q52fSsjIiVt+qz1EnaJXK/CgjaMYNYVsPaJj0OO12LZwWsDeTzLWLGIMIuusnQujfc2Yu6OXhxftr+d9hG02MtZuZTyN3tvZYOvBHLNMPbLisOqzbYa1mRkTV+mRdbZ6bFzFYpmo1kMpH0PHYlEfsvWI5ocZqJ4jCnpEeUbhjdW9MX+US0GP43n22Yl8D4GRMWC1y9SlMn+6spWphzfeYWgTyfGzoKxH2y6qT69tb//PxCx6vONhn42HnUxk6qEU11qx9NDC0kMLn6rHjFrsmEkPr53ZMGP9ymNnNiw9tGx8qh5ZWiw97DaY3NvpHs2djeyaKgrv/F565OPOX2Q/qsZkFj0sfi49+PD4t/TgIVpXnx1qelT8XqkEFT1m/K2CgWo9kPaXHlr4hH4sPbTg+R16XTnXX4iZwORAnAAA
+  </data>
+ </layer>
+ <layer id="4" name="Decoration" width="100" height="100">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAE+3bQQqAIBAF0K7QqgO06gYer6NXyyhCisah3gM34mLwg4yCpdvru6Ozuav5yLVfVFoXAAAAAAAAAMBtU+sCAAAAeM1655tb1wAAAE/oaQEAAIBaY8Ugzrbfw8WQRyx55CKPXOSRizxykUcutf2uf0IAAAAA8G/eCIEazgoAgHgZerAMNQAAAAAAAAAAABBnAWYb8/RAnAAA
+  </data>
+ </layer>
+</map>
