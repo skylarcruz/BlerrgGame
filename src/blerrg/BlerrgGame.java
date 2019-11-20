@@ -33,6 +33,7 @@ public class BlerrgGame extends StateBasedGame {
 	
 	//PLAYER
 	public final static String CHARACTER_PLACEHOLDER = "blerrg/resource/character_placeholder.png";
+	public final static String PROJECTILE_PLACEHOLDER = "blerrg/resource/projectile_placeholder.png";
 	
 	//TILES
 	public final static String TILE_1 = "blerrg/resource/tile1.png";
@@ -56,6 +57,7 @@ public class BlerrgGame extends StateBasedGame {
 		
 		//Load Player Resources
 		ResourceManager.loadImage(CHARACTER_PLACEHOLDER);
+		ResourceManager.loadImage(PROJECTILE_PLACEHOLDER);
 		
 		//Load Tile Resources
 		ResourceManager.loadImage(TILE_1);

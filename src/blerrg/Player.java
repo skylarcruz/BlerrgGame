@@ -1,18 +1,21 @@
 package blerrg;
 
-import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.state.StateBasedGame;
 
+import java.util.ArrayList;
 import jig.Entity;
 import jig.ResourceManager;
 import jig.Vector;
+import worldModel.WorldModel;
 
 public class Player extends Entity {
 	
 	private Vector velocity;
 	private boolean isStopped;
 	private int direction;
+	public ArrayList<Projectile> projectiles;
+
 
 	public Player(final float x, final float y, final float vx, final float vy, int characterType) {
 		super(x, y);
@@ -23,12 +26,25 @@ public class Player extends Entity {
 		}
 		
 		velocity = new Vector(vx, vy);
+		projectiles = new ArrayList<Projectile>(10);
+
 	}
 	
 	
-	public void processInput(Input input) {
+	public void processInput(Input input, StateBasedGame game) {
 		
+		BlerrgGame bg = (BlerrgGame)game;
+				
 		//System.out.println("Processing Input directly");
+		
+		
+		//START PLAYER SHOOTING
+		if (input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+			float mouseX = input.getMouseX() + bg.world.cameraX;
+			float mouseY = input.getMouseY() + bg.world.cameraY;
+			shoot(mouseX, mouseY, getX(), getY());
+		}
+		//END PLAYER SHOOTING
 		
 		//START PLAYER MOVEMENT
 		boolean a = input.isKeyDown(Input.KEY_A) ? true : false;
@@ -116,7 +132,7 @@ public class Player extends Entity {
 		boolean w = input.isKeyDown(Input.KEY_W) ? true : false;
 		boolean d = input.isKeyDown(Input.KEY_D) ? true : false;
 		boolean s = input.isKeyDown(Input.KEY_S) ? true : false;
-		
+
 		
 		//Get Movement
 		if (a) { 
@@ -240,4 +256,34 @@ public class Player extends Entity {
 	public void update(final int delta) {
 		translate(velocity.scale(delta));
 	}
+	
+	public void shoot(float mouseX, float mouseY, float originX, float originY) {
+		double speed = 1.0;
+		double angle = Math.atan2(mouseX - originX, mouseY - originY);
+		float vx = (float) (speed * Math.sin(angle));
+		float vy = (float) (speed * Math.cos(angle));
+
+		projectiles.add(new Projectile(originX, originY, vx, vy));
+	}
+
+	
+	public class Projectile extends Entity {
+		private Vector velocity;
+		
+		
+		public Projectile(final float x, final float y, final float vx, final float vy) {
+			super(x, y);
+			addImageWithBoundingBox(ResourceManager.getImage(BlerrgGame.PROJECTILE_PLACEHOLDER));
+			velocity = new Vector(vx, vy);
+		}
+		
+		public void setVelocity(final Vector v) {
+			velocity = v;
+		}
+		
+		public void update(final int delta) {
+			translate(velocity.scale(delta));
+		}
+	}
+
 }

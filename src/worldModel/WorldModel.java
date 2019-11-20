@@ -118,6 +118,9 @@ public class WorldModel {
 		if (bg.clientCount == 3)
 			player4.update(delta);
 		
+		for (Player.Projectile p : thisPlayer.projectiles) {
+			p.update(delta);
+		}		
 	}
 	
 	
@@ -206,6 +209,10 @@ public class WorldModel {
 			character.render(g);
 		}
 		
+		for(Player.Projectile p : thisPlayer.projectiles) {
+			p.render(g);
+		}
+		
 	}
 
 
@@ -214,6 +221,14 @@ public class WorldModel {
 		cameraX = thisPlayer.getPosition().getX() - frameWidth/2;
 		cameraY = thisPlayer.getPosition().getY() - frameHeight/2;
 		g.translate(-cameraX, -cameraY);
+	}
+	
+	public float getCameraX() {
+		return cameraX;
+	}
+	
+	public float getCameraY() {
+		return cameraY;
 	}
 	
 }

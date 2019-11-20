@@ -140,7 +140,7 @@ public class PlayingState extends BasicGameState {
 	
 	public void serverUpdate(GameContainer container, BlerrgGame bg, int delta) {
 		
-		bg.world.player.processInput(container.getInput());
+		bg.world.player.processInput(container.getInput(), bg);
 		//END PLAYER MOVEMENT
 		
 	
