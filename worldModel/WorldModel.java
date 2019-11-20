@@ -5,10 +5,12 @@ import java.util.Vector;
 
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.geom.Point;
 import org.newdawn.slick.state.StateBasedGame;
 
 import blerrg.BlerrgGame;
 import blerrg.Player;
+import blerrg.Raycast;
 import blerrg.Tile;
 import jig.Collision;
 import jig.Entity;
@@ -185,35 +187,24 @@ public class WorldModel {
 		
 		BlerrgGame bg = (BlerrgGame)game;
 		
-		//try {
-			
-			translateCamera(g);
-			
-			//map.render(g);
-			
-			//get tiles in the area of the camera
-			ArrayList<Tile> visTiles = 
-					map.tilesInArea(thisPlayer.getX() - frameWidth/2, thisPlayer.getY() - frameHeight/2,
-							thisPlayer.getX()+frameWidth/2, thisPlayer.getY()+frameHeight/2);
-			for(Tile t: visTiles) {
-				t.render(g);
-			}
-			
-			//player.render(g);
-			
-			for(Entity character: characters) {
-				character.render(g);
-			}
-			
-//		} catch (SlickException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
+		translateCamera(g);
+
+		// ################ BEGIN RENDERING TILES ################
+
+		Raycast field = new Raycast(game, g, 180, thisPlayer);
+		ArrayList<Point> points = field.getPoints();
+		
+		for(int i = 0; i < points.size(); i++) {
+			if(points.get(i).getX() >= 0 && points.get(i).getY() >= 0 && points.get(i).getX() < map.tiles.length && points.get(i).getY() < map.tiles[0].length)
+			map.tiles[(int)points.get(i).getX() ][(int)points.get(i).getY() ].render(g);
+		}
+		
+		// ################ END RENDERING TILES ################
 		
 		
-		
-		//Render game objects
-		
+		for(Entity character: characters) {
+			character.render(g);
+		}
 		
 	}
 

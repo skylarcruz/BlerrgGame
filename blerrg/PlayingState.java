@@ -2,11 +2,13 @@ package blerrg;
 
 import java.io.IOException;
 //import java.util.Arrays;
+import java.util.ArrayList;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.geom.Point;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -21,6 +23,7 @@ public class PlayingState extends BasicGameState {
 	private String in2;
 	private String in3;
 	private String in4;
+	int amount = 0;
 
 	@Override
 	public void init(GameContainer container, StateBasedGame game) throws SlickException {		
@@ -43,16 +46,14 @@ public class PlayingState extends BasicGameState {
 			System.out.println("/t/tclient num: "+ bg.clientNum);
 		}
 		
-		
-		//TODO: Suspect this might be messing it up
-		bg.world.assignPlayer(bg.clientCount+1);
+		bg.world.assignPlayer(bg.clientNum);
 		
 	}
 
 	@Override
 	public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
 		BlerrgGame bg = (BlerrgGame)game;
-		
+
 		bg.world.render(game, g);
 
 	}
@@ -60,11 +61,6 @@ public class PlayingState extends BasicGameState {
 	@Override
 	public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
 		BlerrgGame bg = (BlerrgGame)game;
-		
-
-		//Process input
-		//bg.world.player.processInput(container.getInput());
-
 		
 		cUpdate = "";
 		

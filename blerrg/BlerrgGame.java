@@ -29,22 +29,13 @@ public class BlerrgGame extends StateBasedGame {
 	boolean isServer = false;
 	Client bgClient;
 	boolean isClient = false;
-	int clientNum = 0;
+	int clientNum = 1;
 	
 	//PLAYER
 	public final static String CHARACTER_PLACEHOLDER = "blerrg/resource/character_placeholder.png";
 	
 	//TILES
 	public final static String TILE_1 = "blerrg/resource/tile1.png";
-//<<<<<<< HEAD
-//=======
-//	
-//	Player player;
-//	Player player2;
-//	Player player3;
-//	Player player4;
-//	//ArrayList<Tile> tiles;
-//>>>>>>> refs/heads/dev
 
 	WorldModel world;
 
