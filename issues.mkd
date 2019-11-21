@@ -6,4 +6,6 @@
 
 ## Open Issues ##
 
+1: find out why there are wide empty spaces
+2: find out why ray is stepping over walls
 
