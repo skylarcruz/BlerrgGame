@@ -18,7 +18,8 @@ public class BlerrgGame extends StateBasedGame {
 	public final static boolean DEBUG = true;
 	
 	public final static int STARTSTATE = 0;
-	public final static int PLAYINGSTATE = 0;
+	public final static int MENUSTATE = 1;
+	public final static int PLAYINGSTATE = 2;
 	
 	public final int ScreenWidth;
 	public final int ScreenHeight;
@@ -34,6 +35,10 @@ public class BlerrgGame extends StateBasedGame {
 	//PLAYER
 	public final static String CHARACTER_PLACEHOLDER = "blerrg/resource/character_placeholder.png";
 	public final static String PROJECTILE_PLACEHOLDER = "blerrg/resource/projectile_placeholder.png";
+	
+	//MENU
+	public final static String CHEVRON_LEFT = "blerrg/resource/Menu/leftChevron.png";
+	public final static String CHEVRON_RIGHT = "blerrg/resource/Menu/rightChevron.png";
 	
 	//TILES
 	public final static String TILE_1 = "blerrg/resource/tile1.png";
@@ -53,11 +58,16 @@ public class BlerrgGame extends StateBasedGame {
 	
 	public void initStatesList(GameContainer arg0) throws SlickException {
 		addState(new StartState());
+		addState(new MenuState());
 		addState(new PlayingState());
 		
 		//Load Player Resources
 		ResourceManager.loadImage(CHARACTER_PLACEHOLDER);
 		ResourceManager.loadImage(PROJECTILE_PLACEHOLDER);
+		
+		//Load Menu Resources
+		ResourceManager.loadImage(CHEVRON_LEFT);
+		ResourceManager.loadImage(CHEVRON_RIGHT);
 		
 		//Load Tile Resources
 		ResourceManager.loadImage(TILE_1);

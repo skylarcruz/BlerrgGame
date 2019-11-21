@@ -98,7 +98,7 @@ public class StartState extends BasicGameState {
 		
 		if (state == "server") {
 			if (startFlag == true)
-				bg.enterState(BlerrgGame.PLAYINGSTATE);
+				bg.enterState(BlerrgGame.MENUSTATE);
 			if (input.isKeyPressed(Input.KEY_C))
 				getClient = true;
 			if (input.isKeyPressed(Input.KEY_SPACE)) {
@@ -153,13 +153,6 @@ public class StartState extends BasicGameState {
 				e.printStackTrace();
 			}
 			
-			if (iTest < 5) {
-				System.out.println("Update length: "+update.length());
-				System.out.println("Update: "+update);
-				iTest += 1;
-			}
-		
-			
 			if (update.equals("null") == false) {
 				if (update.equals("NewPlayer:2")) {
 					bg.clientNum = 2;
@@ -177,7 +170,7 @@ public class StartState extends BasicGameState {
 					bg.clientCount += 1;
 				}
 				else if (update.equals("gameStart"))
-					bg.enterState(BlerrgGame.PLAYINGSTATE);
+					bg.enterState(BlerrgGame.MENUSTATE);
 			}
 			update = null;
 		}
