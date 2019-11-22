@@ -17,8 +17,6 @@ public class StartState extends BasicGameState {
 	private String newPlayer = null;
 	private String update = null;
 	private boolean startFlag = false;
-	
-	private int iTest = 0;
 
 	@Override
 	public void init(GameContainer container, StateBasedGame game) throws SlickException {
@@ -110,34 +108,37 @@ public class StartState extends BasicGameState {
 		
 		if (bg.isServer == true) {
 			if (newPlayer == "2") {
+				bg.p2Active = true;
 				bg.bgServer.sendToClient("NewPlayer:2", "2");
 				newPlayer = null;
 			}
 			else if (newPlayer == "3") {
+				bg.p3Active = true;
 				bg.bgServer.sendToClient("NewPlayer:3", "3");
 				bg.bgServer.sendToClient("incCount", "2");
 				newPlayer = null;
 			}
 			else if (newPlayer == "4") {
+				bg.p4Active = true;
 				bg.bgServer.sendToClient("NewPlayer:4", "4");
 				bg.bgServer.sendToClient("incCount", "2");
 				bg.bgServer.sendToClient("incCount", "3");
 				newPlayer = null;
 			}
 			else if (startFlag == true) {
-				if (bg.clientCount >= 1)
+				if (bg.clientCount >= 1 && bg.p2Active)
 					bg.bgServer.sendToClient("menuStart", "2");
-				if (bg.clientCount >= 2)
+				if (bg.clientCount >= 2 && bg.p3Active)
 					bg.bgServer.sendToClient("menuStart", "3");
-				if (bg.clientCount == 3)
+				if (bg.clientCount == 3 && bg.p4Active)
 					bg.bgServer.sendToClient("menuStart", "4");
 			}
 			else {
-				if (bg.clientCount >= 1)
+				if (bg.clientCount >= 1 && bg.p2Active)
 					bg.bgServer.sendToClient("null", "2");
-				if (bg.clientCount >= 2)
+				if (bg.clientCount >= 2 && bg.p3Active)
 					bg.bgServer.sendToClient("null", "3");
-				if (bg.clientCount == 3)
+				if (bg.clientCount == 3 && bg.p4Active)
 					bg.bgServer.sendToClient("null", "4");
 			}
 			
@@ -155,20 +156,26 @@ public class StartState extends BasicGameState {
 			
 			if (update.equals("null") == false) {
 				if (update.equals("NewPlayer:2")) {
+					bg.p2Active = true;
 					bg.clientNum = 2;
 					bg.clientCount = 1;
 				}
 				else if (update.equals("NewPlayer:3")) {
+					bg.p2Active = true; bg.p3Active = true;
 					bg.clientNum = 3;
 					bg.clientCount = 2;
 				}
 				else if (update.equals("NewPlayer:4")) {
+					bg.p2Active = true; bg.p3Active = true; bg.p4Active = true;
 					bg.clientNum = 4;
 					bg.clientCount = 3;
 				}
 				else if (update.equals("incCount")) {
 					bg.clientCount += 1;
 				}
+				else if (update.equals("!:p2|")) { bg.p2Active = false; }
+				else if (update.equals("!:p3|")) { bg.p3Active = false; }
+				else if (update.equals("!:p4|")) { bg.p4Active = false; }
 				else if (update.equals("menuStart"))
 					bg.enterState(BlerrgGame.MENUSTATE);
 			}

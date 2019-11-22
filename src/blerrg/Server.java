@@ -68,16 +68,27 @@ public class Server {
 	  }
   }
   
-  public String get2Updates() throws IOException {
-	  String input2 = p2In.readLine();
-	  return input2;
+  public String get2Updates() {
+	String input2;
+	try {input2 = p2In.readLine();
+	} catch (IOException e) {input2 = "!:p2|";
+	e.printStackTrace();}
+	return input2;
   }
+  
   public String get3Updates() throws IOException {
-	  String input3 = p3In.readLine();
-	  return input3;
+	  String input3;
+		try {input3 = p3In.readLine();
+		} catch (IOException e) {input3 = "!:p3|";
+		e.printStackTrace();}
+		return input3;
   }
+  
   public String get4Updates() throws IOException {
-	  String input4 = p4In.readLine();
-	  return input4;
+	  String input4;
+		try {input4 = p4In.readLine();
+		} catch (IOException e) {input4 = "!:p4|";
+		e.printStackTrace();}
+		return input4;
   }
 }

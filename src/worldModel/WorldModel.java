@@ -64,15 +64,15 @@ public class WorldModel {
 		player = new Player(screenWidth/2, screenHeight/2, 0, 0, 0);
 		characters.add(player);
 		
-		if (bg.clientCount >= 1) {
+		if (bg.clientCount >= 1 && bg.p2Active) {
 			player2 = new Player(bg.ScreenWidth/2 + 50, bg.ScreenHeight/2, 0, 0, 0);
 			characters.add(player2);
 		}
-		if (bg.clientCount >= 2) {
+		if (bg.clientCount >= 2 && bg.p3Active) {
 			player3 = new Player(bg.ScreenWidth/2, bg.ScreenHeight/2 + 50, 0, 0, 0);
 			characters.add(player3);
 		}
-		if (bg.clientCount == 3) {
+		if (bg.clientCount == 3 && bg.p4Active) {
 			player4 = new Player(bg.ScreenWidth/2 + 50, bg.ScreenHeight/2 + 50, 0, 0, 0);
 			characters.add(player4);
 		}
