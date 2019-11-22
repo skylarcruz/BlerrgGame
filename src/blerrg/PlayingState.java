@@ -107,6 +107,12 @@ public class PlayingState extends BasicGameState {
 						    case "Yp2": bg.world.player2.setY(Float.parseFloat(task[1])); break;
 						    case "Yp3": bg.world.player3.setY(Float.parseFloat(task[1])); break;
 						    case "Yp4": bg.world.player4.setY(Float.parseFloat(task[1])); break;}
+						  // Get Dir
+						  case 'D': switch (task[0]) {
+						    case "Dp1": bg.world.player.setDirection(Integer.parseInt(task[1])); break;
+						    case "Dp2": bg.world.player2.setDirection(Integer.parseInt(task[1])); break;
+						    case "Dp3": bg.world.player3.setDirection(Integer.parseInt(task[1])); break;
+						    case "Dp4": bg.world.player4.setDirection(Integer.parseInt(task[1])); break;}
 						  // Get Shots Fired
 						  case 'F': switch (task[0]) {
 						    case "Fp1": bg.world.player.shoot(Float.parseFloat(p[0]), Float.parseFloat(p[1]), 
@@ -154,10 +160,10 @@ public class PlayingState extends BasicGameState {
 		// Get Player2Updates
 		if (bg.clientCount >= 1) {
 			try {
-				BlerrgGame.debugPrint("Server attempting to get player 2 update");
+				//BlerrgGame.debugPrint("Server attempting to get player 2 update");
 				in2 = bg.bgServer.get2Updates();
 				
-				BlerrgGame.debugPrint("Server recieved: "+in2);
+				//BlerrgGame.debugPrint("Server recieved: "+in2);
 				
 				cUpdate += bg.world.player2.processClientRequest(in2, cUpdate, "2");
 			} catch (IOException e) {

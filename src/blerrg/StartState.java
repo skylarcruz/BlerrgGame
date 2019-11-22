@@ -98,7 +98,7 @@ public class StartState extends BasicGameState {
 		
 		if (state == "server") {
 			if (startFlag == true)
-				bg.enterState(BlerrgGame.PLAYINGSTATE);
+				bg.enterState(BlerrgGame.MENUSTATE);
 			if (input.isKeyPressed(Input.KEY_C))
 				getClient = true;
 			if (input.isKeyPressed(Input.KEY_SPACE)) {
@@ -126,11 +126,11 @@ public class StartState extends BasicGameState {
 			}
 			else if (startFlag == true) {
 				if (bg.clientCount >= 1)
-					bg.bgServer.sendToClient("gameStart", "2");
+					bg.bgServer.sendToClient("menuStart", "2");
 				if (bg.clientCount >= 2)
-					bg.bgServer.sendToClient("gameStart", "3");
+					bg.bgServer.sendToClient("menuStart", "3");
 				if (bg.clientCount == 3)
-					bg.bgServer.sendToClient("gameStart", "4");
+					bg.bgServer.sendToClient("menuStart", "4");
 			}
 			else {
 				if (bg.clientCount >= 1)
@@ -153,13 +153,6 @@ public class StartState extends BasicGameState {
 				e.printStackTrace();
 			}
 			
-			if (iTest < 5) {
-				System.out.println("Update length: "+update.length());
-				System.out.println("Update: "+update);
-				iTest += 1;
-			}
-		
-			
 			if (update.equals("null") == false) {
 				if (update.equals("NewPlayer:2")) {
 					bg.clientNum = 2;
@@ -176,8 +169,8 @@ public class StartState extends BasicGameState {
 				else if (update.equals("incCount")) {
 					bg.clientCount += 1;
 				}
-				else if (update.equals("gameStart"))
-					bg.enterState(BlerrgGame.PLAYINGSTATE);
+				else if (update.equals("menuStart"))
+					bg.enterState(BlerrgGame.MENUSTATE);
 			}
 			update = null;
 		}

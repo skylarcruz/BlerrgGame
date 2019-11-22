@@ -59,60 +59,61 @@ public class Player extends Entity {
 			setStopped(false);
 			if (w) {
 				setVelocity(new Vector(-0.20f, -0.20f));
-				setDirection(7);
+				if(setDirection(7)) {
+					cU += "Dp1:7|"; }
 			} else if (s) {
 				setVelocity(new Vector(-0.20f, +0.20f));
-				setDirection(5);
-				
+				if(setDirection(5)) {
+					cU += "Dp1:5|"; }	
 			} else {
 				setVelocity(new Vector(-0.25f, 0));
-				setDirection(6);
-				
+				if(setDirection(6)) {
+					cU += "Dp1:6|"; }
 			}
 		} else if (d) { //moving right, top-right, bottom-right
 			setStopped(false);
 			if (w) {
 				setVelocity(new Vector(+0.20f, -0.20f));
-				setDirection(1);
-				
+				if(setDirection(1)) {
+					cU += "Dp1:1|"; }
 			} else if (s) {
 				setVelocity(new Vector(+0.20f, +0.20f));
-				setDirection(3);
-				
+				if(setDirection(3)) {
+					cU += "Dp1:3|"; }	
 			} else {
 				setVelocity(new Vector(+0.25f, 0));
-				setDirection(2);
-				
+				if(setDirection(2)) {
+					cU += "Dp1:2|"; }
 			}			
 		} else if (w) { //moving up, top-right, top-left
 			setStopped(false);
 			if (a) {
 				setVelocity(new Vector(-0.20f, -0.20f));
-				setDirection(7);
-				
+				if(setDirection(7)) {
+					cU += "Dp1:7|"; }
 			} else if (d) {
 				setVelocity(new Vector(+0.20f, -0.20f));
-				setDirection(1);
-				
+				if(setDirection(1)) {
+					cU += "Dp1:1|"; }
 			} else {
 				setVelocity(new Vector(0, -0.25f));
-				setDirection(0);
-				
+				if(setDirection(0)) {
+					cU += "Dp1:0|"; }
 			}
 		} else if (s) { //moving down, bottom-left, bottom-right
 			setStopped(false);
 			if (a) {
 				setVelocity(new Vector(-0.20f, +0.20f));
-				setDirection(5);
-				
+				if(setDirection(5)) {
+					cU += "Dp1:5|"; }
 			} else if (d) {
 				setVelocity(new Vector(+0.20f, +0.20f));
-				setDirection(3);
-				
+				if(setDirection(3)) {
+					cU += "Dp1:3|"; }
 			} else {
 				setVelocity(new Vector(0, +0.25f));
-				setDirection(4);
-				
+				if(setDirection(4)) {
+					cU += "Dp1:4|"; }
 			}
 		} else {
 			setStopped(true);
@@ -183,7 +184,7 @@ public class Player extends Entity {
 		}
 		
 		if(!msg.equalsIgnoreCase("")) {
-			System.out.println("Client Input Request: "+msg);			
+			//System.out.println("Client Input Request: "+msg);			
 		}
 		
 		return msg;
@@ -203,7 +204,7 @@ public class Player extends Entity {
 			return cU;
 		}
 		
-		System.out.println("Recieved request: "+in);
+		//System.out.println("Recieved request: "+in);
 	
 		String p[];
 		String arr[] = in.split("\\|");
@@ -217,21 +218,29 @@ public class Player extends Entity {
 							setStopped(false);
 						switch(task[1]) {
 							case "U":  setVelocity(new Vector(0, -0.25f));
-						       		   setDirection(0); break;
+						       		   if(setDirection(0)) { 
+						       			   cU += "Dp" + num + ":0|";} break;
 							case "UR": setVelocity(new Vector(+0.20f, -0.20f));
-						               setDirection(1); break;
+									   if(setDirection(1)) {
+										   cU += "Dp" + num + ":1|";} break;
 							case "R":  setVelocity(new Vector(+0.25f, 0));
-						       		   setDirection(2); break;	
+									   if(setDirection(2)) {
+										   cU += "Dp" + num + ":2|";} break;	
 							case "DR": setVelocity(new Vector(+0.20f, +0.20f));
-						               setDirection(3); break;
+									   if(setDirection(3)) {
+										   cU += "Dp" + num + ":3|";} break;
 							case "D":  setVelocity(new Vector(0, +0.25f));
-						               setDirection(4); break;
+									   if(setDirection(4)) {
+										   cU += "Dp" + num + ":4|";} break;
 							case "DL": setVelocity(new Vector(-0.20f, +0.20f));
-							           setDirection(5); break;
+									   if(setDirection(5)) { 
+										   cU += "Dp" + num + ":5|";} break;
 							case "L":  setVelocity(new Vector(-0.25f, 0));
-						               setDirection(6); break;
+									   if(setDirection(6)) { 
+										   cU += "Dp" + num + ":6|";} break;
 							case "UL": setVelocity(new Vector(-0.20f, -0.20f));
-						               setDirection(7); break;
+									   if(setDirection(7)) {
+										   cU += "Dp" + num + ":7|";} break;
 							case "stop": setStopped(true);
 					                     setVelocity(new Vector(0, 0)); break;
 				            default:   setStopped(true);
@@ -258,10 +267,14 @@ public class Player extends Entity {
 		}
 	}
 	
-	public void setDirection(final int d) {
+	public boolean setDirection(final int d) {
 		if (d != direction) {
 			direction = d;
-		} 
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 	
 	public Vector getVelocity() {

@@ -30,7 +30,7 @@ public class Client {
 	  
 	  String input = in.readLine();
 	  
-	  BlerrgGame.debugPrint("Client recieved update: ", input);
+	  //BlerrgGame.debugPrint("Client recieved update: ", input);
 	  return input;
   }
 }
