@@ -193,18 +193,32 @@ public class WorldModel {
 		for(int i = 0; i < points.size(); i++) {
 			if(points.get(i).getX() >= 0 && points.get(i).getY() >= 0 && points.get(i).getX() < map.tiles.length && points.get(i).getY() < map.tiles[0].length)
 			map.tiles[(int)points.get(i).getX() ][(int)points.get(i).getY() ].render(g);
+			
 		}
 		
 		// ################ END RENDERING TILES ################
-		
-		
+		for(int i = 0; i < points.size(); i++) {
+			for(Entity character: characters) {
+				if(points.get(i).getX()*32 <= character.getX() && character.getX() <= (points.get(i).getX()*32) + 32
+					&&points.get(i).getY()*32 <= character.getY() && character.getY() <= (points.get(i).getY()*32) + 32) {
+					character.render(g);
+				}
+				Player test = (Player) character;
+				for(Player.Projectile p : test.projectiles) {
+					p.render(g);
+				}
+			}
+			
+			
+		}
+		/*
 		for(Entity character: characters) {
-			character.render(g);
+			//character.render(g);
 			Player test = (Player) character;
 			for(Player.Projectile p : test.projectiles) {
 				p.render(g);
 			}
-		}
+		}*/
 		
 //		for(Player.Projectile p : thisPlayer.projectiles) {
 //			p.render(g);

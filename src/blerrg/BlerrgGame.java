@@ -82,7 +82,7 @@ public class BlerrgGame extends StateBasedGame {
 			app = new AppGameContainer(new BlerrgGame(":: Blerrg ::", 1280, 720));
 			app.setAlwaysRender(true);
 			app.setDisplayMode(1280, 720, false);
-			app.setVSync(true);
+			//app.setVSync(true);
 			app.setShowFPS(true);
 			app.start();
 		} catch (SlickException e) {
