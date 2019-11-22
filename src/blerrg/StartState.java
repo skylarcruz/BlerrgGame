@@ -126,11 +126,11 @@ public class StartState extends BasicGameState {
 			}
 			else if (startFlag == true) {
 				if (bg.clientCount >= 1)
-					bg.bgServer.sendToClient("gameStart", "2");
+					bg.bgServer.sendToClient("menuStart", "2");
 				if (bg.clientCount >= 2)
-					bg.bgServer.sendToClient("gameStart", "3");
+					bg.bgServer.sendToClient("menuStart", "3");
 				if (bg.clientCount == 3)
-					bg.bgServer.sendToClient("gameStart", "4");
+					bg.bgServer.sendToClient("menuStart", "4");
 			}
 			else {
 				if (bg.clientCount >= 1)
@@ -169,7 +169,7 @@ public class StartState extends BasicGameState {
 				else if (update.equals("incCount")) {
 					bg.clientCount += 1;
 				}
-				else if (update.equals("gameStart"))
+				else if (update.equals("menuStart"))
 					bg.enterState(BlerrgGame.MENUSTATE);
 			}
 			update = null;
