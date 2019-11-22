@@ -187,7 +187,7 @@ public class WorldModel {
 
 		// ################ BEGIN RENDERING TILES ################
 
-		Raycast field = new Raycast(game, g, 90, thisPlayer);
+		Raycast field = new Raycast(game, g, 720, thisPlayer);
 		ArrayList<Point> points = field.getPoints();
 		
 		for(int i = 0; i < points.size(); i++) {
