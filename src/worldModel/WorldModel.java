@@ -1,10 +1,8 @@
 package worldModel;
 
 import java.util.ArrayList;
-import java.util.Vector;
 
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Point;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -14,6 +12,8 @@ import blerrg.Raycast;
 import blerrg.Tile;
 import jig.Collision;
 import jig.Entity;
+import jig.Vector;
+
 
 public class WorldModel {
 
@@ -108,9 +108,10 @@ public class WorldModel {
 		
 		//Update entities		
 		for(Entity character: characters) {
-			Player test = (Player) character;
-			test.update(delta);
-			for(Player.Projectile p : test.projectiles) {
+			Player player = (Player) character;
+			player.setPrevPosition(player.getX(), player.getY());
+			player.update(delta);
+			for(Player.Projectile p : player.projectiles) {
 				p.update(delta);
 			}
 		}
@@ -121,32 +122,17 @@ public class WorldModel {
 		
 		//Check all characters
 		for(Entity character: characters) {
+			Player player = (Player) character;
 			//get nearby entities
-			ArrayList<Entity> nearEnts = quadTree.nearbyEntities(character);
+			ArrayList<Entity> nearEnts = quadTree.nearbyEntities(player);
 			
-//			if(!nearEnts.isEmpty()) {
-//				BlerrgGame.debugPrint("Nearby Entities: ", nearEnts.size());
-//			}
-			
-			for(Entity ent: nearEnts) {
-				Collision c = character.collides(ent);
+			for(Entity ent : nearEnts) {
+				Collision c = player.collides(ent);
 				
 				if(c != null) {
-					System.out.println("Collision!");
 					
-					//Resolve the collision, this depends on the type of object
-					
-					//Details:
-					System.out.println("---------");
-					System.out.println("MinPen: "+c.getMinPenetration().toString());
-					System.out.println("---------");
-					
-					//Move player back by the minimum penetration
-					jig.Vector back = c.getMinPenetration().scale(1.0f);
-					//character.translate(back);
-					
-					//for now, assume character is player
-					((Player)character).setVelocity(back);
+					player.setVelocity(new Vector(0, 0));
+					player.setPosition(player.prevPosition);
 					
 					//Stop checking for collisions with this character
 					break;

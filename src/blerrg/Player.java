@@ -15,6 +15,7 @@ public class Player extends Entity {
 	private boolean isStopped;
 	private int direction;
 	public ArrayList<Projectile> projectiles;
+	public Vector prevPosition;
 
 
 	public Player(final float x, final float y, final float vx, final float vy, int characterType) {
@@ -283,6 +284,10 @@ public class Player extends Entity {
 
 	public void setVelocity(final Vector v) {
 		velocity = v;
+	}
+	
+	public void setPrevPosition(float xCoord, float yCoord) {
+		prevPosition = new Vector(xCoord, yCoord);
 	}
 	
 	public void update(final int delta) {
