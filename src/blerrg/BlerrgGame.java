@@ -32,6 +32,10 @@ public class BlerrgGame extends StateBasedGame {
 	boolean isClient = false;
 	int clientNum = 1;
 	
+	public boolean p2Active = false;
+	public boolean p3Active = false;
+	public boolean p4Active = false;
+	
 	//PLAYER
 	public final static String CHARACTER_PLACEHOLDER = "blerrg/resource/character_placeholder.png";
 	public final static String PROJECTILE_PLACEHOLDER = "blerrg/resource/projectile_placeholder.png";

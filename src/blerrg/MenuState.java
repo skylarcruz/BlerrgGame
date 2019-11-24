@@ -58,13 +58,13 @@ public class MenuState extends BasicGameState {
 		g.drawString("BLERRG", 600, 50);
 		
 		g.drawImage(ResourceManager.getImage((p1Image)).getScaledCopy(5), 85, 200);
-		if (bg.clientCount >= 1) {
+		if (bg.clientCount >= 1 && bg.p2Active) {
 			g.drawImage(ResourceManager.getImage((p2Image)).getScaledCopy(5), 405, 200);
 			if (p2Ready) { g.drawString("Ready!", 465, 375); }}
-		if (bg.clientCount >= 2) {
+		if (bg.clientCount >= 2 && bg.p3Active) {
 			g.drawImage(ResourceManager.getImage((p3Image)).getScaledCopy(5), 725, 200);
 			if (p3Ready) { g.drawString("Ready!", 785, 375); }}
-		if (bg.clientCount == 3) {
+		if (bg.clientCount == 3 && bg.p4Active) {
 			g.drawImage(ResourceManager.getImage((p4Image)).getScaledCopy(5), 1045, 200);
 			if (p4Ready) { g.drawString("Ready!", 1105, 375); }}
 		
@@ -110,17 +110,16 @@ public class MenuState extends BasicGameState {
 			if (gameStart) { bg.enterState(BlerrgGame.PLAYINGSTATE); }
 			
 			// Get Updates From Clients
-			if (bg.clientCount >= 1) {
-			try {in2 = bg.bgServer.get2Updates();} 
-			catch (IOException e) {e.printStackTrace();}
+			if (bg.clientCount >= 1 && bg.p2Active) {
+			in2 = bg.bgServer.get2Updates();
 			processClientInput(in2);}
 			
-			if (bg.clientCount >= 2) {
+			if (bg.clientCount >= 2 && bg.p3Active) {
 			try {in3 = bg.bgServer.get3Updates();} 
 			catch (IOException e) {e.printStackTrace();}
 			processClientInput(in3);}
 			
-			if (bg.clientCount >= 3) {
+			if (bg.clientCount >= 3 && bg.p4Active) {
 			try {in4 = bg.bgServer.get4Updates();} 
 			catch (IOException e) {e.printStackTrace();}
 			processClientInput(in4);}
@@ -143,9 +142,9 @@ public class MenuState extends BasicGameState {
 				}
 				else if (w) {Sel = "LevelSel";}
 			}
-			if (bg.clientCount >= 1) {bg.bgServer.sendToClient(netUpdate, "2");}
-			if (bg.clientCount >= 2) {bg.bgServer.sendToClient(netUpdate, "3");}
-			if (bg.clientCount >= 3) {bg.bgServer.sendToClient(netUpdate, "4");}
+			if (bg.clientCount >= 1 && bg.p2Active) {bg.bgServer.sendToClient(netUpdate, "2");}
+			if (bg.clientCount >= 2 && bg.p3Active) {bg.bgServer.sendToClient(netUpdate, "3");}
+			if (bg.clientCount >= 3 && bg.p4Active) {bg.bgServer.sendToClient(netUpdate, "4");}
 		}
 		
 		if (bg.isClient) {
@@ -161,6 +160,7 @@ public class MenuState extends BasicGameState {
 					case "p2Ready": { p2Ready = true; } break;
 					case "p3Ready": { p3Ready = true; } break;
 					case "p4Ready": { p4Ready = true; } break;
+					case "!:p1|":
 					default: break;
 				}
 			}

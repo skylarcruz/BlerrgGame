@@ -159,17 +159,12 @@ public class PlayingState extends BasicGameState {
 		
 		// Get Player2Updates
 		if (bg.clientCount >= 1) {
-			try {
-				//BlerrgGame.debugPrint("Server attempting to get player 2 update");
-				in2 = bg.bgServer.get2Updates();
-				
-				//BlerrgGame.debugPrint("Server recieved: "+in2);
-				
-				cUpdate += bg.world.player2.processClientRequest(in2, cUpdate, "2");
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			//BlerrgGame.debugPrint("Server attempting to get player 2 update");
+			in2 = bg.bgServer.get2Updates();
+			
+			//BlerrgGame.debugPrint("Server recieved: "+in2);
+			
+			cUpdate += bg.world.player2.processClientRequest(in2, cUpdate, "2");
 			
 
 			// Get Player3Updates
