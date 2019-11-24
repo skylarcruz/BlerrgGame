@@ -126,19 +126,19 @@ public class StartState extends BasicGameState {
 				newPlayer = null;
 			}
 			else if (startFlag == true) {
-				if (bg.clientCount >= 1 && bg.p2Active)
+				if (bg.p2Active)
 					bg.bgServer.sendToClient("menuStart", "2");
-				if (bg.clientCount >= 2 && bg.p3Active)
+				if (bg.p3Active)
 					bg.bgServer.sendToClient("menuStart", "3");
-				if (bg.clientCount == 3 && bg.p4Active)
+				if (bg.p4Active)
 					bg.bgServer.sendToClient("menuStart", "4");
 			}
 			else {
-				if (bg.clientCount >= 1 && bg.p2Active)
+				if (bg.p2Active)
 					bg.bgServer.sendToClient("null", "2");
-				if (bg.clientCount >= 2 && bg.p3Active)
+				if (bg.p3Active)
 					bg.bgServer.sendToClient("null", "3");
-				if (bg.clientCount == 3 && bg.p4Active)
+				if (bg.p4Active)
 					bg.bgServer.sendToClient("null", "4");
 			}
 			

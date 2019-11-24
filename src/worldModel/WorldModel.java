@@ -102,9 +102,9 @@ public class WorldModel {
 	
 	public void removePlayer(int pNum) {
 		switch(pNum) {
-		case 2: player2.setPosition(-1000000, -1000000); break;
-		case 3: player3.setPosition(-1000000, -1000000); break;
-		case 4: player4.setPosition(-1000000, -1000000); break;
+		case 2: player2.setPosition(-1000000, -1000000); characters.remove(player2); break;
+		case 3: player3.setPosition(-1000000, -1000000); characters.remove(player3); break;
+		case 4: player4.setPosition(-1000000, -1000000); characters.remove(player4); break;
 		}
 	}
 	
