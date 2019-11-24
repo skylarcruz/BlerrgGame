@@ -191,7 +191,8 @@ public class Player extends Entity {
 	}
 	
 	//Recieves a string from a client, updates this player accordingly
-	public String processClientRequest(String in, String cU, String num) {
+	public String processClientRequest(StateBasedGame game, WorldModel w, String in, String cU, String num) {
+		BlerrgGame bg = (BlerrgGame)game;
 	
 		//make sure request was not null
 		if(in == null) {
@@ -253,13 +254,19 @@ public class Player extends Entity {
 								getX(), getY()); 
 						cU += "Fp" + num + ":" + p[0] + "&" +
 							       p[1] + "|"; break;
+			        // Disconnect
+					case "!": switch(task[1]) {
+						case "p2": bg.p2Active = false; cU += "!:p2|"; w.removePlayer(2); break;
+						case "p3": bg.p3Active = false; cU += "!:p3|"; w.removePlayer(3); break;
+						case "p4": bg.p4Active = false; cU += "!:p4|"; w.removePlayer(4); break;
+					} break;
 					default: break;
+					
 				} // end of task[0] switch
 			} // end of if
 		} // end of for loop
 		return cU;
 	}
-	
 	
 	public void setStopped(boolean s) {
 		if (s != isStopped) {

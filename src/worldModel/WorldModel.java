@@ -100,6 +100,14 @@ public class WorldModel {
 		}
 	}
 	
+	public void removePlayer(int pNum) {
+		switch(pNum) {
+		case 2: player2.setPosition(-1000000, -1000000); break;
+		case 3: player3.setPosition(-1000000, -1000000); break;
+		case 4: player4.setPosition(-1000000, -1000000); break;
+		}
+	}
+	
 	//Update the game model. All updates should go through this method
 	public void update(StateBasedGame game, int delta) {
 		BlerrgGame bg = (BlerrgGame)game;
