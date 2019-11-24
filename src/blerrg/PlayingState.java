@@ -123,6 +123,11 @@ public class PlayingState extends BasicGameState {
 									    bg.world.player3.getX(), bg.world.player3.getY()); break;
 						    case "Fp4": bg.world.player.shoot(Float.parseFloat(p[0]), Float.parseFloat(p[1]), 
 									    bg.world.player4.getX(), bg.world.player4.getY()); break;}
+						  case '!': switch(task[1]) {
+						    case "p2": bg.p2Active = false; bg.world.removePlayer(2); break;
+							case "p3": bg.p3Active = false; bg.world.removePlayer(3); break;
+							case "p4": bg.p4Active = false; bg.world.removePlayer(4); break;
+						  } break;
 						default: break;
 						}
 					}
@@ -158,62 +163,51 @@ public class PlayingState extends BasicGameState {
 		//Receive inputs from clients
 		
 		// Get Player2Updates
-		if (bg.clientCount >= 1) {
-			//BlerrgGame.debugPrint("Server attempting to get player 2 update");
-			in2 = bg.bgServer.get2Updates();
-			
-			//BlerrgGame.debugPrint("Server recieved: "+in2);
-			
-			cUpdate += bg.world.player2.processClientRequest(in2, cUpdate, "2");
+		if (bg.p2Active) {
+			try {in2 = bg.bgServer.get2Updates();
+			} catch (IOException e) {e.printStackTrace();}
+			cUpdate += bg.world.player2.processClientRequest(bg, bg.world, in2, cUpdate, "2");
+		}
 			
 
-			// Get Player3Updates
-			if (bg.clientCount >= 2) {
-				try {
-					in3 = bg.bgServer.get3Updates();
-					cUpdate += bg.world.player3.processClientRequest(in3, cUpdate, "3");
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+		// Get Player3Updates
+		if (bg.p3Active) {
+			try {in3 = bg.bgServer.get3Updates();
+			} catch (IOException e) {e.printStackTrace();}
+			cUpdate += bg.world.player3.processClientRequest(bg, bg.world, in3, cUpdate, "3");
+		}
 	 
 			
-				// Get Player4Updates
-				if (bg.clientCount == 3) {
-					try {
-						in4 = bg.bgServer.get4Updates();
-						cUpdate +=  bg.world.player4.processClientRequest(in4, cUpdate, "4");
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-			
-			}
-		
+		// Get Player4Updates
+		if (bg.p4Active) {
+			try {in4 = bg.bgServer.get4Updates();
+			} catch (IOException e) {e.printStackTrace();}
+			cUpdate +=  bg.world.player4.processClientRequest(bg, bg.world, in4, cUpdate, "4");
 		}
+			
+		
 			
 		// Send updated positions to all clients
 		cUpdate = cUpdate + "Xp1:" + String.valueOf(bg.world.player.getX()) + "|";
 		cUpdate = cUpdate + "Yp1:" + String.valueOf(bg.world.player.getY()) + "|";
-		if (bg.clientCount >= 1) {
+		if (bg.clientCount >= 1 && bg.p2Active) {
 			cUpdate = cUpdate + "Xp2:" + String.valueOf(bg.world.player2.getX()) + "|";
 			cUpdate = cUpdate + "Yp2:" + String.valueOf(bg.world.player2.getY()) + "|";
 		}
-		if (bg.clientCount >= 2) {
+		if (bg.clientCount >= 2 && bg.p3Active) {
 			cUpdate = cUpdate + "Xp3:" + String.valueOf(bg.world.player3.getX()) + "|";
 			cUpdate = cUpdate + "Yp3:" + String.valueOf(bg.world.player3.getY()) + "|";
 		}
-		if (bg.clientCount == 3) {
+		if (bg.clientCount == 3 && bg.p4Active) {
 			cUpdate = cUpdate + "Xp4:" + String.valueOf(bg.world.player4.getX()) + "|";
 			cUpdate = cUpdate + "Yp4:" + String.valueOf(bg.world.player4.getY()) + "|";
 		}
 		
-		if (bg.clientCount >= 1)
+		if (bg.p2Active)
 			bg.bgServer.sendToClient(cUpdate, "2");
-		if (bg.clientCount >= 2)
+		if (bg.p3Active)
 			bg.bgServer.sendToClient(cUpdate, "3");
-		if (bg.clientCount == 3)
+		if (bg.p4Active)
 			bg.bgServer.sendToClient(cUpdate, "4");
 		
 		

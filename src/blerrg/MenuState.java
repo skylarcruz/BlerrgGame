@@ -58,13 +58,13 @@ public class MenuState extends BasicGameState {
 		g.drawString("BLERRG", 600, 50);
 		
 		g.drawImage(ResourceManager.getImage((p1Image)).getScaledCopy(5), 85, 200);
-		if (bg.clientCount >= 1 && bg.p2Active) {
+		if (bg.p2Active) {
 			g.drawImage(ResourceManager.getImage((p2Image)).getScaledCopy(5), 405, 200);
 			if (p2Ready) { g.drawString("Ready!", 465, 375); }}
-		if (bg.clientCount >= 2 && bg.p3Active) {
+		if (bg.p3Active) {
 			g.drawImage(ResourceManager.getImage((p3Image)).getScaledCopy(5), 725, 200);
 			if (p3Ready) { g.drawString("Ready!", 785, 375); }}
-		if (bg.clientCount == 3 && bg.p4Active) {
+		if (bg.p4Active) {
 			g.drawImage(ResourceManager.getImage((p4Image)).getScaledCopy(5), 1045, 200);
 			if (p4Ready) { g.drawString("Ready!", 1105, 375); }}
 		
@@ -110,20 +110,24 @@ public class MenuState extends BasicGameState {
 			if (gameStart) { bg.enterState(BlerrgGame.PLAYINGSTATE); }
 			
 			// Get Updates From Clients
-			if (bg.clientCount >= 1 && bg.p2Active) {
-			in2 = bg.bgServer.get2Updates();
-			processClientInput(in2);}
+			if (bg.p2Active) {
+			try {in2 = bg.bgServer.get2Updates();
+			} catch (IOException e) {e.printStackTrace();}
+			processClientInput(bg, in2);}
+			System.out.println("Test: " + in2);
 			
-			if (bg.clientCount >= 2 && bg.p3Active) {
+			if (bg.p3Active) {
 			try {in3 = bg.bgServer.get3Updates();} 
 			catch (IOException e) {e.printStackTrace();}
-			processClientInput(in3);}
+			processClientInput(bg, in3);}
 			
-			if (bg.clientCount >= 3 && bg.p4Active) {
+			if (bg.p4Active) {
 			try {in4 = bg.bgServer.get4Updates();} 
 			catch (IOException e) {e.printStackTrace();}
-			processClientInput(in4);}
+			processClientInput(bg, in4);}
+			// End Client Updates
 			
+			// Menu Navigation
 			if (Sel == "CharSel") {
 				if (s) {Sel = "LevelSel";}
 				else if (a) {/*ChangeCharLeft*/}
@@ -142,11 +146,12 @@ public class MenuState extends BasicGameState {
 				}
 				else if (w) {Sel = "LevelSel";}
 			}
-			if (bg.clientCount >= 1 && bg.p2Active) {bg.bgServer.sendToClient(netUpdate, "2");}
-			if (bg.clientCount >= 2 && bg.p3Active) {bg.bgServer.sendToClient(netUpdate, "3");}
-			if (bg.clientCount >= 3 && bg.p4Active) {bg.bgServer.sendToClient(netUpdate, "4");}
+			if (bg.p2Active) {bg.bgServer.sendToClient(netUpdate, "2");}
+			if (bg.p3Active) {bg.bgServer.sendToClient(netUpdate, "3");}
+			if (bg.p4Active) {bg.bgServer.sendToClient(netUpdate, "4");}
 		}
 		
+		// If client
 		if (bg.isClient) {
 			// Get Updates From Server
 			try { netUpdate = bg.bgClient.getUpdates();} 
@@ -160,7 +165,9 @@ public class MenuState extends BasicGameState {
 					case "p2Ready": { p2Ready = true; } break;
 					case "p3Ready": { p3Ready = true; } break;
 					case "p4Ready": { p4Ready = true; } break;
-					case "!:p1|":
+					case "!p2": { bg.p2Active = false; } break;
+					case "!p3": { bg.p3Active = false; } break;
+					case "!p4": { bg.p4Active = false; } break;
 					default: break;
 				}
 			}
@@ -199,10 +206,15 @@ public class MenuState extends BasicGameState {
 		input.isKeyPressed(Input.KEY_D);
 	}
 	
-	public void processClientInput(String in) {
+	public void processClientInput(StateBasedGame game, String in) {
+		BlerrgGame bg = (BlerrgGame)game;
+		
 		if (in.equals("p2Ready")) { p2Ready = true; netUpdate += "p2Ready|"; }
-		if (in.equals("p3Ready")) { p3Ready = true; netUpdate += "p3Ready|"; }
-		if (in.equals("p4Ready")) { p4Ready = true; netUpdate += "p4Ready|"; }
+		else if (in.equals("p3Ready")) { p3Ready = true; netUpdate += "p3Ready|"; }
+		else if (in.equals("p4Ready")) { p4Ready = true; netUpdate += "p4Ready|"; }
+		else if (in.equals("!:p2|")) { bg.p2Active = false; p2Ready = true; netUpdate += "!p2|"; }
+		else if (in.equals("!:p3|")) { bg.p3Active = false; p3Ready = true; netUpdate += "!p3|"; }
+		else if (in.equals("!:p4|")) { bg.p4Active = false; p4Ready = true; netUpdate += "!p4|"; }
 	}
 
 	@Override
