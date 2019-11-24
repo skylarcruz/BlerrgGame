@@ -114,7 +114,6 @@ public class MenuState extends BasicGameState {
 			try {in2 = bg.bgServer.get2Updates();
 			} catch (IOException e) {e.printStackTrace();}
 			processClientInput(bg, in2);}
-			System.out.println("Test: " + in2);
 			
 			if (bg.p3Active) {
 			try {in3 = bg.bgServer.get3Updates();} 
@@ -168,6 +167,7 @@ public class MenuState extends BasicGameState {
 					case "!p2": { bg.p2Active = false; } break;
 					case "!p3": { bg.p3Active = false; } break;
 					case "!p4": { bg.p4Active = false; } break;
+					case "!:close": { container.exit(); } break;
 					default: break;
 				}
 			}
