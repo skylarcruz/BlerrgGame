@@ -199,7 +199,10 @@ public class WorldModel {
 				}
 				Player test = (Player) character;
 				for(Player.Projectile p : test.projectiles) {
-					p.render(g);
+					if(points.get(i).getX()*32 <= p.getX() && p.getX() <= (points.get(i).getX()*32) + 32
+							&&points.get(i).getY()*32 <= p.getY() && p.getY() <= (points.get(i).getY()*32) + 32) {
+							p.render(g);
+					}
 				}
 			}
 			
