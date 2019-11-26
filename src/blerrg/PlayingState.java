@@ -61,6 +61,10 @@ public class PlayingState extends BasicGameState {
 	@Override
 	public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
 		BlerrgGame bg = (BlerrgGame)game;
+		Input input = container.getInput();
+		
+		if (input.isKeyPressed(Input.KEY_P))
+			container.setSoundOn(false);
 		
 		cUpdate = "";
 		
@@ -116,13 +120,13 @@ public class PlayingState extends BasicGameState {
 						  // Get Shots Fired
 						  case 'F': switch (task[0]) {
 						    case "Fp1": bg.world.player.shoot(Float.parseFloat(p[0]), Float.parseFloat(p[1]), 
-							            bg.world.player.getX(), bg.world.player.getY()); break;
-						    case "Fp2": bg.world.player.shoot(Float.parseFloat(p[0]), Float.parseFloat(p[1]), 
-									    bg.world.player2.getX(), bg.world.player2.getY()); break;
-						    case "Fp3": bg.world.player.shoot(Float.parseFloat(p[0]), Float.parseFloat(p[1]), 
-									    bg.world.player3.getX(), bg.world.player3.getY()); break;
-						    case "Fp4": bg.world.player.shoot(Float.parseFloat(p[0]), Float.parseFloat(p[1]), 
-									    bg.world.player4.getX(), bg.world.player4.getY()); break;}
+							            bg.world.player.getX(), bg.world.player.getY(), bg.world.thisPlayer); break;
+						    case "Fp2": bg.world.player2.shoot(Float.parseFloat(p[0]), Float.parseFloat(p[1]), 
+									    bg.world.player2.getX(), bg.world.player2.getY(), bg.world.thisPlayer); break;
+						    case "Fp3": bg.world.player3.shoot(Float.parseFloat(p[0]), Float.parseFloat(p[1]), 
+									    bg.world.player3.getX(), bg.world.player3.getY(), bg.world.thisPlayer); break;
+						    case "Fp4": bg.world.player4.shoot(Float.parseFloat(p[0]), Float.parseFloat(p[1]), 
+									    bg.world.player4.getX(), bg.world.player4.getY(), bg.world.thisPlayer); break;}
 						  // Server/Client Disconnects
 						  case '!': switch(task[1]) {
 						    case "close": container.exit(); break;

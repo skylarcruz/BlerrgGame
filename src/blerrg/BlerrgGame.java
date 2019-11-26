@@ -46,6 +46,9 @@ public class BlerrgGame extends StateBasedGame {
 	
 	//TILES
 	public final static String TILE_1 = "blerrg/resource/tile1.png";
+	
+	//SFX
+	public static final String GUN_1_SND = "blerrg/resource/sfx/gunshot1.wav";
 
 	WorldModel world;
 
@@ -64,6 +67,9 @@ public class BlerrgGame extends StateBasedGame {
 		addState(new StartState());
 		addState(new MenuState());
 		addState(new PlayingState());
+		
+		//Load SFX
+		ResourceManager.loadSound(GUN_1_SND);
 		
 		//Load Player Resources
 		ResourceManager.loadImage(CHARACTER_PLACEHOLDER);
