@@ -252,7 +252,7 @@ public class Player extends Entity {
 					case "fire":
 						p = task[1].split("&");
 						shoot(Float.parseFloat(p[0]), Float.parseFloat(p[1]), 
-								getX(), getY(), this); 
+								getX(), getY(), bg.world.player); 
 						cU += "Fp" + num + ":" + p[0] + "&" +
 							       p[1] + "|"; break;
 			        // Disconnect
@@ -313,11 +313,9 @@ public class Player extends Entity {
 		float dY = (p.getY() - this.getY());
 		float d = (float) Math.sqrt((dX * dX) + (dY * dY));
 		d = d/500 + 1;
-		
 		if (d < 3)  d = 1/d ; 
 		else d = 0;
 		
-		System.out.println("Distance: " + d);
 		ResourceManager.getSound(BlerrgGame.GUN_1_SND).play(1, d);
 	}
 

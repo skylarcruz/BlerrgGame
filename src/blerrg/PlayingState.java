@@ -4,6 +4,7 @@ import java.io.IOException;
 //import java.util.Arrays;
 import java.util.ArrayList;
 
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
@@ -24,6 +25,8 @@ public class PlayingState extends BasicGameState {
 	private String in3;
 	private String in4;
 	int amount = 0;
+	
+	int loadTime;
 
 	@Override
 	public void init(GameContainer container, StateBasedGame game) throws SlickException {		
@@ -32,6 +35,7 @@ public class PlayingState extends BasicGameState {
 	@Override
 	public void enter(GameContainer container, StateBasedGame game) throws SlickException {
 		BlerrgGame bg = (BlerrgGame)game;
+		loadTime = 100;
 		
 		bg.world = new WorldModel(bg.ScreenWidth, bg.ScreenHeight, bg);
 		
@@ -55,6 +59,13 @@ public class PlayingState extends BasicGameState {
 		BlerrgGame bg = (BlerrgGame)game;
 
 		bg.world.render(game, g);
+		
+		if (loadTime > 0) {
+			g.setColor(new Color(0, 0, 0));
+			g.fillRect(0 + bg.world.cameraX, 0 + bg.world.cameraY, 1280, 720);
+			g.setColor(new Color(255, 255, 255));
+			g.drawString("Loading...", 600, 360);
+		}
 
 	}
 
@@ -62,6 +73,10 @@ public class PlayingState extends BasicGameState {
 	public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
 		BlerrgGame bg = (BlerrgGame)game;
 		Input input = container.getInput();
+		
+		if (loadTime > 0)
+			loadTime -= 1;
+		else {
 		
 		if (input.isKeyPressed(Input.KEY_P))
 			container.setSoundOn(false);
@@ -152,6 +167,7 @@ public class PlayingState extends BasicGameState {
 			
 		}
 		//End Client Updating
+		}
 		
 		
 		//Update the world

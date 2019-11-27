@@ -88,6 +88,9 @@ public class MenuState extends BasicGameState {
 			if (bg.clientNum == 4 & !p4Ready) { g.drawString("Ready?", 1105, 375); }
 		}
 		
+		if (gameStart)
+			g.drawString("Loading...", 600, 600);
+		
 		g.drawString("Level: " + Integer.toString(level), 600, 500);
 		if (Sel == "LevelSel") {g.drawString(">", 575, 500);}
 		g.drawString("Start Game", 600, 550);
