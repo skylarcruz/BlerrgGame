@@ -39,6 +39,8 @@ public class BlerrgGame extends StateBasedGame {
 	//PLAYER
 	public final static String CHARACTER_PLACEHOLDER = "blerrg/resource/character_placeholder.png";
 	public final static String PROJECTILE_PLACEHOLDER = "blerrg/resource/projectile_placeholder.png";
+	public final static String HEALTHBORDER_PLACEHOLDER = "blerrg/resource/Player/hpBorder.png";
+	public final static String HEALTH_PLACEHOLDER = "blerrg/resource/Player/health.png";
 	
 	//MENU
 	public final static String CHEVRON_LEFT = "blerrg/resource/Menu/leftChevron.png";
@@ -74,6 +76,8 @@ public class BlerrgGame extends StateBasedGame {
 		//Load Player Resources
 		ResourceManager.loadImage(CHARACTER_PLACEHOLDER);
 		ResourceManager.loadImage(PROJECTILE_PLACEHOLDER);
+		ResourceManager.loadImage(HEALTHBORDER_PLACEHOLDER);
+		ResourceManager.loadImage(HEALTH_PLACEHOLDER);
 		
 		//Load Menu Resources
 		ResourceManager.loadImage(CHEVRON_LEFT);

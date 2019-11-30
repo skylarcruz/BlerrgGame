@@ -2,6 +2,7 @@ package worldModel;
 
 import java.util.ArrayList;
 
+import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Point;
 import org.newdawn.slick.state.StateBasedGame;
@@ -193,11 +194,19 @@ public class WorldModel {
 		// ################ END RENDERING TILES ################
 		for(int i = 0; i < points.size(); i++) {
 			for(Entity character: characters) {
+				Player test = (Player) character;
 				if(points.get(i).getX()*32 <= character.getX() && character.getX() <= (points.get(i).getX()*32) + 32
 					&&points.get(i).getY()*32 <= character.getY() && character.getY() <= (points.get(i).getY()*32) + 32) {
 					character.render(g);
+					if (test != thisPlayer) {
+						if (test.hp.display)
+							test.hp.render(g);
+					}
+					else {
+						renderThisPlayerHPTemp(g, test);
+					}
+						
 				}
-				Player test = (Player) character;
 				for(Player.Projectile p : test.projectiles) {
 					if(points.get(i).getX()*32 <= p.getX() && p.getX() <= (points.get(i).getX()*32) + 32
 							&&points.get(i).getY()*32 <= p.getY() && p.getY() <= (points.get(i).getY()*32) + 32) {
@@ -221,6 +230,20 @@ public class WorldModel {
 //			p.render(g);
 //		}
 		
+	}
+	
+	public void renderThisPlayerHPTemp(Graphics g, Player t) {
+		g.setColor(new Color(0, 0, 0));
+		if (t.hp.getHealth() == 100)
+			g.fillRect(t.getX() - 77, t.getY() + 323, 140, 20);
+		else 
+			g.fillRect(t.getX() - 77, t.getY() + 323, 130, 20);
+		if (t.hp.getHealth() > 50)
+			g.setColor(new Color(0, 255, 0));
+		else
+			g.setColor(new Color(255, 0, 0));
+		g.drawString("Health: " + t.hp.getHealth() +  "/100", t.getX() - 75, t.getY() + 325);
+		g.setColor(new Color(255, 255, 255));
 	}
 
 

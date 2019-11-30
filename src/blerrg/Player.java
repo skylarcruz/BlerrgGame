@@ -1,11 +1,13 @@
 package blerrg;
 
+import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.state.StateBasedGame;
 
 import java.util.ArrayList;
 import jig.Entity;
 import jig.ResourceManager;
+import jig.Shape;
 import jig.Vector;
 import worldModel.WorldModel;
 
@@ -16,7 +18,9 @@ public class Player extends Entity {
 	private int direction;
 	public ArrayList<Projectile> projectiles;
 	public Vector prevPosition;
-
+	
+	public Healthbar hp;
+	
 
 	public Player(final float x, final float y, final float vx, final float vy, int characterType) {
 		super(x, y);
@@ -28,6 +32,7 @@ public class Player extends Entity {
 		
 		velocity = new Vector(vx, vy);
 		projectiles = new ArrayList<Projectile>(10);
+		hp = new Healthbar(x - 50, y - 25);
 
 	}
 	
@@ -299,6 +304,7 @@ public class Player extends Entity {
 	
 	public void update(final int delta) {
 		translate(velocity.scale(delta));
+		hp.setPosition(getX(), getY());
 	}
 	
 	public void shoot(float mouseX, float mouseY, float originX, float originY, Player p) {
@@ -336,6 +342,38 @@ public class Player extends Entity {
 		
 		public void update(final int delta) {
 			translate(velocity.scale(delta));
+		}
+	}
+	
+	// Healthbar only visible to other players
+	public class Healthbar extends Entity {
+		private int health;
+		private Image bar;
+		private Image border;
+		public boolean display = true;
+
+		public Healthbar(final float x, final float y) {
+			super(x, y);
+			health = 90;
+			
+			border = ResourceManager.getImage(BlerrgGame.HEALTHBORDER_PLACEHOLDER);
+			addImage(border, new Vector(0, -25));
+			
+			bar = ResourceManager.getImage(BlerrgGame.HEALTH_PLACEHOLDER).getScaledCopy(health, 10);
+			addImage(bar, new Vector(0 - (50 - health/2), -25));
+			
+		}
+		
+		public void setHealth(int h) {
+			health = h;
+			
+			removeImage(bar);
+			bar = ResourceManager.getImage(BlerrgGame.HEALTH_PLACEHOLDER).getScaledCopy(health, 10);
+			addImage(bar, new Vector(0, -25));
+		}
+		
+		public int getHealth() {
+			return health;
 		}
 	}
 
