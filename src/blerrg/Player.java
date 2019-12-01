@@ -258,6 +258,7 @@ public class Player extends Entity {
 						p = task[1].split("&");
 						shoot(Float.parseFloat(p[0]), Float.parseFloat(p[1]), 
 								getX(), getY(), bg.world.player); 
+
 						cU += "Fp" + num + ":" + p[0] + "&" +
 							       p[1] + "|"; break;
 			        // Disconnect
@@ -308,11 +309,12 @@ public class Player extends Entity {
 	}
 	
 	public void shoot(float mouseX, float mouseY, float originX, float originY, Player p) {
+
 		double speed = 1.0;
 		double angle = Math.atan2(mouseX - originX, mouseY - originY);
 		float vx = (float) (speed * Math.sin(angle));
 		float vy = (float) (speed * Math.cos(angle));
-
+		
 		projectiles.add(new Projectile(originX, originY, vx, vy));
 		
 		float dX = (p.getX() - this.getX());

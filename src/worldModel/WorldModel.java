@@ -1,6 +1,7 @@
 package worldModel;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
@@ -9,6 +10,7 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import blerrg.BlerrgGame;
 import blerrg.Player;
+import blerrg.Player.Projectile;
 import blerrg.Raycast;
 import blerrg.Tile;
 import jig.Collision;
@@ -58,6 +60,7 @@ public class WorldModel {
 		
 		staticCollidables = new ArrayList<Entity>();
 		specialObjects = new ArrayList<Entity>();
+		dynamicCollidables = new ArrayList<Entity>();
 		characters = new ArrayList<Entity>();
 		
 		
@@ -111,7 +114,6 @@ public class WorldModel {
 	
 	//Update the game model. All updates should go through this method
 	public void update(StateBasedGame game, int delta) {
-		BlerrgGame bg = (BlerrgGame)game;
 		//Test for collisions
 		collisionTesting(delta);
 		
@@ -147,37 +149,29 @@ public class WorldModel {
 					break;
 				}
 			}
+			
+			for (Iterator<Projectile> itr = player.projectiles.iterator(); itr.hasNext();) {
+				Player.Projectile shot = (Projectile) itr.next();
+				for (Entity cTest : characters) {
+					if (player != cTest) {
+						if (shot.collides(cTest) != null) {
+							itr.remove();
+							System.out.println("Bullet hit other player!");
+							break;
+						}
+					} else {
+						System.out.println("player was cTest");
+					}
+				}
+			}
 		}
-		
-		
-		//Check dynamic collidables
-		
-//		for(Entity statCol: staticCollidables) {
-//			
-//			Collision c = player.collides(statCol);
-//			if(c != null) {
-//				System.out.println("Collision!");
-//				
-//				//Details:
-//				System.out.println("---------");
-//				System.out.println("MinPen: "+c.getMinPenetration().toString());
-//				System.out.println("---------");
-//				
-//				//Move player back by the minimum penetration
-//				jig.Vector back = c.getMinPenetration().scale(1.0f);
-//				player.translate(back);
-//				player.setVelocity(back);
-//			}
-//		}
 		
 	}
 	
 	
 	
 	public void render(StateBasedGame game, Graphics g) {
-		
-		BlerrgGame bg = (BlerrgGame)game;
-		
+				
 		translateCamera(g);
 
 		// ################ BEGIN RENDERING TILES ################
@@ -194,42 +188,27 @@ public class WorldModel {
 		// ################ END RENDERING TILES ################
 		for(int i = 0; i < points.size(); i++) {
 			for(Entity character: characters) {
-				Player test = (Player) character;
+				Player currentChar = (Player) character;
 				if(points.get(i).getX()*32 <= character.getX() && character.getX() <= (points.get(i).getX()*32) + 32
 					&&points.get(i).getY()*32 <= character.getY() && character.getY() <= (points.get(i).getY()*32) + 32) {
 					character.render(g);
-					if (test != thisPlayer) {
-						if (test.hp.display)
-							test.hp.render(g);
+					if (currentChar != thisPlayer) {
+						if (currentChar.hp.display)
+							currentChar.hp.render(g);
 					}
 					else {
-						renderThisPlayerHPTemp(g, test);
+						renderThisPlayerHPTemp(g, currentChar);
 					}
 						
 				}
-				for(Player.Projectile p : test.projectiles) {
+				for(Player.Projectile p : currentChar.projectiles) {
 					if(points.get(i).getX()*32 <= p.getX() && p.getX() <= (points.get(i).getX()*32) + 32
 							&&points.get(i).getY()*32 <= p.getY() && p.getY() <= (points.get(i).getY()*32) + 32) {
 							p.render(g);
 					}
 				}
 			}
-			
-			
 		}
-		/*
-		for(Entity character: characters) {
-			//character.render(g);
-			Player test = (Player) character;
-			for(Player.Projectile p : test.projectiles) {
-				p.render(g);
-			}
-		}*/
-		
-//		for(Player.Projectile p : thisPlayer.projectiles) {
-//			p.render(g);
-//		}
-		
 	}
 	
 	public void renderThisPlayerHPTemp(Graphics g, Player t) {

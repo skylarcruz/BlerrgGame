@@ -142,6 +142,7 @@ public class PlayingState extends BasicGameState {
 									    bg.world.player3.getX(), bg.world.player3.getY(), bg.world.thisPlayer); break;
 						    case "Fp4": bg.world.player4.shoot(Float.parseFloat(p[0]), Float.parseFloat(p[1]), 
 									    bg.world.player4.getX(), bg.world.player4.getY(), bg.world.thisPlayer); break;}
+
 						  // Server/Client Disconnects
 						  case '!': switch(task[1]) {
 						    case "close": container.exit(); break;
