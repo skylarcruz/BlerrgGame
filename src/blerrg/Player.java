@@ -324,7 +324,9 @@ public class Player extends Entity {
 		if (d < 3)  d = 1/d ; 
 		else d = 0;
 		
-		ResourceManager.getSound(BlerrgGame.GUN_1_SND).play(1, d);
+		ResourceManager.getSound(BlerrgGame.GUN_1_SND).play(1, d/4);
+		
+		p.hp.setHealth(p.hp.getHealth() - 5);
 	}
 
 	
@@ -356,7 +358,7 @@ public class Player extends Entity {
 
 		public Healthbar(final float x, final float y) {
 			super(x, y);
-			health = 90;
+			health = 100;
 			
 			border = ResourceManager.getImage(BlerrgGame.HEALTHBORDER_PLACEHOLDER);
 			addImage(border, new Vector(0, -25));
@@ -367,11 +369,14 @@ public class Player extends Entity {
 		}
 		
 		public void setHealth(int h) {
-			health = h;
+			if (h >= 0)
+				health = h;
+			else
+				health = 0;
 			
 			removeImage(bar);
 			bar = ResourceManager.getImage(BlerrgGame.HEALTH_PLACEHOLDER).getScaledCopy(health, 10);
-			addImage(bar, new Vector(0, -25));
+			addImage(bar, new Vector(0 - (50 - health/2), -25));
 		}
 		
 		public int getHealth() {

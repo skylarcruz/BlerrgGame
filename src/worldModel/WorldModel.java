@@ -9,6 +9,7 @@ import org.newdawn.slick.geom.Point;
 import org.newdawn.slick.state.StateBasedGame;
 
 import blerrg.BlerrgGame;
+import blerrg.HUD;
 import blerrg.Player;
 import blerrg.Player.Projectile;
 import blerrg.Raycast;
@@ -46,6 +47,8 @@ public class WorldModel {
 	public Player player4;
 	
 	public Player thisPlayer;
+	
+	public HUD pHUD;
 	
 	public WorldModel(int screenWidth, int screenHeight, BlerrgGame bg) {
 		
@@ -102,6 +105,7 @@ public class WorldModel {
 		case 4: thisPlayer = player4; break;
 		default: thisPlayer = player; break;
 		}
+		pHUD = new HUD(thisPlayer);
 	}
 	
 	public void removePlayer(int pNum) {
@@ -126,6 +130,7 @@ public class WorldModel {
 				p.update(delta);
 			}
 		}
+		pHUD.update(thisPlayer);
 	}
 	
 	
@@ -194,7 +199,8 @@ public class WorldModel {
 							currentChar.hp.render(g);
 					}
 					else {
-						renderThisPlayerHPTemp(g, currentChar);
+						//renderThisPlayerHPTemp(g, currentChar);
+						pHUD.renderHUD(g, thisPlayer);
 					}
 						
 				}
@@ -221,7 +227,6 @@ public class WorldModel {
 		g.drawString("Health: " + t.hp.getHealth() +  "/100", t.getX() - 75, t.getY() + 325);
 		g.setColor(new Color(255, 255, 255));
 	}
-
 
 	public void translateCamera(Graphics g) {
 		//Translate Camera to achieve scrolling
