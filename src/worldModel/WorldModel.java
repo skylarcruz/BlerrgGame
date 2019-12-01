@@ -156,11 +156,8 @@ public class WorldModel {
 					if (player != cTest) {
 						if (shot.collides(cTest) != null) {
 							itr.remove();
-							System.out.println("Bullet hit other player!");
 							break;
 						}
-					} else {
-						System.out.println("player was cTest");
 					}
 				}
 			}
