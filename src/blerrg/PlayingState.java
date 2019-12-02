@@ -185,7 +185,7 @@ public class PlayingState extends BasicGameState {
 		
 		//Update the world
 
-		cUpdate += bg.world.update(game, delta);
+		/*cUpdate += */bg.world.update(game, delta);
 		
 	}
 
