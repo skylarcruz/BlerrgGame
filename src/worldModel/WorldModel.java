@@ -184,7 +184,7 @@ public class WorldModel {
 					if (player != cTest) {
 						if (shot.collides(cTest) != null) {
 							if (getPlayer(thisPlayer) == "p1") {
-								((Player) player).hit((Player) cTest);
+								thisPlayer.hit((Player) player, (Player) cTest);
 								cUp += "Cshot:" + getPlayer(player) + "&" + getPlayer((Player) cTest) + "|";
 								//System.out.println(cUp);
 							}
@@ -202,6 +202,7 @@ public class WorldModel {
 	
 	
 	public void render(StateBasedGame game, Graphics g) {
+		BlerrgGame bg = (BlerrgGame)game;
 				
 		translateCamera(g);
 
@@ -228,8 +229,11 @@ public class WorldModel {
 							currentChar.hp.render(g);
 					}
 					else {
-						//renderThisPlayerHPTemp(g, currentChar);
-						pHUD.renderHUD(g, thisPlayer);
+						pHUD.setScore("p1", player.score);
+						if (bg.p2Active) pHUD.setScore("p2", player2.score);
+						if (bg.p3Active) pHUD.setScore("p2", player3.score);
+						if (bg.p4Active) pHUD.setScore("p2", player4.score);
+						pHUD.renderHUD(game, g, thisPlayer);
 					}
 						
 				}

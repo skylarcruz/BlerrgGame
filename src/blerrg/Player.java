@@ -20,6 +20,7 @@ public class Player extends Entity {
 	public Vector prevPosition;
 	
 	public Healthbar hp;
+	public int score = 0;
 	
 
 	public Player(final float x, final float y, final float vx, final float vy, int characterType) {
@@ -331,9 +332,16 @@ public class Player extends Entity {
 //		p.hp.setHealth(p.hp.getHealth() - 5);
 	}
 	
-	public void hit(Player p) {
-		p.hp.setHealth(p.hp.getHealth() - 30);
-		System.out.println("Player: " + p + " was hit! Current health: " + p.hp.getHealth());
+	public void hit(Player pS, Player pD) {
+		pD.hp.setHealth(pD.hp.getHealth() - 30);
+		System.out.println("Player: " + pD + " was hit! Current health: " + pD.hp.getHealth());
+		
+		if (pD.hp.getHealth() <= 0) {
+			// reset player p
+			System.out.println("Player: " + pD + " killed by Player: " + pS);
+			pD.hp.setHealth(100);
+			pS.score += 1;
+		}
 	}
 
 	
