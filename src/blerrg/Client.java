@@ -28,9 +28,14 @@ public class Client {
 	  
 	  //check input
 	  
-	  String input = in.readLine();
+	  String input;
 	  
-	  BlerrgGame.debugPrint("Client recieved update: ", input);
+	  try {input = in.readLine();
+	  } catch (IOException e) {input = "!:close|";
+	  e.printStackTrace();}
+	  if (input.equals("!:close|")) { echoSocket.close(); }
+	  
+	  //BlerrgGame.debugPrint("Client recieved update: ", input);
 	  return input;
   }
 }

@@ -39,6 +39,7 @@ public class Raycast {
 		this.px = p.getX();
 		this.py = p.getY();
 		
+		
 		this.bordertop = (py-bg.ScreenHeight/2)/32;
 		this.borderbottom = (py+bg.ScreenHeight/2)/32;
 		this.borderleft = (px-bg.ScreenWidth/2)/32;
@@ -115,31 +116,27 @@ public class Raycast {
 										// O X
 										// X  
 										if((bg.world.map.tiles[(int) p.getX() +1][(int) p.getY() -0].type == TileType.WALL /*!= TileType.FLOOR*/ || bg.world.map.tiles[(int) p.getX() -0][(int) p.getY() +1].type == TileType.WALL /*!= TileType.FLOOR*/) && bg.world.map.tiles[(int) p.getX() -0][(int) p.getY() -0].type == TileType.FLOOR) {
-											points.add(new Point(p.getX()+1, p.getY()+1));
-											//linepoints.add(p);
+											
 											break;
 										}
 										if((bg.world.map.tiles[(int) p.getX() +1][(int) p.getY() -0].type == TileType.WALL /*!= TileType.FLOOR*/ || bg.world.map.tiles[(int) p.getX() -0][(int) p.getY() +1].type == TileType.WALL /*!= TileType.FLOOR*/) && bg.world.map.tiles[(int) p.getX() -0][(int) p.getY() -0].type == TileType.WALL) {
 
-											points.add(new Point(p.getX()-1, p.getY()-1));
-											//firstgridpoints[(int) p.getX()][(int) p.getY()] = p;
-											//linepoints.add(p);
+											points.add(new Point(p.getX()-0, p.getY()-0));
+											gridpoints[(int)p.getX()][(int)p.getY()] = p;
 											break;
 										}
 									}
 									else if(p.getY() > Math.round(py/32)) { // point below player
-										// X  
+										// X 
 										// O X
 										if((bg.world.map.tiles[(int) p.getX() -0][(int) p.getY() -1].type == TileType.WALL /*!= TileType.FLOOR*/ || bg.world.map.tiles[(int) p.getX() +1][(int) p.getY() +0].type == TileType.WALL /*!= TileType.FLOOR*/) && bg.world.map.tiles[(int) p.getX() -0][(int) p.getY() -0].type == TileType.FLOOR) {
-											//points.add(new Point(p.getX()+1, p.getY()-1));
-											//linepoints.add(p);
+											
 											break;
 										}
 										else if((bg.world.map.tiles[(int) p.getX() -0][(int) p.getY() -1].type == TileType.WALL /*!= TileType.FLOOR*/ || bg.world.map.tiles[(int) p.getX() +1][(int) p.getY() +0].type == TileType.WALL /*!= TileType.FLOOR*/) && bg.world.map.tiles[(int) p.getX() -0][(int) p.getY() -0].type == TileType.WALL) {
 
-											points.add(new Point(p.getX()-1, p.getY()-1));
-											//firstgridpoints[(int) p.getX()][(int) p.getY()] = p;
-											//linepoints.add(p);
+											points.add(new Point(p.getX()-0, p.getY()-0));
+											gridpoints[(int)p.getX()][(int)p.getY()] = p;
 											break;
 										}
 									}
@@ -150,15 +147,13 @@ public class Raycast {
 										// X O
 										//   X
 										if((bg.world.map.tiles[(int) p.getX() -1][(int) p.getY() -0].type == TileType.WALL /*!= TileType.FLOOR*/ || bg.world.map.tiles[(int) p.getX() -0][(int) p.getY() +1].type == TileType.WALL /*!= TileType.FLOOR*/) && bg.world.map.tiles[(int) p.getX() -0][(int) p.getY() -0].type == TileType.FLOOR) {
-											//points.add(new Point(p.getX()-1, p.getY()+1));
-											//linepoints.add(p);
+
 											break;
 										}
 										else if((bg.world.map.tiles[(int) p.getX() -1][(int) p.getY() -0].type == TileType.WALL /*!= TileType.FLOOR*/ || bg.world.map.tiles[(int) p.getX() -0][(int) p.getY() +1].type == TileType.WALL /*!= TileType.FLOOR*/) && bg.world.map.tiles[(int) p.getX() -0][(int) p.getY() -0].type == TileType.WALL) {
 
-											points.add(new Point(p.getX()-1, p.getY()-1));
-											//firstgridpoints[(int) p.getX()][(int) p.getY()] = p;
-											//linepoints.add(p);
+											points.add(new Point(p.getX()-0, p.getY()-0));
+											gridpoints[(int)p.getX()][(int)p.getY()] = p;
 											break;
 										}
 									}
@@ -167,39 +162,30 @@ public class Raycast {
 										// X O
 										if((bg.world.map.tiles[(int) p.getX() -0][(int) p.getY() -1].type == TileType.WALL /*!= TileType.FLOOR*/ || bg.world.map.tiles[(int) p.getX() -1][(int) p.getY() -0].type == TileType.WALL /*!= TileType.FLOOR*/) && bg.world.map.tiles[(int) p.getX() -0][(int) p.getY() -0].type == TileType.FLOOR) {
 											
-											//points.add(new Point(p.getX()-1, p.getY()-1));
-											//linepoints.add(p);
 											break;
 										}
 										else if((bg.world.map.tiles[(int) p.getX() -0][(int) p.getY() -1].type == TileType.WALL /*!= TileType.FLOOR*/ || bg.world.map.tiles[(int) p.getX() -1][(int) p.getY() -0].type == TileType.WALL /*!= TileType.FLOOR*/) && bg.world.map.tiles[(int) p.getX() -0][(int) p.getY() -0].type == TileType.WALL) {
 											
-											points.add(new Point(p.getX()-1, p.getY()-1));
-											//firstgridpoints[(int) p.getX()][(int) p.getY()] = p;
-											//linepoints.add(p);
+											points.add(new Point(p.getX()-0, p.getY()-0));
+											gridpoints[(int)p.getX()][(int)p.getY()] = p;
 											break;
 										}
-										//if((bg.world.map.tiles[(int) p.getX() +1][(int) p.getY() -0].type == TileType.WALL /*!= TileType.FLOOR*/ || bg.world.map.tiles[(int) p.getX() -0][(int) p.getY() +1].type == TileType.WALL /*!= TileType.FLOOR*/) && bg.world.map.tiles[(int) p.getX() -0][(int) p.getY() -0].type == TileType.FLOOR) {
-										// O X
-										// X
-										//	break;
-										//}
 										
 									}
 								}
 							}
 				}
-				else {
-					break;
-					}
+				else break;
 				
 				
 				i += 32*Math.cos(Math.PI*trig/angles);
 				j += 32*Math.sin(Math.PI*trig/angles);
+				/*
 				if(i < 0) i += 16;
 				if(i > bg.ScreenWidth) i -= 16;
 				if(j < 0) j += 16;
 				if(j > bg.ScreenHeight) j -= 16;
-				
+				*/
 			}
 		}
 	}

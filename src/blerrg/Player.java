@@ -1,11 +1,13 @@
 package blerrg;
 
+import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.state.StateBasedGame;
 
 import java.util.ArrayList;
 import jig.Entity;
 import jig.ResourceManager;
+import jig.Shape;
 import jig.Vector;
 import worldModel.WorldModel;
 
@@ -15,7 +17,11 @@ public class Player extends Entity {
 	private boolean isStopped;
 	private int direction;
 	public ArrayList<Projectile> projectiles;
-
+	public Vector prevPosition;
+	
+	public Healthbar hp;
+	public int score = 0;
+	
 
 	public Player(final float x, final float y, final float vx, final float vy, int characterType) {
 		super(x, y);
@@ -27,13 +33,15 @@ public class Player extends Entity {
 		
 		velocity = new Vector(vx, vy);
 		projectiles = new ArrayList<Projectile>(10);
+		hp = new Healthbar(x - 50, y - 25);
 
 	}
 	
 	
-	public String processInput(Input input, StateBasedGame game, String cU) {
+	public String processInput(Input input, StateBasedGame game) {
 		
 		BlerrgGame bg = (BlerrgGame)game;
+		String cU = "";
 				
 		//System.out.println("Processing Input directly");
 		
@@ -42,7 +50,7 @@ public class Player extends Entity {
 		if (input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
 			float mouseX = input.getMouseX() + bg.world.cameraX;
 			float mouseY = input.getMouseY() + bg.world.cameraY;
-			shoot(mouseX, mouseY, getX(), getY());
+			shoot(mouseX, mouseY, getX(), getY(), this);
 			cU += "Fp1:" + String.valueOf(mouseX) + "&" +
 				    String.valueOf(mouseY) + "|";
 		}
@@ -59,60 +67,61 @@ public class Player extends Entity {
 			setStopped(false);
 			if (w) {
 				setVelocity(new Vector(-0.20f, -0.20f));
-				setDirection(7);
+				if(setDirection(7)) {
+					cU += "Dp1:7|"; }
 			} else if (s) {
 				setVelocity(new Vector(-0.20f, +0.20f));
-				setDirection(5);
-				
+				if(setDirection(5)) {
+					cU += "Dp1:5|"; }	
 			} else {
 				setVelocity(new Vector(-0.25f, 0));
-				setDirection(6);
-				
+				if(setDirection(6)) {
+					cU += "Dp1:6|"; }
 			}
 		} else if (d) { //moving right, top-right, bottom-right
 			setStopped(false);
 			if (w) {
 				setVelocity(new Vector(+0.20f, -0.20f));
-				setDirection(1);
-				
+				if(setDirection(1)) {
+					cU += "Dp1:1|"; }
 			} else if (s) {
 				setVelocity(new Vector(+0.20f, +0.20f));
-				setDirection(3);
-				
+				if(setDirection(3)) {
+					cU += "Dp1:3|"; }	
 			} else {
 				setVelocity(new Vector(+0.25f, 0));
-				setDirection(2);
-				
+				if(setDirection(2)) {
+					cU += "Dp1:2|"; }
 			}			
 		} else if (w) { //moving up, top-right, top-left
 			setStopped(false);
 			if (a) {
 				setVelocity(new Vector(-0.20f, -0.20f));
-				setDirection(7);
-				
+				if(setDirection(7)) {
+					cU += "Dp1:7|"; }
 			} else if (d) {
 				setVelocity(new Vector(+0.20f, -0.20f));
-				setDirection(1);
-				
+				if(setDirection(1)) {
+					cU += "Dp1:1|"; }
 			} else {
 				setVelocity(new Vector(0, -0.25f));
-				setDirection(0);
-				
+				if(setDirection(0)) {
+					cU += "Dp1:0|"; }
 			}
 		} else if (s) { //moving down, bottom-left, bottom-right
 			setStopped(false);
 			if (a) {
 				setVelocity(new Vector(-0.20f, +0.20f));
-				setDirection(5);
-				
+				if(setDirection(5)) {
+					cU += "Dp1:5|"; }
 			} else if (d) {
 				setVelocity(new Vector(+0.20f, +0.20f));
-				setDirection(3);
-				
+				if(setDirection(3)) {
+					cU += "Dp1:3|"; }
 			} else {
 				setVelocity(new Vector(0, +0.25f));
-				setDirection(4);
-				
+				if(setDirection(4)) {
+					cU += "Dp1:4|"; }
 			}
 		} else {
 			setStopped(true);
@@ -183,14 +192,16 @@ public class Player extends Entity {
 		}
 		
 		if(!msg.equalsIgnoreCase("")) {
-			System.out.println("Client Input Request: "+msg);			
+			//System.out.println("Client Input Request: "+msg);			
 		}
 		
 		return msg;
 	}
 	
 	//Recieves a string from a client, updates this player accordingly
-	public String processClientRequest(String in, String cU, String num) {
+	public String processClientRequest(StateBasedGame game, WorldModel w, String in, String num) {
+		BlerrgGame bg = (BlerrgGame)game;
+		String cU = "";
 	
 		//make sure request was not null
 		if(in == null) {
@@ -203,7 +214,7 @@ public class Player extends Entity {
 			return cU;
 		}
 		
-		System.out.println("Recieved request: "+in);
+		//System.out.println("Recieved request: "+in);
 	
 		String p[];
 		String arr[] = in.split("\\|");
@@ -217,21 +228,29 @@ public class Player extends Entity {
 							setStopped(false);
 						switch(task[1]) {
 							case "U":  setVelocity(new Vector(0, -0.25f));
-						       		   setDirection(0); break;
+						       		   if(setDirection(0)) { 
+						       			   cU += "Dp" + num + ":0|";} break;
 							case "UR": setVelocity(new Vector(+0.20f, -0.20f));
-						               setDirection(1); break;
+									   if(setDirection(1)) {
+										   cU += "Dp" + num + ":1|";} break;
 							case "R":  setVelocity(new Vector(+0.25f, 0));
-						       		   setDirection(2); break;	
+									   if(setDirection(2)) {
+										   cU += "Dp" + num + ":2|";} break;	
 							case "DR": setVelocity(new Vector(+0.20f, +0.20f));
-						               setDirection(3); break;
+									   if(setDirection(3)) {
+										   cU += "Dp" + num + ":3|";} break;
 							case "D":  setVelocity(new Vector(0, +0.25f));
-						               setDirection(4); break;
+									   if(setDirection(4)) {
+										   cU += "Dp" + num + ":4|";} break;
 							case "DL": setVelocity(new Vector(-0.20f, +0.20f));
-							           setDirection(5); break;
+									   if(setDirection(5)) { 
+										   cU += "Dp" + num + ":5|";} break;
 							case "L":  setVelocity(new Vector(-0.25f, 0));
-						               setDirection(6); break;
+									   if(setDirection(6)) { 
+										   cU += "Dp" + num + ":6|";} break;
 							case "UL": setVelocity(new Vector(-0.20f, -0.20f));
-						               setDirection(7); break;
+									   if(setDirection(7)) {
+										   cU += "Dp" + num + ":7|";} break;
 							case "stop": setStopped(true);
 					                     setVelocity(new Vector(0, 0)); break;
 				            default:   setStopped(true);
@@ -241,16 +260,23 @@ public class Player extends Entity {
 					case "fire":
 						p = task[1].split("&");
 						shoot(Float.parseFloat(p[0]), Float.parseFloat(p[1]), 
-								getX(), getY()); 
+								getX(), getY(), bg.world.player); 
+
 						cU += "Fp" + num + ":" + p[0] + "&" +
 							       p[1] + "|"; break;
+			        // Disconnect
+					case "!": switch(task[1]) {
+						case "p2": bg.p2Active = false; cU += "!:p2|"; w.removePlayer(2); break;
+						case "p3": bg.p3Active = false; cU += "!:p3|"; w.removePlayer(3); break;
+						case "p4": bg.p4Active = false; cU += "!:p4|"; w.removePlayer(4); break;
+					} break;
 					default: break;
+					
 				} // end of task[0] switch
 			} // end of if
 		} // end of for loop
 		return cU;
 	}
-	
 	
 	public void setStopped(boolean s) {
 		if (s != isStopped) {
@@ -258,10 +284,14 @@ public class Player extends Entity {
 		}
 	}
 	
-	public void setDirection(final int d) {
+	public boolean setDirection(final int d) {
 		if (d != direction) {
 			direction = d;
-		} 
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 	
 	public Vector getVelocity() {
@@ -272,17 +302,46 @@ public class Player extends Entity {
 		velocity = v;
 	}
 	
-	public void update(final int delta) {
-		translate(velocity.scale(delta));
+	public void setPrevPosition(float xCoord, float yCoord) {
+		prevPosition = new Vector(xCoord, yCoord);
 	}
 	
-	public void shoot(float mouseX, float mouseY, float originX, float originY) {
+	public void update(final int delta) {
+		translate(velocity.scale(delta));
+		hp.setPosition(getX(), getY());
+	}
+	
+	public void shoot(float mouseX, float mouseY, float originX, float originY, Player p) {
+
 		double speed = 1.0;
 		double angle = Math.atan2(mouseX - originX, mouseY - originY);
 		float vx = (float) (speed * Math.sin(angle));
 		float vy = (float) (speed * Math.cos(angle));
-
+		
 		projectiles.add(new Projectile(originX, originY, vx, vy));
+		
+		float dX = (p.getX() - this.getX());
+		float dY = (p.getY() - this.getY());
+		float d = (float) Math.sqrt((dX * dX) + (dY * dY));
+		d = d/500 + 1;
+		if (d < 3)  d = 1/d ; 
+		else d = 0;
+		
+		ResourceManager.getSound(BlerrgGame.GUN_1_SND).play(1, d/4);
+		
+//		p.hp.setHealth(p.hp.getHealth() - 5);
+	}
+	
+	public void hit(Player pS, Player pD) {
+		pD.hp.setHealth(pD.hp.getHealth() - 30);
+		System.out.println("Player: " + pD + " was hit! Current health: " + pD.hp.getHealth());
+		
+		if (pD.hp.getHealth() <= 0) {
+			// reset player p
+			System.out.println("Player: " + pD + " killed by Player: " + pS);
+			pD.hp.setHealth(100);
+			pS.score += 1;
+		}
 	}
 
 	
@@ -292,7 +351,7 @@ public class Player extends Entity {
 		
 		public Projectile(final float x, final float y, final float vx, final float vy) {
 			super(x, y);
-			addImageWithBoundingBox(ResourceManager.getImage(BlerrgGame.PROJECTILE_PLACEHOLDER));
+			addImageWithBoundingBox(ResourceManager.getImage(BlerrgGame.PROJECTILE_PLACEHOLDER).getScaledCopy(2));
 			velocity = new Vector(vx, vy);
 		}
 		
@@ -302,6 +361,41 @@ public class Player extends Entity {
 		
 		public void update(final int delta) {
 			translate(velocity.scale(delta));
+		}
+	}
+	
+	// Healthbar only visible to other players
+	public class Healthbar extends Entity {
+		private int health;
+		private Image bar;
+		private Image border;
+		public boolean display = true;
+
+		public Healthbar(final float x, final float y) {
+			super(x, y);
+			health = 100;
+			
+			border = ResourceManager.getImage(BlerrgGame.HEALTHBORDER_PLACEHOLDER);
+			addImage(border, new Vector(0, -25));
+			
+			bar = ResourceManager.getImage(BlerrgGame.HEALTH_PLACEHOLDER).getScaledCopy(health, 10);
+			addImage(bar, new Vector(0 - (50 - health/2), -25));
+			
+		}
+		
+		public void setHealth(int h) {
+			if (h >= 0)
+				health = h;
+			else
+				health = 0;
+			
+			removeImage(bar);
+			bar = ResourceManager.getImage(BlerrgGame.HEALTH_PLACEHOLDER).getScaledCopy(health, 10);
+			addImage(bar, new Vector(0 - (50 - health/2), -25));
+		}
+		
+		public int getHealth() {
+			return health;
 		}
 	}
 

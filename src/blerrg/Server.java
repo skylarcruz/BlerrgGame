@@ -69,15 +69,29 @@ public class Server {
   }
   
   public String get2Updates() throws IOException {
-	  String input2 = p2In.readLine();
-	  return input2;
+	String input2;
+	try {input2 = p2In.readLine();
+	} catch (IOException e) {input2 = "!:p2|";
+	e.printStackTrace();}
+	if (input2.equals("!:p2|")) { p2Socket.close(); }
+	return input2;
   }
+  
   public String get3Updates() throws IOException {
-	  String input3 = p3In.readLine();
-	  return input3;
+	  String input3;
+		try {input3 = p3In.readLine();
+		} catch (IOException e) {input3 = "!:p3|";
+		e.printStackTrace();}
+		if (input3.equals("!:p3|")) { p3Socket.close(); }
+		return input3;
   }
+  
   public String get4Updates() throws IOException {
-	  String input4 = p4In.readLine();
-	  return input4;
+	  String input4;
+		try {input4 = p4In.readLine();
+		} catch (IOException e) {input4 = "!:p4|";
+		e.printStackTrace();}
+		if (input4.equals("!:p4|")) { p4Socket.close(); }
+		return input4;
   }
 }
