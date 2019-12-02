@@ -133,9 +133,10 @@ public class WorldModel {
 	}
 	
 	//Update the game model. All updates should go through this method
-	public String update(StateBasedGame game, int delta, String cUp) {
+	public String update(StateBasedGame game, int delta) {
 		//Test for collisions
-		cUp += collisionTesting(delta, cUp);
+		String cUp = "";
+		cUp += collisionTesting(delta);
 		
 		//Update entities		
 		for(Entity character: characters) {
@@ -152,9 +153,9 @@ public class WorldModel {
 	}
 	
 	
-	public String collisionTesting(int delta, String cUp) {
+	public String collisionTesting(int delta) {
 		
-		int shotFlag = 0;
+		String cUp = "";
 		
 		//Check all characters
 		for(Entity character: characters) {
