@@ -20,7 +20,7 @@ import worldModel.WorldModel;
 public class PlayingState extends BasicGameState {
 	
 	private String msg;
-	private String cUpdate = "";
+	private String cUpdate;
 	private String in2;
 	private String in3;
 	private String in4;
@@ -36,6 +36,7 @@ public class PlayingState extends BasicGameState {
 	public void enter(GameContainer container, StateBasedGame game) throws SlickException {
 		BlerrgGame bg = (BlerrgGame)game;
 		loadTime = 100;
+		cUpdate = "";
 		
 		bg.world = new WorldModel(bg.ScreenWidth, bg.ScreenHeight, bg);
 		
@@ -81,7 +82,7 @@ public class PlayingState extends BasicGameState {
 		if (input.isKeyPressed(Input.KEY_P))
 			container.setSoundOn(false);
 		
-		cUpdate = "";
+		//cUpdate = "";
 		
 
 		//This is the server: move player 1, receive input from clients
@@ -105,6 +106,8 @@ public class PlayingState extends BasicGameState {
 			// getUpdates from Server
 			try {
 				cUpdate = bg.bgClient.getUpdates();
+				
+				//System.out.println(cUpdate);
 	
 				String p[];
 				String arr[] = cUpdate.split("\\|");
@@ -119,19 +122,22 @@ public class PlayingState extends BasicGameState {
 							case "Xp1": bg.world.player.setX(Float.parseFloat(task[1])); break;
 							case "Xp2": bg.world.player2.setX(Float.parseFloat(task[1])); break;
 							case "Xp3": bg.world.player3.setX(Float.parseFloat(task[1])); break;
-							case "Xp4": bg.world.player4.setX(Float.parseFloat(task[1])); break; }
+							case "Xp4": bg.world.player4.setX(Float.parseFloat(task[1])); break;
+							default: break; } break;
 						  // Get Y Positions
 						  case 'Y': switch (task[0]) {
 						    case "Yp1": bg.world.player.setY(Float.parseFloat(task[1])); break;
 						    case "Yp2": bg.world.player2.setY(Float.parseFloat(task[1])); break;
 						    case "Yp3": bg.world.player3.setY(Float.parseFloat(task[1])); break;
-						    case "Yp4": bg.world.player4.setY(Float.parseFloat(task[1])); break;}
+						    case "Yp4": bg.world.player4.setY(Float.parseFloat(task[1])); break;
+						    default: break; } break;
 						  // Get Dir
 						  case 'D': switch (task[0]) {
 						    case "Dp1": bg.world.player.setDirection(Integer.parseInt(task[1])); break;
 						    case "Dp2": bg.world.player2.setDirection(Integer.parseInt(task[1])); break;
 						    case "Dp3": bg.world.player3.setDirection(Integer.parseInt(task[1])); break;
-						    case "Dp4": bg.world.player4.setDirection(Integer.parseInt(task[1])); break;}
+						    case "Dp4": bg.world.player4.setDirection(Integer.parseInt(task[1])); break;
+						    default: break; } break;
 						  // Get Shots Fired
 						  case 'F': switch (task[0]) {
 						    case "Fp1": bg.world.player.shoot(Float.parseFloat(p[0]), Float.parseFloat(p[1]), 
@@ -141,15 +147,20 @@ public class PlayingState extends BasicGameState {
 						    case "Fp3": bg.world.player3.shoot(Float.parseFloat(p[0]), Float.parseFloat(p[1]), 
 									    bg.world.player3.getX(), bg.world.player3.getY(), bg.world.thisPlayer); break;
 						    case "Fp4": bg.world.player4.shoot(Float.parseFloat(p[0]), Float.parseFloat(p[1]), 
-									    bg.world.player4.getX(), bg.world.player4.getY(), bg.world.thisPlayer); break;}
-
+									    bg.world.player4.getX(), bg.world.player4.getY(), bg.world.thisPlayer); break;
+						    default: break; } break;
+					      // Player Shot
+						  case 'C': switch (task[0]) {
+						  	case "Cshot": Player pS = bg.world.getPlayer(p[0]); Player pD = bg.world.getPlayer(p[1]);
+						  				  pS.hit(pD); break;
+						  	default: break; } break;			  
 						  // Server/Client Disconnects
 						  case '!': switch(task[1]) {
 						    case "close": container.exit(); break;
 						    case "p2": bg.p2Active = false; bg.world.removePlayer(2); break;
 							case "p3": bg.p3Active = false; bg.world.removePlayer(3); break;
 							case "p4": bg.p4Active = false; bg.world.removePlayer(4); break;
-						  } break;
+							default: break; } break;
 						default: break;
 						}
 					}
@@ -170,16 +181,17 @@ public class PlayingState extends BasicGameState {
 		//End Client Updating
 		}
 		
+		cUpdate = "";
 		
 		//Update the world
-		bg.world.update(game, delta);
+		cUpdate += bg.world.update(game, delta, cUpdate);
 		
 	}
 
 	
 	public void serverUpdate(GameContainer container, BlerrgGame bg, int delta) {
 		
-		cUpdate += bg.world.player.processInput(container.getInput(), bg, cUpdate);
+		cUpdate += bg.world.player.processInput(container.getInput(), bg);
 		//END PLAYER MOVEMENT
 		
 	
@@ -189,7 +201,7 @@ public class PlayingState extends BasicGameState {
 		if (bg.p2Active) {
 			try {in2 = bg.bgServer.get2Updates();
 			} catch (IOException e) {e.printStackTrace();}
-			cUpdate += bg.world.player2.processClientRequest(bg, bg.world, in2, cUpdate, "2");
+			cUpdate += bg.world.player2.processClientRequest(bg, bg.world, in2, "2");
 		}
 			
 
@@ -197,7 +209,7 @@ public class PlayingState extends BasicGameState {
 		if (bg.p3Active) {
 			try {in3 = bg.bgServer.get3Updates();
 			} catch (IOException e) {e.printStackTrace();}
-			cUpdate += bg.world.player3.processClientRequest(bg, bg.world, in3, cUpdate, "3");
+			cUpdate += bg.world.player3.processClientRequest(bg, bg.world, in3, "3");
 		}
 	 
 			
@@ -205,7 +217,7 @@ public class PlayingState extends BasicGameState {
 		if (bg.p4Active) {
 			try {in4 = bg.bgServer.get4Updates();
 			} catch (IOException e) {e.printStackTrace();}
-			cUpdate +=  bg.world.player4.processClientRequest(bg, bg.world, in4, cUpdate, "4");
+			cUpdate +=  bg.world.player4.processClientRequest(bg, bg.world, in4, "4");
 		}
 			
 		

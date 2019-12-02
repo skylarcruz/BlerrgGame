@@ -108,6 +108,22 @@ public class WorldModel {
 		pHUD = new HUD(thisPlayer);
 	}
 	
+	public String getPlayer(Player p) {
+		if (p == player) return "p1";
+		else if (p == player2) return "p2";
+		else if (p == player3) return "p3";
+		else if (p == player4) return "p4";
+		else return "error";
+	}
+	
+	public Player getPlayer(String p) {
+		if (p.equals("p1")) return player;
+		else if (p.equals("p2")) return player2;
+		else if (p.equals("p3")) return player3;
+		else if (p.equals("p4")) return player4;
+		else return player;
+	}
+	
 	public void removePlayer(int pNum) {
 		switch(pNum) {
 		case 2: player2.setPosition(-1000000, -1000000); characters.remove(player2); break;
@@ -117,9 +133,9 @@ public class WorldModel {
 	}
 	
 	//Update the game model. All updates should go through this method
-	public void update(StateBasedGame game, int delta) {
+	public String update(StateBasedGame game, int delta, String cUp) {
 		//Test for collisions
-		collisionTesting(delta);
+		cUp += collisionTesting(delta, cUp);
 		
 		//Update entities		
 		for(Entity character: characters) {
@@ -131,10 +147,14 @@ public class WorldModel {
 			}
 		}
 		pHUD.update(thisPlayer);
+		
+		return cUp;
 	}
 	
 	
-	public void collisionTesting(int delta) {
+	public String collisionTesting(int delta, String cUp) {
+		
+		int shotFlag = 0;
 		
 		//Check all characters
 		for(Entity character: characters) {
@@ -160,7 +180,11 @@ public class WorldModel {
 				for (Entity cTest : characters) {
 					if (player != cTest) {
 						if (shot.collides(cTest) != null) {
-							((Player) cTest).hit((Player) cTest);
+							if (getPlayer(thisPlayer) == "p1") {
+								((Player) player).hit((Player) cTest);
+								cUp += "Cshot:" + getPlayer(player) + "&" + getPlayer((Player) cTest) + "|";
+								//System.out.println(cUp);
+							}
 							itr.remove();
 							break;
 						}
@@ -169,6 +193,7 @@ public class WorldModel {
 			}
 		}
 		
+		return cUp;
 	}
 	
 	
