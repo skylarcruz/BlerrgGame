@@ -326,7 +326,12 @@ public class Player extends Entity {
 		
 		ResourceManager.getSound(BlerrgGame.GUN_1_SND).play(1, d/4);
 		
-		p.hp.setHealth(p.hp.getHealth() - 5);
+//		p.hp.setHealth(p.hp.getHealth() - 5);
+	}
+	
+	public void hit(Player p) {
+		p.hp.setHealth(p.hp.getHealth() - 30);
+		System.out.println("Player: " + p + " was hit! Current health: " + p.hp.getHealth());
 	}
 
 	
@@ -336,7 +341,7 @@ public class Player extends Entity {
 		
 		public Projectile(final float x, final float y, final float vx, final float vy) {
 			super(x, y);
-			addImageWithBoundingBox(ResourceManager.getImage(BlerrgGame.PROJECTILE_PLACEHOLDER));
+			addImageWithBoundingBox(ResourceManager.getImage(BlerrgGame.PROJECTILE_PLACEHOLDER).getScaledCopy(2));
 			velocity = new Vector(vx, vy);
 		}
 		

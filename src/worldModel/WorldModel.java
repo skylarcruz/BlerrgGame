@@ -160,6 +160,7 @@ public class WorldModel {
 				for (Entity cTest : characters) {
 					if (player != cTest) {
 						if (shot.collides(cTest) != null) {
+							((Player) cTest).hit((Player) cTest);
 							itr.remove();
 							break;
 						}
