@@ -37,9 +37,10 @@ public class Player extends Entity {
 	}
 	
 	
-	public String processInput(Input input, StateBasedGame game, String cU) {
+	public String processInput(Input input, StateBasedGame game) {
 		
 		BlerrgGame bg = (BlerrgGame)game;
+		String cU = "";
 				
 		//System.out.println("Processing Input directly");
 		
@@ -197,8 +198,9 @@ public class Player extends Entity {
 	}
 	
 	//Recieves a string from a client, updates this player accordingly
-	public String processClientRequest(StateBasedGame game, WorldModel w, String in, String cU, String num) {
+	public String processClientRequest(StateBasedGame game, WorldModel w, String in, String num) {
 		BlerrgGame bg = (BlerrgGame)game;
+		String cU = "";
 	
 		//make sure request was not null
 		if(in == null) {
