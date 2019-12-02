@@ -3,6 +3,7 @@ package worldModel;
 import java.util.ArrayList;
 
 import blerrg.BlerrgGame;
+import blerrg.Tile;
 import jig.Entity;
 
 public class QuadTree {
@@ -12,8 +13,7 @@ public class QuadTree {
 	//Build a quadtree to cover the entire map
 	public QuadTree(int p_width, int p_height) {
 		
-		rootNode = new QuadNode(0,0,p_width, p_height);
-		
+		rootNode = new QuadNode(-Tile.size,-Tile.size,p_width + Tile.size, p_height+Tile.size);
 	}
 	
 	
