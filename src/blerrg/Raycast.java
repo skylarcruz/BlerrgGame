@@ -81,27 +81,18 @@ public class Raycast {
 				Point p = new Point((int) Math.round(i/32), (int) Math.round((j)/32));
 				
 				if(gridpoints[(int)p.getX()][(int)p.getY()] == null) {
-					//if(!points.contains(p)) {
-						// left right up down
+
 							if(bg.world.map.tiles[(int) p.getX()][(int) p.getY()].type == TileType.WALL 
 									||((p.getX() < borderleft) || (borderright < p.getX()) || (p.getY() < bordertop) || (borderbottom < p.getY()) )
 									||((p.getX() <= 0) || (bg.ScreenWidth <= p.getX()) || (p.getY() <= 0) || (bg.ScreenHeight <= p.getY()) )) {
 								
+								// we don't need floor tiles, we need the shape outline
+								// we add the point obviously, but for fast checking we set the gridpoints array as a poor mans hash map
 								points.add(p);
 								gridpoints[(int)p.getX()][(int)p.getY()] = p;
-								/*
-								for(int a = -1; a <=1; a++) {
-									for(int b = -1; b <= 1; b++) {
-										if(0 <= p.getX() + a && p.getX() + a < bg.world.map.tiles.length && 0 <= p.getY() + b && p.getY()+b < bg.world.map.tiles[0].length) {
-											if(bg.world.map.tiles[(int) p.getX() + a][(int) p.getY() + b].type == TileType.WALL && firstgridpoints[(int)p.getX() + a][(int)p.getY() + b] == null) {
-												extrawalls.add(new Point(p.getX() + a, p.getY() + b));
-												firstgridpoints[(int)p.getX()][(int)p.getY()] = new Point(p.getX() + a, p.getY() + b);
-											}
-										}
-									}
-								}*/
 								
 								
+								// kinda like the coarseGrained stuff, this sets the bounds of the raycast resultant shape
 								if(p.getX() > maxx) maxx = (int) p.getX();
 								else if(p.getX() < minx) minx = (int) p.getX();
 								if(p.getY() > maxy) maxy = (int) p.getY();
@@ -180,12 +171,6 @@ public class Raycast {
 				
 				i += 32*Math.cos(Math.PI*trig/angles);
 				j += 32*Math.sin(Math.PI*trig/angles);
-				/*
-				if(i < 0) i += 16;
-				if(i > bg.ScreenWidth) i -= 16;
-				if(j < 0) j += 16;
-				if(j > bg.ScreenHeight) j -= 16;
-				*/
 			}
 		}
 	}

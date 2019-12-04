@@ -58,6 +58,10 @@ public class BlerrgGame extends StateBasedGame {
 	
 	//SFX
 	public static final String GUN_1_SND = "blerrg/resource/sfx/gunshot1.wav";
+	
+	//WEAPONS
+	public static final String WEAPON_SHOTGUN = "blerrg/resource/Weapons/Shotgun.png";
+	public static final String WEAPON_SHOTGUN_R = "blerrg/resource/Weapons/Shotgun_Reversed.png";
 
 	WorldModel world;
 
@@ -78,9 +82,6 @@ public class BlerrgGame extends StateBasedGame {
 		addState(new PlayingState());
 		addState(new EndState());
 		
-		//Load SFX
-		ResourceManager.loadSound(GUN_1_SND);
-		
 		//Load Player Resources
 		ResourceManager.loadImage(CHARACTER_PLACEHOLDER);
 		ResourceManager.loadImage(PROJECTILE_PLACEHOLDER);
@@ -97,6 +98,12 @@ public class BlerrgGame extends StateBasedGame {
 		
 		//Load Tile Resources
 		ResourceManager.loadImage(TILE_1);
+		
+		//Load SFX
+		ResourceManager.loadSound(GUN_1_SND);
+		
+		//Load Weapons
+		ResourceManager.loadImage(WEAPON_SHOTGUN);
 	}
 	
 	

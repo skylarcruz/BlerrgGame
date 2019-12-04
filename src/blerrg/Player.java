@@ -1,5 +1,6 @@
 package blerrg;
 
+import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.state.StateBasedGame;
@@ -17,11 +18,13 @@ public class Player extends Entity {
 	private boolean isStopped;
 	private int direction;
 	public ArrayList<Projectile> projectiles;
+	public ArrayList<Weapon> weapons;
+	private String cur_weapon;
 	public Vector prevPosition;
 	
 	public Healthbar hp;
 	public int score = 0;
-	
+	public double rotation;
 
 	public Player(final float x, final float y, final float vx, final float vy, int characterType) {
 		super(x, y);
@@ -33,10 +36,15 @@ public class Player extends Entity {
 		
 		velocity = new Vector(vx, vy);
 		projectiles = new ArrayList<Projectile>(10);
+		cur_weapon = "shotgun";
+		weapons = new ArrayList<Weapon>();
+		//weapons.add(new Weapon(x, y, "shotgun", 45));
 		hp = new Healthbar(x - 50, y - 25);
 
 	}
-	
+	public String getCurrentWeapon() {
+		return cur_weapon;
+	}
 	
 	public String processInput(Input input, StateBasedGame game) {
 		
@@ -398,5 +406,4 @@ public class Player extends Entity {
 			return health;
 		}
 	}
-
 }
