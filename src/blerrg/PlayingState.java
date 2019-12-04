@@ -27,6 +27,7 @@ public class PlayingState extends BasicGameState {
 	int amount = 0;
 	
 	int loadTime;
+	boolean winFlag;
 
 	@Override
 	public void init(GameContainer container, StateBasedGame game) throws SlickException {		
@@ -36,6 +37,7 @@ public class PlayingState extends BasicGameState {
 	public void enter(GameContainer container, StateBasedGame game) throws SlickException {
 		BlerrgGame bg = (BlerrgGame)game;
 		loadTime = 100;
+		winFlag = false;
 		cUpdate = "";
 		
 		bg.world = new WorldModel(bg.ScreenWidth, bg.ScreenHeight, bg);
@@ -89,6 +91,10 @@ public class PlayingState extends BasicGameState {
 		// and update associated player objects.
 		// Return updated positions to the clients
 		if (bg.isServer) {
+			if (winFlag == true) {
+				bg.enterState(BlerrgGame.MENUSTATE);
+			}
+				
 			serverUpdate(container, bg, delta);
 			//System.out.println("Server update - client count: "+bg.clientCount);
 		}
@@ -161,6 +167,13 @@ public class PlayingState extends BasicGameState {
 							case "p3": bg.p3Active = false; bg.world.removePlayer(3); break;
 							case "p4": bg.p4Active = false; bg.world.removePlayer(4); break;
 							default: break; } break;
+						  // Winner found
+						  case 'W': switch(task[1]) {
+						    case "P1": bg.enterState(BlerrgGame.MENUSTATE); break;
+						    case "P2": bg.enterState(BlerrgGame.MENUSTATE); break;
+							case "P3": bg.enterState(BlerrgGame.MENUSTATE); break;
+							case "P4": bg.enterState(BlerrgGame.MENUSTATE); break;
+							default: break; } break;
 						default: break;
 						}
 					}
@@ -192,6 +205,11 @@ public class PlayingState extends BasicGameState {
 	
 	public void serverUpdate(GameContainer container, BlerrgGame bg, int delta) {
 		
+		if (bg.world.pHUD.checkForWinner(bg) != "noWin") {
+			cUpdate += bg.world.pHUD.checkForWinner(bg);
+			winFlag = true;
+		}
+					
 		cUpdate += bg.world.player.processInput(container.getInput(), bg);
 		//END PLAYER MOVEMENT
 		

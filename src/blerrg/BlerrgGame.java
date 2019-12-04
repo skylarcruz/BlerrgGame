@@ -36,6 +36,8 @@ public class BlerrgGame extends StateBasedGame {
 	public boolean p3Active = false;
 	public boolean p4Active = false;
 	
+	public int winScore = 10;
+	
 	//PLAYER
 	public final static String CHARACTER_PLACEHOLDER = "blerrg/resource/character_placeholder.png";
 	public final static String PROJECTILE_PLACEHOLDER = "blerrg/resource/projectile_placeholder.png";

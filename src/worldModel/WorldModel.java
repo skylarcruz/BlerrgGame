@@ -150,6 +150,9 @@ public class WorldModel {
 		}
 		pHUD.update(thisPlayer);
 		
+//		if (pHUD.checkForWinner(game) != "noWin")
+//			System.out.println(pHUD.checkForWinner(game));
+		
 		return cUp;
 	}
 	
