@@ -88,13 +88,15 @@ public class MenuState extends BasicGameState {
 			if (bg.clientNum == 4 & !p4Ready) { g.drawString("Ready?", 1105, 375); }
 		}
 		
-		if (gameStart)
-			g.drawString("Loading...", 600, 600);
-		
 		g.drawString("Level: " + Integer.toString(level), 600, 500);
 		if (Sel == "LevelSel") {g.drawString(">", 575, 500);}
-		g.drawString("Start Game", 600, 550);
-		if (Sel == "StartSel") {g.drawString(">", 575, 550);}
+		g.drawString("Points to Win: " + bg.winScore, 600, 550);
+		if (Sel == "WinSel") {g.drawString(">", 575, 550);}
+		g.drawString("Start Game", 600, 600);
+		if (Sel == "StartSel") {g.drawString(">", 575, 600);}
+		
+		if (gameStart)
+			g.drawString("Loading...", 600, 650);
 	}
 
 	@Override
@@ -137,9 +139,15 @@ public class MenuState extends BasicGameState {
 			}
 			else if (Sel == "LevelSel") {
 				if (w) {Sel = "CharSel";}
-				else if (s) {Sel = "StartSel";}
+				else if (s) {Sel = "WinSel";}
 				else if (a) {/*ChangelvlLeft*/}
 				else if (d) {/*ChangelvlRight*/}
+			}
+			else if (Sel == "WinSel") {
+				if (w) {Sel = "LevelSel";}
+				else if (s) {Sel = "StartSel";}
+				else if (a && bg.winScore > 5) {bg.winScore -= 5; }
+				else if (d && bg.winScore < 20) {bg.winScore += 5; }
 			}
 			else if (Sel == "StartSel") {
 				if (spc & p2Ready & p3Ready & p4Ready) {

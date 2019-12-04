@@ -92,7 +92,11 @@ public class PlayingState extends BasicGameState {
 		// Return updated positions to the clients
 		if (bg.isServer) {
 			if (winFlag == true) {
-				bg.enterState(BlerrgGame.MENUSTATE);
+				String w = bg.world.pHUD.checkForWinner(bg);
+				String arr[] = w.split("\\|");
+				String task[] = arr[0].split(":");
+				((EndState)game.getState(BlerrgGame.ENDSTATE)).setWinner(task[1]);
+				bg.enterState(BlerrgGame.ENDSTATE);
 			}
 				
 			serverUpdate(container, bg, delta);
@@ -168,12 +172,8 @@ public class PlayingState extends BasicGameState {
 							case "p4": bg.p4Active = false; bg.world.removePlayer(4); break;
 							default: break; } break;
 						  // Winner found
-						  case 'W': switch(task[1]) {
-						    case "P1": bg.enterState(BlerrgGame.MENUSTATE); break;
-						    case "P2": bg.enterState(BlerrgGame.MENUSTATE); break;
-							case "P3": bg.enterState(BlerrgGame.MENUSTATE); break;
-							case "P4": bg.enterState(BlerrgGame.MENUSTATE); break;
-							default: break; } break;
+						  case 'W': ((EndState)game.getState(BlerrgGame.ENDSTATE)).setWinner(task[1]);
+						  			bg.enterState(BlerrgGame.ENDSTATE); break;
 						default: break;
 						}
 					}

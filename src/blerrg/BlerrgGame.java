@@ -20,6 +20,7 @@ public class BlerrgGame extends StateBasedGame {
 	public final static int STARTSTATE = 0;
 	public final static int MENUSTATE = 1;
 	public final static int PLAYINGSTATE = 2;
+	public final static int ENDSTATE = 3;
 	
 	public final int ScreenWidth;
 	public final int ScreenHeight;
@@ -75,6 +76,7 @@ public class BlerrgGame extends StateBasedGame {
 		addState(new StartState());
 		addState(new MenuState());
 		addState(new PlayingState());
+		addState(new EndState());
 		
 		//Load SFX
 		ResourceManager.loadSound(GUN_1_SND);
