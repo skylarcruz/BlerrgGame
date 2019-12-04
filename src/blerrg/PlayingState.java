@@ -185,7 +185,12 @@ public class PlayingState extends BasicGameState {
 		
 		//Update the world
 
-		/*cUpdate += */bg.world.update(game, delta);
+		float mouseX = input.getMouseX() + bg.world.cameraX;
+		float mouseY = input.getMouseY() + bg.world.cameraY;
+		double theta = getAngle(mouseX, bg.world.player.getX(), mouseY, bg.world.player.getY());
+		//System.out.println(theta);
+		bg.world.player.weapons.get(0).setDirection(Math.toDegrees(theta));
+		bg.world.update(game, delta);
 		
 	}
 
@@ -256,5 +261,11 @@ public class PlayingState extends BasicGameState {
 		return BlerrgGame.PLAYINGSTATE;
 	}
 
+	public double getAngle(float ax, float bx, float ay, float by) {
+		double a = ay - by;
+		double b = ax - bx;
+		
+		return Math.atan2((a), (b));
+	}
 	
 }

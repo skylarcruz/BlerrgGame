@@ -51,7 +51,7 @@ public class TileMap {
 	public TileMap() {
 		//createTestMap(0, 50, 50);
 		
-		loadMap("blerrg/resource/TiledMaps/LargeLevel.tmx");
+		loadMap("blerrg/resource/TiledMaps/Experimental_4.tmx");
 	}
 	
 	

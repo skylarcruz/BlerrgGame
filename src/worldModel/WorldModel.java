@@ -14,8 +14,10 @@ import blerrg.Player;
 import blerrg.Player.Projectile;
 import blerrg.Raycast;
 import blerrg.Tile;
+import blerrg.Weapon;
 import jig.Collision;
 import jig.Entity;
+import jig.ResourceManager;
 import jig.Vector;
 
 
@@ -70,6 +72,7 @@ public class WorldModel {
 		//TODO: Determine starting position from map
 		player = new Player(screenWidth/2, screenHeight/2, 0, 0, 0);
 		characters.add(player);
+		player.weapons.add(new Weapon(player.getX(), player.getY(), "shotgun", 45));
 		
 		if (bg.clientCount >= 1 && bg.p2Active) {
 			player2 = new Player(bg.ScreenWidth/2 + 50, bg.ScreenHeight/2, 0, 0, 0);
@@ -218,12 +221,42 @@ public class WorldModel {
 		}
 		
 		// ################ END RENDERING TILES ################
+
+		//for(int i = 0; i < points.size(); i++) {
+			for(Entity character: characters) {
+				Player currentChar = (Player) character;
+				//if(points.get(i).getX()*32 <= character.getX() && character.getX() <= (points.get(i).getX()*32) + 32
+				//	&&points.get(i).getY()*32 <= character.getY() && character.getY() <= (points.get(i).getY()*32) + 32) {
+					
+					
+					//weapon.removeImage(ResourceManager.getImage(BlerrgGame.WEAPON_SHOTGUN));
+					//System.out.println("x: " + currentChar.weapons.get(0).getX()/32 + " / y: " + currentChar.weapons.get(0).getY()/32 + " / px: " + currentChar.getX()/32 + " / py: " + currentChar.getY()/32);
+					//currentChar.weapons.get(0).setPosition(currentChar.getCoarseGrainedMaxX(), currentChar.getY());
+					//System.out.println(currentChar.weapons.get(0).getType() + " / " + currentChar.weapons.get(0).getCoarseGrainedCollisionBoundary());
+					
+					//currentChar.weapons.get(0).rotation(g);
+					//if(currentChar.getCurrentWeapon() == "shotgun") {
+						//weapon.rotation(g);
+					//}
+				//}
+			}
+		//}
 		for(int i = 0; i < points.size(); i++) {
 			for(Entity character: characters) {
 				Player currentChar = (Player) character;
 				if(points.get(i).getX()*32 <= character.getX() && character.getX() <= (points.get(i).getX()*32) + 32
 					&&points.get(i).getY()*32 <= character.getY() && character.getY() <= (points.get(i).getY()*32) + 32) {
-					character.render(g);
+					
+					// #### WEAPON RENDERING ####
+					//Weapon weapon = new Weapon(currentChar.getX(), currentChar.getY(), (currentChar.getCurrentWeapon()), currentChar.weapons.get(0).getDirection());
+					
+					g.rotate(currentChar.getX(), currentChar.getY(), (float) currentChar.weapons.get(0).getDirection());
+					currentChar.weapons.get(0).setPosition(currentChar.getCoarseGrainedMaxX(), currentChar.getY());
+					currentChar.weapons.get(0).render(g);
+					g.rotate(currentChar.getX(), currentChar.getY(), 0-(float) currentChar.weapons.get(0).getDirection());
+					
+					// #### CHARACTER RENDERING ####
+					currentChar.render(g);
 					if (currentChar != thisPlayer) {
 						if (currentChar.hp.display)
 							currentChar.hp.render(g);
@@ -245,6 +278,7 @@ public class WorldModel {
 				}
 			}
 		}
+
 	}
 	
 	public void renderThisPlayerHPTemp(Graphics g, Player t) {
