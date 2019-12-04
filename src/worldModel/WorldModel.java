@@ -77,14 +77,17 @@ public class WorldModel {
 		if (bg.clientCount >= 1 && bg.p2Active) {
 			player2 = new Player(bg.ScreenWidth/2 + 50, bg.ScreenHeight/2, 0, 0, 0);
 			characters.add(player2);
+			player2.weapons.add(new Weapon(player.getX(), player.getY(), "shotgun", 45));
 		}
 		if (bg.clientCount >= 2 && bg.p3Active) {
 			player3 = new Player(bg.ScreenWidth/2, bg.ScreenHeight/2 + 50, 0, 0, 0);
 			characters.add(player3);
+			player3.weapons.add(new Weapon(player.getX(), player.getY(), "shotgun", 45));
 		}
 		if (bg.clientCount == 3 && bg.p4Active) {
 			player4 = new Player(bg.ScreenWidth/2 + 50, bg.ScreenHeight/2 + 50, 0, 0, 0);
 			characters.add(player4);
+			player4.weapons.add(new Weapon(player.getX(), player.getY(), "shotgun", 45));
 		}
 		
 		

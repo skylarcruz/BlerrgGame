@@ -201,7 +201,6 @@ public class PlayingState extends BasicGameState {
 		float mouseX = input.getMouseX() + bg.world.cameraX;
 		float mouseY = input.getMouseY() + bg.world.cameraY;
 		double theta = getAngle(mouseX, bg.world.player.getX(), mouseY, bg.world.player.getY());
-		//System.out.println(theta);
 		bg.world.player.weapons.get(0).setDirection(Math.toDegrees(theta));
 		bg.world.update(game, delta);
 		
