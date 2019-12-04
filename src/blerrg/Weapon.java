@@ -14,8 +14,8 @@ public class Weapon extends Entity{
 	private float x;
 	private float y;
 	private double direction;
-	Image weapon;
 	String type;
+	public boolean reversed;
 
 	public Weapon(final float x, final float y, String type, final double direction){
 		
@@ -25,6 +25,7 @@ public class Weapon extends Entity{
 		this.direction = direction;
 		
 		this.type = type;
+		reversed = false;
 		switch(this.type) {
 			case "shotgun": addImage(ResourceManager.getImage(BlerrgGame.WEAPON_SHOTGUN));
 			default: addImage(ResourceManager.getImage(BlerrgGame.WEAPON_SHOTGUN));
@@ -58,6 +59,20 @@ public class Weapon extends Entity{
 		return  this.type;
 	}
 	
+	public void directionSwap(){
+		if(type == "shotgun") {
+			if(reversed == false) {
+				removeImage(ResourceManager.getImage(BlerrgGame.WEAPON_SHOTGUN));
+				addImage(ResourceManager.getImage(BlerrgGame.WEAPON_SHOTGUN_R));
+				reversed = true;
+			}
+			else {
+				removeImage(ResourceManager.getImage(BlerrgGame.WEAPON_SHOTGUN_R));
+				addImage(ResourceManager.getImage(BlerrgGame.WEAPON_SHOTGUN));
+				reversed = false;
+			}
+		}
+	}
 	/*
 	 * receive the angle that the weapon should point toward
 	 */

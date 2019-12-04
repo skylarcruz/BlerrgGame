@@ -58,6 +58,7 @@ public class BlerrgGame extends StateBasedGame {
 	
 	//WEAPONS
 	public static final String WEAPON_SHOTGUN = "blerrg/resource/Weapons/Shotgun.png";
+	public static final String WEAPON_SHOTGUN_R = "blerrg/resource/Weapons/Shotgun_Reversed.png";
 
 	WorldModel world;
 
