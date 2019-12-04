@@ -377,7 +377,7 @@ public class Player extends Entity {
 		
 		public Projectile(final float x, final float y, final float vx, final float vy) {
 			super(x, y);
-			addImageWithBoundingBox(ResourceManager.getImage(BlerrgGame.PROJECTILE_PLACEHOLDER).getScaledCopy(2));
+			addImageWithBoundingBox(ResourceManager.getImage(BlerrgGame.PROJECTILE_PLACEHOLDER).getScaledCopy(1));
 			velocity = new Vector(vx, vy);
 		}
 		
