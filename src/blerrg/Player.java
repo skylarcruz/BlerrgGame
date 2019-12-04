@@ -52,17 +52,20 @@ public class Player extends Entity {
 		String cU = "";
 				
 		//System.out.println("Processing Input directly");
-		
-		
+
+		float mouseX = input.getMouseX() + bg.world.cameraX;
+		float mouseY = input.getMouseY() + bg.world.cameraY;
 		//START PLAYER SHOOTING
 		if (input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
-			float mouseX = input.getMouseX() + bg.world.cameraX;
-			float mouseY = input.getMouseY() + bg.world.cameraY;
 			shoot(mouseX, mouseY, getX(), getY(), this);
 			cU += "Fp1:" + String.valueOf(mouseX) + "&" +
 				    String.valueOf(mouseY) + "|";
 		}
-		//END PLAYER SHOOTING
+		
+		//SET WEAPON ROTATION
+		double theta = getAngle(mouseX, bg.world.thisPlayer.getX(), mouseY, bg.world.thisPlayer.getY());
+		weapons.get(0).setDirection(Math.toDegrees(theta));
+		cU += "W:rot&p1&" + String.valueOf(Math.toDegrees(theta)) + "|";
 		
 		//START PLAYER MOVEMENT
 		boolean a = input.isKeyDown(Input.KEY_A) ? true : false;
@@ -191,13 +194,18 @@ public class Player extends Entity {
 			msg += "mov:stop|";
 		} // End of Movement
 
+		float mouseX = input.getMouseX() + bg.world.cameraX;
+		float mouseY = input.getMouseY() + bg.world.cameraY;
 		// Get Shots Fired
 		if (input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
-			float mouseX = input.getMouseX() + bg.world.cameraX;
-			float mouseY = input.getMouseY() + bg.world.cameraY;
 			msg += "fire:" + String.valueOf(mouseX) + "&" + 
 					String.valueOf(mouseY) + "|";
 		}
+		
+		// Get Weapon Rotation
+		double theta = getAngle(mouseX, bg.world.thisPlayer.getX(), mouseY, bg.world.thisPlayer.getY());
+		weapons.get(0).setDirection(Math.toDegrees(theta));
+		msg += "wRot:" + String.valueOf(Math.toDegrees(theta)) + "|";
 		
 		if(!msg.equalsIgnoreCase("")) {
 			//System.out.println("Client Input Request: "+msg);			
@@ -272,6 +280,9 @@ public class Player extends Entity {
 
 						cU += "Fp" + num + ":" + p[0] + "&" +
 							       p[1] + "|"; break;
+			        // Weapon Rotation
+					case "wRot": weapons.get(0).setDirection(Double.valueOf(task[1])); 
+								 cU += "W:rot&p" + num + "&" + task[1] + "|"; break;
 			        // Disconnect
 					case "!": switch(task[1]) {
 						case "p2": bg.p2Active = false; cU += "!:p2|"; w.removePlayer(2); break;
@@ -317,6 +328,13 @@ public class Player extends Entity {
 	public void update(final int delta) {
 		translate(velocity.scale(delta));
 		hp.setPosition(getX(), getY());
+	}
+	
+	public double getAngle(float ax, float bx, float ay, float by) {
+		double a = ay - by;
+		double b = ax - bx;
+		
+		return Math.atan2((a), (b));
 	}
 	
 	public void shoot(float mouseX, float mouseY, float originX, float originY, Player p) {

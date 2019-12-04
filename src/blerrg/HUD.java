@@ -66,10 +66,10 @@ public class HUD extends Entity {
 	public String checkForWinner(StateBasedGame game) {
 		BlerrgGame bg = (BlerrgGame)game;
 		
-		if (p1Score >= bg.winScore) return "W:P1|";
-		else if (p2Score >= bg.winScore) return "W:P2|";
-		else if (p3Score >= bg.winScore) return "W:P3|";
-		else if (p4Score >= bg.winScore) return "W:P4|";
+		if (p1Score >= bg.winScore) return "E:P1|";
+		else if (p2Score >= bg.winScore) return "E:P2|";
+		else if (p3Score >= bg.winScore) return "E:P3|";
+		else if (p4Score >= bg.winScore) return "E:P4|";
 		else return "noWin";
 	}
 

@@ -104,6 +104,7 @@ public class BlerrgGame extends StateBasedGame {
 		
 		//Load Weapons
 		ResourceManager.loadImage(WEAPON_SHOTGUN);
+		ResourceManager.loadImage(WEAPON_SHOTGUN_R);
 	}
 	
 	

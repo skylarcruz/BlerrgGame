@@ -156,9 +156,6 @@ public class WorldModel {
 		}
 		pHUD.update(thisPlayer);
 		
-//		if (pHUD.checkForWinner(game) != "noWin")
-//			System.out.println(pHUD.checkForWinner(game));
-		
 		return cUp;
 	}
 	
@@ -195,7 +192,7 @@ public class WorldModel {
 							if (getPlayer(thisPlayer) == "p1") {
 								thisPlayer.hit((Player) player, (Player) cTest);
 								cUp += "Cshot:" + getPlayer(player) + "&" + getPlayer((Player) cTest) + "|";
-								//System.out.println(cUp);
+								System.out.println(cUp);
 							}
 							itr.remove();
 							break;
@@ -257,8 +254,8 @@ public class WorldModel {
 					else {
 						pHUD.setScore("p1", player.score);
 						if (bg.p2Active) pHUD.setScore("p2", player2.score);
-						if (bg.p3Active) pHUD.setScore("p2", player3.score);
-						if (bg.p4Active) pHUD.setScore("p2", player4.score);
+						if (bg.p3Active) pHUD.setScore("p3", player3.score);
+						if (bg.p4Active) pHUD.setScore("p4", player4.score);
 						pHUD.renderHUD(game, g, thisPlayer);
 					}
 						

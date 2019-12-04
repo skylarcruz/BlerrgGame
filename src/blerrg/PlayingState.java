@@ -141,6 +141,16 @@ public class PlayingState extends BasicGameState {
 						    case "Yp3": bg.world.player3.setY(Float.parseFloat(task[1])); break;
 						    case "Yp4": bg.world.player4.setY(Float.parseFloat(task[1])); break;
 						    default: break; } break;
+					      // Weapon Functions
+						  case 'W': switch (p[0]) {
+						  	// Set weapon rotations
+						    case "rot": switch (p[1]) {
+						      case "p1": bg.world.player.weapons.get(0).setDirection(Double.valueOf(p[2])); break;
+						      case "p2": bg.world.player2.weapons.get(0).setDirection(Double.valueOf(p[2])); break;
+						      case "p3": bg.world.player3.weapons.get(0).setDirection(Double.valueOf(p[2])); break;
+						      case "p4": bg.world.player4.weapons.get(0).setDirection(Double.valueOf(p[2])); break;
+						    } break;
+						  } break;
 						  // Get Dir
 						  case 'D': switch (task[0]) {
 						    case "Dp1": bg.world.player.setDirection(Integer.parseInt(task[1])); break;
@@ -160,7 +170,8 @@ public class PlayingState extends BasicGameState {
 									    bg.world.player4.getX(), bg.world.player4.getY(), bg.world.thisPlayer); break;
 						    default: break; } break;
 					      // Player Shot
-						  case 'C': switch (task[0]) {
+						  case 'C': System.out.println("Event Triggered");
+							  switch (task[0]) {
 						  	case "Cshot": Player pS = bg.world.getPlayer(p[0]); Player pD = bg.world.getPlayer(p[1]);
 						  				  bg.world.thisPlayer.hit(pS, pD); break;
 						  	default: break; } break;			  
@@ -171,8 +182,8 @@ public class PlayingState extends BasicGameState {
 							case "p3": bg.p3Active = false; bg.world.removePlayer(3); break;
 							case "p4": bg.p4Active = false; bg.world.removePlayer(4); break;
 							default: break; } break;
-						  // Winner found
-						  case 'W': ((EndState)game.getState(BlerrgGame.ENDSTATE)).setWinner(task[1]);
+						  // End Game, set Winner
+						  case 'E': ((EndState)game.getState(BlerrgGame.ENDSTATE)).setWinner(task[1]);
 						  			bg.enterState(BlerrgGame.ENDSTATE); break;
 						default: break;
 						}
@@ -196,13 +207,16 @@ public class PlayingState extends BasicGameState {
 		
 		cUpdate = "";
 		
-		//Update the world
+		// Alex: This section moved to Player
+		// Line 66 for server, Line 206 for clients
 
-		float mouseX = input.getMouseX() + bg.world.cameraX;
-		float mouseY = input.getMouseY() + bg.world.cameraY;
-		double theta = getAngle(mouseX, bg.world.player.getX(), mouseY, bg.world.player.getY());
-		bg.world.player.weapons.get(0).setDirection(Math.toDegrees(theta));
-		bg.world.update(game, delta);
+//		float mouseX = input.getMouseX() + bg.world.cameraX;
+//		float mouseY = input.getMouseY() + bg.world.cameraY;
+//		double theta = getAngle(mouseX, bg.world.thisPlayer.getX(), mouseY, bg.world.thisPlayer.getY());
+//		bg.world.thisPlayer.weapons.get(0).setDirection(Math.toDegrees(theta));
+		
+		//Update the world
+		cUpdate += bg.world.update(game, delta);
 		
 	}
 
