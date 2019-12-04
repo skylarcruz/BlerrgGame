@@ -170,8 +170,7 @@ public class PlayingState extends BasicGameState {
 									    bg.world.player4.getX(), bg.world.player4.getY(), bg.world.thisPlayer); break;
 						    default: break; } break;
 					      // Player Shot
-						  case 'C': System.out.println("Event Triggered");
-							  switch (task[0]) {
+						  case 'C': switch (task[0]) {
 						  	case "Cshot": Player pS = bg.world.getPlayer(p[0]); Player pD = bg.world.getPlayer(p[1]);
 						  				  bg.world.thisPlayer.hit(pS, pD); break;
 						  	default: break; } break;			  
