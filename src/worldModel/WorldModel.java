@@ -5,6 +5,7 @@ import java.util.Iterator;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Point;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -151,6 +152,7 @@ public class WorldModel {
 			Player player = (Player) character;
 			player.setPrevPosition(player.getX(), player.getY());
 			player.update(delta);
+			player.walk.update(delta);
 			for(Player.Projectile p : player.projectiles) {
 				p.update(delta);
 			}
@@ -247,7 +249,7 @@ public class WorldModel {
 					g.rotate(currentChar.getX(), currentChar.getY(), 0-(float) weapon.getDirection());
 
 					// #### CHARACTER RENDERING ####
-					currentChar.render(g);
+					currentChar.walk.draw(currentChar.getX() - 16, currentChar.getY() - 16);
 					if (currentChar != thisPlayer) {
 						if (currentChar.hp.display)
 							currentChar.hp.render(g);
