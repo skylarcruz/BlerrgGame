@@ -1,16 +1,18 @@
 package blerrg;
 
+import java.util.ArrayList;
+
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.state.StateBasedGame;
 
+import blerrg.Player.Projectile;
 import jig.Entity;
 import jig.ResourceManager;
 import jig.Vector;
 
 public class HUD extends Entity {
 	private Image hpBar;
-	private Vector velocity;
 	private int HUDhp;
 	
 	private int p1Score;
@@ -18,26 +20,30 @@ public class HUD extends Entity {
 	private int p3Score;
 	private int p4Score;
 	
+	public ArrayList<WeaponIcon> HUDweapons;
+	
 	public HUD(Player p) {
 		super(p.getX(), p.getY());
 		HUDhp = p.hp.getHealth();
 		
-		addImage(ResourceManager.getImage(BlerrgGame.HUD_HP_BORDER), new Vector (-560, 335));
+		addImage(ResourceManager.getImage(BlerrgGame.HUD_HP_BORDER), new Vector (560, 335));
 		hpBar = ResourceManager.getImage(BlerrgGame.HUD_HP_BAR).getScaledCopy(130 * HUDhp/100, 24);
-		addImage(hpBar, new Vector (-560 - (65 - 130 * HUDhp/200), 335));
+		addImage(hpBar, new Vector (560 - (65 - 130 * HUDhp/200), 335));
+		
+		HUDweapons = new ArrayList<WeaponIcon>();
 	}
 	
 	public void setHUDhealth(int h) {
 		removeImage(hpBar);
 		hpBar = ResourceManager.getImage(BlerrgGame.HUD_HP_BAR).getScaledCopy(130 * HUDhp/100, 24);
-		addImage(hpBar, new Vector (-560 - (65 - 130 * HUDhp/200), 335));
+		addImage(hpBar, new Vector (560 - (65 - 130 * HUDhp/200), 335));
 	}
 	
 	public void renderHUD(StateBasedGame game, Graphics g, Player p) {
 		BlerrgGame bg = (BlerrgGame)game;
 		
 		render(g);
-		g.drawString(HUDhp + "/100", p.getX() - 590, p.getY() + 327);
+		g.drawString(HUDhp + "/100", p.getX() + 530, p.getY() + 327);
 		
 		g.drawString("P1 Score: " + p1Score, p.getX() + 520, p.getY() - 355);
 		if (bg.p2Active)
@@ -46,6 +52,13 @@ public class HUD extends Entity {
 			g.drawString("P3 Score: " + p3Score, p.getX() + 520, p.getY() - 315);
 		if (bg.p4Active)
 			g.drawString("P4 Score: " + p4Score, p.getX() + 520, p.getY() - 295);
+		
+		for(int i = 0; i < HUDweapons.size(); i++) {
+			if (HUDweapons.get(i).active)
+				g.drawImage(HUDweapons.get(i).getIconA(), p.getX() - 625 + (i * 60),p.getY() + 300);
+			else
+				g.drawImage(HUDweapons.get(i).getIconNA(), p.getX() - 625 + (i * 60),p.getY() + 300);
+		}
 	}
 	
 	public void update(Player p) {
@@ -71,6 +84,90 @@ public class HUD extends Entity {
 		else if (p3Score >= bg.winScore) return "E:P3|";
 		else if (p4Score >= bg.winScore) return "E:P4|";
 		else return "noWin";
+	}
+	
+	public void addWeapon(Weapon w) {
+		boolean isNew = true;
+		int incAmmoLoc;
+		
+		for(int i = 0; i < HUDweapons.size(); i++) {
+			if (w.type == HUDweapons.get(i).getType()) {
+				isNew = false;
+				incAmmoLoc = i;
+				break;
+			}
+		}
+		
+		if (isNew) {
+			for(int i = 0; i < HUDweapons.size(); i++) {
+				HUDweapons.get(i).active = false;
+			}
+			WeaponIcon newW = new WeaponIcon(w);
+			HUDweapons.add(newW);
+		}
+		else {
+			// Add Ammo to existing weapon 
+		}
+	}
+	
+	public void shiftWeapon(String dir) {
+		int activeI = 0;
+		for(int i = 0; i < HUDweapons.size(); i++) {
+			if (HUDweapons.get(i).active == true) {
+				activeI = i;
+				break;
+			}
+		}
+		
+		if (dir == "Left")
+			activeI -= 1;
+		else
+			activeI += 1;
+		
+		if (activeI < 0)
+			activeI = HUDweapons.size() - 1;
+		if (activeI > HUDweapons.size() - 1)
+			activeI = 0;
+		
+		for(int i = 0; i < HUDweapons.size(); i++) {
+			if (i != activeI)
+				HUDweapons.get(i).active = false;
+			else
+				HUDweapons.get(i).active = true;
+		}
+	}
+	
+	public class WeaponIcon extends Entity {
+		
+		private String type;
+		private boolean active;
+		//private int AmmoLimit;
+		//private int AmmoCount;
+		
+		private Image iconNA;
+		public Image iconA;
+		
+		public WeaponIcon (Weapon w) {
+			type = w.type;
+			active = true;
+			switch (type) {
+				case "shotgun": iconNA = ResourceManager.getImage(BlerrgGame.SHOTGUN_ICON_NA);
+								iconA = ResourceManager.getImage(BlerrgGame.SHOTGUN_ICON_A); break;
+			}
+		}
+		
+		public Image getIconA() {
+			return iconA;
+		}
+		
+		public Image getIconNA() {
+			return iconNA;
+		}
+		
+		public String getType() {
+			return type;
+		}
+		
 	}
 
 }

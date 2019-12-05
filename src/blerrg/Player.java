@@ -73,6 +73,12 @@ public class Player extends Entity {
 		boolean d = input.isKeyDown(Input.KEY_D) ? true : false;
 		boolean s = input.isKeyDown(Input.KEY_S) ? true : false;
 		
+		boolean q = input.isKeyPressed(Input.KEY_Q) ? true : false;
+		boolean e = input.isKeyPressed(Input.KEY_E) ? true : false;
+		
+		if (q) { bg.world.pHUD.shiftWeapon("Left"); }
+		if (e) { bg.world.pHUD.shiftWeapon("Right"); }
+		
 		
 		if (a) { //moving left, top-left, bottom-left
 			setStopped(false);

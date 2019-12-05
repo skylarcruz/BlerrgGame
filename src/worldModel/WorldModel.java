@@ -112,6 +112,7 @@ public class WorldModel {
 		default: thisPlayer = player; break;
 		}
 		pHUD = new HUD(thisPlayer);
+		pHUD.addWeapon(thisPlayer.weapons.get(0));
 	}
 	
 	public String getPlayer(Player p) {
