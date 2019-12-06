@@ -22,7 +22,7 @@ public class Player extends Entity {
 	private int direction;
 	public ArrayList<Projectile> projectiles;
 	public ArrayList<Weapon> weapons;
-	private String cur_weapon;
+	private int cur_weapon;
 	public Vector prevPosition;
 	
 	public Healthbar hp;
@@ -41,7 +41,7 @@ public class Player extends Entity {
 		
 		velocity = new Vector(vx, vy);
 		projectiles = new ArrayList<Projectile>(10);
-		cur_weapon = "shotgun";
+		cur_weapon = 0;
 		weapons = new ArrayList<Weapon>();
 		//weapons.add(new Weapon(x, y, "shotgun", 45));
 		hp = new Healthbar(x - 50, y - 25);
@@ -53,8 +53,17 @@ public class Player extends Entity {
 		rotation = 0;
 
 	}
-	public String getCurrentWeapon() {
+	public int getCurrentWeapon() {
 		return cur_weapon;
+	}
+	
+	public void changeWeaponUp() {
+		if(cur_weapon != (weapons.size() - 1)) cur_weapon++;
+		else cur_weapon = 0;
+	}
+	public void changeWeaponDown() {
+		if(cur_weapon != 0) cur_weapon--;
+		else cur_weapon = (weapons.size() - 1);
 	}
 	
 	public String processInput(Input input, StateBasedGame game) {
@@ -63,7 +72,14 @@ public class Player extends Entity {
 		String cU = "";
 				
 		//System.out.println("Processing Input directly");
-
+		
+		// ALEX'S NEW STUFF
+		
+		if(input.isKeyPressed(Input.KEY_E)) {changeWeaponUp();}
+		else if(input.isKeyPressed(Input.KEY_Q)) {changeWeaponDown();}
+		
+		// END ALEX'S NEW STUFF
+		
 		float mouseX = input.getMouseX() + bg.world.cameraX;
 		float mouseY = input.getMouseY() + bg.world.cameraY;
 		//START PLAYER SHOOTING
@@ -75,8 +91,10 @@ public class Player extends Entity {
 		
 		//SET WEAPON ROTATION
 		double theta = getAngle(mouseX, bg.world.thisPlayer.getX(), mouseY, bg.world.thisPlayer.getY());
-		weapons.get(0).setDirection(Math.toDegrees(theta));
+		
+		weapons.get(cur_weapon).setDirection(Math.toDegrees(theta));
 		this.setRotation(Math.toDegrees(theta));
+
 		cU += "W:rot&p1&" + String.valueOf(Math.toDegrees(theta)) + "|";
 		
 		//START PLAYER MOVEMENT
@@ -222,7 +240,7 @@ public class Player extends Entity {
 		
 		// Get Weapon Rotation
 		double theta = getAngle(mouseX, bg.world.thisPlayer.getX(), mouseY, bg.world.thisPlayer.getY());
-		weapons.get(0).setDirection(Math.toDegrees(theta));
+		weapons.get(cur_weapon).setDirection(Math.toDegrees(theta));
 		msg += "wRot:" + String.valueOf(Math.toDegrees(theta)) + "|";
 		
 		if(!msg.equalsIgnoreCase("")) {
@@ -299,7 +317,7 @@ public class Player extends Entity {
 						cU += "Fp" + num + ":" + p[0] + "&" +
 							       p[1] + "|"; break;
 			        // Weapon Rotation
-					case "wRot": weapons.get(0).setDirection(Double.valueOf(task[1])); 
+					case "wRot": weapons.get(cur_weapon).setDirection(Double.valueOf(task[1])); 
 								 cU += "W:rot&p" + num + "&" + task[1] + "|"; break;
 			        // Disconnect
 					case "!": switch(task[1]) {
@@ -409,7 +427,7 @@ public class Player extends Entity {
 		
 		public Projectile(final float x, final float y, final float vx, final float vy) {
 			super(x, y);
-			addImageWithBoundingBox(ResourceManager.getImage(BlerrgGame.PROJECTILE_PLACEHOLDER).getScaledCopy(2));
+			addImageWithBoundingBox(ResourceManager.getImage(BlerrgGame.PROJECTILE_PLACEHOLDER).getScaledCopy(1));
 			velocity = new Vector(vx, vy);
 		}
 		

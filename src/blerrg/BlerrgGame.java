@@ -42,8 +42,9 @@ public class BlerrgGame extends StateBasedGame {
 	//PLAYER
 	public final static String CHARACTER_PLACEHOLDER = "blerrg/resource/character_placeholder.png";
 
-	public final static String PROJECTILE_PLACEHOLDER = "blerrg/resource/projectile_placeholder.png";
+	public final static String PROJECTILE_PLACEHOLDER = "blerrg/resource/pellet.png";
 	public final static String CHAR1_TOP_DOWN = "blerrg/resource/Player/char1_topdown.png";
+
 	public final static String HEALTHBORDER_PLACEHOLDER = "blerrg/resource/Player/hpBorder.png";
 	public final static String HEALTH_PLACEHOLDER = "blerrg/resource/Player/health.png";
 	
@@ -65,8 +66,20 @@ public class BlerrgGame extends StateBasedGame {
 	public static final String GUN_1_SND = "blerrg/resource/sfx/gunshot1.wav";
 	
 	//WEAPONS
+	public static final String WEAPON_CROSSBOW = "blerrg/resource/Weapons/Crossbow.png";
+	public static final String WEAPON_CROSSBOW_R = "blerrg/resource/Weapons/Crossbow_R.png";
+	
+	public static final String WEAPON_KNIFE = "blerrg/resource/Weapons/Knife.png";
+	public static final String WEAPON_KNIFE_R = "blerrg/resource/Weapons/Knife_R.png";
+	
+	public static final String WEAPON_RIFLE = "blerrg/resource/Weapons/Rifle.png";
+	public static final String WEAPON_RIFLE_R = "blerrg/resource/Weapons/Rifle_R.png";
+	
 	public static final String WEAPON_SHOTGUN = "blerrg/resource/Weapons/Shotgun.png";
-	public static final String WEAPON_SHOTGUN_R = "blerrg/resource/Weapons/Shotgun_Reversed.png";
+	public static final String WEAPON_SHOTGUN_R = "blerrg/resource/Weapons/Shotgun_R.png";
+	
+	public static final String WEAPON_SMG = "blerrg/resource/Weapons/SMG.png";
+	public static final String WEAPON_SMG_R = "blerrg/resource/Weapons/SMG_R.png";
 
 	WorldModel world;
 
@@ -113,8 +126,16 @@ public class BlerrgGame extends StateBasedGame {
 		ResourceManager.loadSound(GUN_1_SND);
 		
 		//Load Weapons
+		ResourceManager.loadImage(WEAPON_CROSSBOW);
+		ResourceManager.loadImage(WEAPON_CROSSBOW_R);
+		ResourceManager.loadImage(WEAPON_KNIFE);
+		ResourceManager.loadImage(WEAPON_KNIFE_R);
+		ResourceManager.loadImage(WEAPON_RIFLE);
+		ResourceManager.loadImage(WEAPON_RIFLE_R);
 		ResourceManager.loadImage(WEAPON_SHOTGUN);
 		ResourceManager.loadImage(WEAPON_SHOTGUN_R);
+		ResourceManager.loadImage(WEAPON_SMG);
+		ResourceManager.loadImage(WEAPON_SMG_R);
 	}
 	
 	

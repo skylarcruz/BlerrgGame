@@ -153,6 +153,8 @@ public class HUD extends Entity {
 			switch (type) {
 				case "shotgun": iconNA = ResourceManager.getImage(BlerrgGame.SHOTGUN_ICON_NA);
 								iconA = ResourceManager.getImage(BlerrgGame.SHOTGUN_ICON_A); break;
+				default:  iconNA = ResourceManager.getImage(BlerrgGame.SHOTGUN_ICON_NA);
+						  iconA = ResourceManager.getImage(BlerrgGame.SHOTGUN_ICON_A); break;
 			}
 		}
 		
