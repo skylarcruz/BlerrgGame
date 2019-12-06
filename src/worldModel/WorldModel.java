@@ -152,7 +152,7 @@ public class WorldModel {
 			Player player = (Player) character;
 			player.setPrevPosition(player.getX(), player.getY());
 			player.update(delta);
-			player.walk.update(delta);
+//			player.walk.update(delta);
 			for(Player.Projectile p : player.projectiles) {
 				p.update(delta);
 			}
@@ -249,7 +249,9 @@ public class WorldModel {
 					g.rotate(currentChar.getX(), currentChar.getY(), 0-(float) weapon.getDirection());
 
 					// #### CHARACTER RENDERING ####
-					currentChar.walk.draw(currentChar.getX() - 16, currentChar.getY() - 16);
+//					currentChar.walk.draw(currentChar.getX() - 16, currentChar.getY() - 16);
+					currentChar.setRotation((float) weapon.getDirection());
+					currentChar.render(g);
 					if (currentChar != thisPlayer) {
 						if (currentChar.hp.display)
 							currentChar.hp.render(g);

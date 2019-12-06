@@ -29,46 +29,46 @@ public class Player extends Entity {
 	public int score = 0;
 	public double rotation;
 	
-	public Animation walk;
-	private SpriteSheet dir0;
-	private SpriteSheet dir1;
-	private SpriteSheet dir2;
-	private SpriteSheet dir3;
-	private SpriteSheet dir4;
-	private SpriteSheet dir5;
-	private SpriteSheet dir6;
-	private SpriteSheet dir7;
+//	public Animation walk;
+//	private SpriteSheet dir0;
+//	private SpriteSheet dir1;
+//	private SpriteSheet dir2;
+//	private SpriteSheet dir3;
+//	private SpriteSheet dir4;
+//	private SpriteSheet dir5;
+//	private SpriteSheet dir6;
+//	private SpriteSheet dir7;
 
 
 	public Player(final float x, final float y, final float vx, final float vy, int characterType) {
 		super(x, y);
 		
-		addImageWithBoundingBox(ResourceManager.getImage(BlerrgGame.CHARACTER_PLACEHOLDER));
+		addImageWithBoundingBox(ResourceManager.getImage(BlerrgGame.CHAR1_TOP_DOWN));
 		
-		try {
-			if (characterType == 0) {
-				dir0 = new SpriteSheet(BlerrgGame.CHAR1_DIR0, 32, 32);
-				dir1 = new SpriteSheet(BlerrgGame.CHAR1_DIR1, 32, 32);
-				dir2 = new SpriteSheet(BlerrgGame.CHAR1_DIR2, 32, 32);
-				dir3 = new SpriteSheet(BlerrgGame.CHAR1_DIR3, 32, 32);
-				dir4 = new SpriteSheet(BlerrgGame.CHAR1_DIR4, 32, 32);
-				dir5 = new SpriteSheet(BlerrgGame.CHAR1_DIR5, 32, 32);
-				dir6 = new SpriteSheet(BlerrgGame.CHAR1_DIR6, 32, 32);
-				dir7 = new SpriteSheet(BlerrgGame.CHAR1_DIR7, 32, 32);
-			} else { //TODO other chars need other sprite sheets..
-				dir0 = new SpriteSheet(BlerrgGame.CHAR1_DIR0, 32, 32);
-				dir1 = new SpriteSheet(BlerrgGame.CHAR1_DIR1, 32, 32);
-				dir2 = new SpriteSheet(BlerrgGame.CHAR1_DIR2, 32, 32);
-				dir3 = new SpriteSheet(BlerrgGame.CHAR1_DIR3, 32, 32);
-				dir4 = new SpriteSheet(BlerrgGame.CHAR1_DIR4, 32, 32);
-				dir5 = new SpriteSheet(BlerrgGame.CHAR1_DIR5, 32, 32);
-				dir6 = new SpriteSheet(BlerrgGame.CHAR1_DIR6, 32, 32);
-				dir7 = new SpriteSheet(BlerrgGame.CHAR1_DIR7, 32, 32);
-			}
-			
-		} catch (SlickException e) {
-			e.printStackTrace();
-		}
+//		try {
+//			if (characterType == 0) {
+//				dir0 = new SpriteSheet(BlerrgGame.CHAR1_DIR0, 32, 32);
+//				dir1 = new SpriteSheet(BlerrgGame.CHAR1_DIR1, 32, 32);
+//				dir2 = new SpriteSheet(BlerrgGame.CHAR1_DIR2, 32, 32);
+//				dir3 = new SpriteSheet(BlerrgGame.CHAR1_DIR3, 32, 32);
+//				dir4 = new SpriteSheet(BlerrgGame.CHAR1_DIR4, 32, 32);
+//				dir5 = new SpriteSheet(BlerrgGame.CHAR1_DIR5, 32, 32);
+//				dir6 = new SpriteSheet(BlerrgGame.CHAR1_DIR6, 32, 32);
+//				dir7 = new SpriteSheet(BlerrgGame.CHAR1_DIR7, 32, 32);
+//			} else { //TODO other chars need other sprite sheets..
+//				dir0 = new SpriteSheet(BlerrgGame.CHAR1_DIR0, 32, 32);
+//				dir1 = new SpriteSheet(BlerrgGame.CHAR1_DIR1, 32, 32);
+//				dir2 = new SpriteSheet(BlerrgGame.CHAR1_DIR2, 32, 32);
+//				dir3 = new SpriteSheet(BlerrgGame.CHAR1_DIR3, 32, 32);
+//				dir4 = new SpriteSheet(BlerrgGame.CHAR1_DIR4, 32, 32);
+//				dir5 = new SpriteSheet(BlerrgGame.CHAR1_DIR5, 32, 32);
+//				dir6 = new SpriteSheet(BlerrgGame.CHAR1_DIR6, 32, 32);
+//				dir7 = new SpriteSheet(BlerrgGame.CHAR1_DIR7, 32, 32);
+//			}
+//			
+//		} catch (SlickException e) {
+//			e.printStackTrace();
+//		}
 
 		
 		velocity = new Vector(vx, vy);
@@ -78,10 +78,11 @@ public class Player extends Entity {
 		//weapons.add(new Weapon(x, y, "shotgun", 45));
 		hp = new Healthbar(x - 50, y - 25);
 		
-		walk = new Animation(dir0, 150);
-		walk.stop();
+//		walk = new Animation(dir0, 150);
+//		walk.stop();
 		isStopped = true;
 		direction = 0;
+		rotation = 0;
 
 	}
 	public String getCurrentWeapon() {
@@ -107,6 +108,7 @@ public class Player extends Entity {
 		//SET WEAPON ROTATION
 		double theta = getAngle(mouseX, bg.world.thisPlayer.getX(), mouseY, bg.world.thisPlayer.getY());
 		weapons.get(0).setDirection(Math.toDegrees(theta));
+		this.setRotation(Math.toDegrees(theta));
 		cU += "W:rot&p1&" + String.valueOf(Math.toDegrees(theta)) + "|";
 		
 		//START PLAYER MOVEMENT
@@ -345,43 +347,44 @@ public class Player extends Entity {
 		return cU;
 	}
 	
-	public void getAnimation(boolean s) {
-		if (s) {
-			walk.stop();
-			walk.setCurrentFrame(1);
-		} else {
-			walk.stop();
-			switch(direction) {
-				case 0: walk = new Animation(dir0, 150); walk.start(); break;
-				case 1: walk = new Animation(dir1, 150); walk.start(); break;
-				case 2: walk = new Animation(dir2, 150); walk.start(); break;
-				case 3: walk = new Animation(dir3, 150); walk.start(); break;
-				case 4: walk = new Animation(dir4, 150); walk.start(); break;
-				case 5: walk = new Animation(dir5, 150); walk.start(); break;
-				case 6: walk = new Animation(dir6, 150); walk.start(); break;
-				case 7: walk = new Animation(dir7, 150); walk.start(); break;
-				default: walk.start(); break;
-			}
-		}
-	}
+//	public void getAnimation(boolean s) {
+//		if (s) {
+//			walk.stop();
+//			walk.setCurrentFrame(1);
+//		} else {
+//			walk.stop();
+//			switch(direction) {
+//				case 0: walk = new Animation(dir0, 150); walk.start(); break;
+//				case 1: walk = new Animation(dir1, 150); walk.start(); break;
+//				case 2: walk = new Animation(dir2, 150); walk.start(); break;
+//				case 3: walk = new Animation(dir3, 150); walk.start(); break;
+//				case 4: walk = new Animation(dir4, 150); walk.start(); break;
+//				case 5: walk = new Animation(dir5, 150); walk.start(); break;
+//				case 6: walk = new Animation(dir6, 150); walk.start(); break;
+//				case 7: walk = new Animation(dir7, 150); walk.start(); break;
+//				default: walk.start(); break;
+//			}
+//		}
+//	}
 	
 	public void setStopped(boolean s) {
 		if (s != isStopped) {
 			isStopped = s;
-			getAnimation(s);
+//			getAnimation(s);
 		}
 	}
 	
 	public boolean setDirection(final int d) {
 		if (d != direction) {
 			direction = d;
-			getAnimation(false);
+//			getAnimation(false);
 			return true;
 		}
 		else {
 			return false;
 		}
 	}
+	
 	
 	public Vector getVelocity() {
 		return velocity;

@@ -51,6 +51,7 @@ public class BlerrgGame extends StateBasedGame {
 	public final static String CHAR1_DIR7 = "blerrg/resource/char1_dir7.png";
 
 	public final static String PROJECTILE_PLACEHOLDER = "blerrg/resource/projectile_placeholder.png";
+	public final static String CHAR1_TOP_DOWN = "blerrg/resource/Player/char1_topdown.png";
 	public final static String HEALTHBORDER_PLACEHOLDER = "blerrg/resource/Player/hpBorder.png";
 	public final static String HEALTH_PLACEHOLDER = "blerrg/resource/Player/health.png";
 	
@@ -84,7 +85,7 @@ public class BlerrgGame extends StateBasedGame {
 		ScreenWidth = width;
 		ScreenHeight = height;
 		
-		Entity.setCoarseGrainedCollisionBoundary(Entity.AABB);
+		Entity.setCoarseGrainedCollisionBoundary(Entity.CIRCLE);
 
 	}
 	
@@ -96,6 +97,7 @@ public class BlerrgGame extends StateBasedGame {
 		
 		//Load Player Resources
 		ResourceManager.loadImage(CHARACTER_PLACEHOLDER);
+		ResourceManager.loadImage(CHAR1_TOP_DOWN);
 		ResourceManager.loadImage(CHAR1_DIR0);
 		ResourceManager.loadImage(CHAR1_DIR1);
 		ResourceManager.loadImage(CHAR1_DIR2);
