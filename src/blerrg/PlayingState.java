@@ -145,10 +145,10 @@ public class PlayingState extends BasicGameState {
 						  case 'W': switch (p[0]) {
 						  	// Set weapon rotations
 						    case "rot": switch (p[1]) {
-						      case "p1": bg.world.player.weapons.get(0).setDirection(Double.valueOf(p[2])); break;
-						      case "p2": bg.world.player2.weapons.get(0).setDirection(Double.valueOf(p[2])); break;
-						      case "p3": bg.world.player3.weapons.get(0).setDirection(Double.valueOf(p[2])); break;
-						      case "p4": bg.world.player4.weapons.get(0).setDirection(Double.valueOf(p[2])); break;
+						      case "p1": bg.world.player.weapons.get(bg.world.player.getCurrentWeapon()).setDirection(Double.valueOf(p[2])); break;
+						      case "p2": bg.world.player2.weapons.get(bg.world.player2.getCurrentWeapon()).setDirection(Double.valueOf(p[2])); break;
+						      case "p3": bg.world.player3.weapons.get(bg.world.player3.getCurrentWeapon()).setDirection(Double.valueOf(p[2])); break;
+						      case "p4": bg.world.player4.weapons.get(bg.world.player4.getCurrentWeapon()).setDirection(Double.valueOf(p[2])); break;
 						    } break;
 						  } break;
 						  // Get Dir

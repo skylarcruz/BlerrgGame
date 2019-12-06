@@ -72,22 +72,30 @@ public class WorldModel {
 		//TODO: Determine starting position from map
 		player = new Player(screenWidth/2, screenHeight/2, 0, 0, 0);
 		characters.add(player);
-		player.weapons.add(new Weapon(player.getX(), player.getY(), "shotgun", 45));
+		player.weapons.add(new Weapon(player.getX(), player.getY(), BlerrgGame.WEAPON_KNIFE, 45));
+		player.weapons.add(new Weapon(player.getX(), player.getY(), BlerrgGame.WEAPON_SHOTGUN, 45));
+		player.weapons.add(new Weapon(player.getX(), player.getY(), BlerrgGame.WEAPON_CROSSBOW, 45));
+		player.weapons.add(new Weapon(player.getX(), player.getY(), BlerrgGame.WEAPON_RIFLE, 45));
+		player.weapons.add(new Weapon(player.getX(), player.getY(), BlerrgGame.WEAPON_SMG, 45));
 		
 		if (bg.clientCount >= 1 && bg.p2Active) {
 			player2 = new Player(bg.ScreenWidth/2 + 50, bg.ScreenHeight/2, 0, 0, 0);
 			characters.add(player2);
-			player2.weapons.add(new Weapon(player.getX(), player.getY(), "shotgun", 45));
+			player2.weapons.add(new Weapon(player2.getX(), player2.getY(), BlerrgGame.WEAPON_KNIFE, 45));
+			player2.weapons.add(new Weapon(player2.getX(), player2.getY(), BlerrgGame.WEAPON_SHOTGUN, 45));
+			player2.weapons.add(new Weapon(player2.getX(), player2.getY(), BlerrgGame.WEAPON_CROSSBOW, 45));
+			player2.weapons.add(new Weapon(player2.getX(), player2.getY(), BlerrgGame.WEAPON_RIFLE, 45));
+			player2.weapons.add(new Weapon(player2.getX(), player2.getY(), BlerrgGame.WEAPON_SMG, 45));
 		}
 		if (bg.clientCount >= 2 && bg.p3Active) {
 			player3 = new Player(bg.ScreenWidth/2, bg.ScreenHeight/2 + 50, 0, 0, 0);
 			characters.add(player3);
-			player3.weapons.add(new Weapon(player.getX(), player.getY(), "shotgun", 45));
+			player3.weapons.add(new Weapon(player3.getX(), player3.getY(), BlerrgGame.WEAPON_SHOTGUN, 45));
 		}
 		if (bg.clientCount == 3 && bg.p4Active) {
 			player4 = new Player(bg.ScreenWidth/2 + 50, bg.ScreenHeight/2 + 50, 0, 0, 0);
 			characters.add(player4);
-			player4.weapons.add(new Weapon(player.getX(), player.getY(), "shotgun", 45));
+			player4.weapons.add(new Weapon(player4.getX(), player4.getY(), BlerrgGame.WEAPON_SHOTGUN, 45));
 		}
 		
 		
@@ -231,21 +239,27 @@ public class WorldModel {
 				if(points.get(i).getX()*32 <= character.getX() && character.getX() <= (points.get(i).getX()*32) + 32
 					&&points.get(i).getY()*32 <= character.getY() && character.getY() <= (points.get(i).getY()*32) + 32) {
 					
-					// #### WEAPON RENDERING ####
-					Weapon weapon = currentChar.weapons.get(0);
+					// ######## WEAPON RENDERING ########
+					
+					Weapon weapon = new Weapon(currentChar.weapons.get(currentChar.getCurrentWeapon()));
+					System.out.println(currentChar.getX() + " / weapon: " + currentChar.getCurrentWeapon());
+					
 					// first if checks if gun pointed towards the right, next is if pointed to the left
-					if((Math.abs(weapon.getDirection()) > 90) && weapon.reversed == false) weapon.directionSwap();
-					else if((Math.abs(weapon.getDirection()) < 90) && weapon.reversed == true) weapon.directionSwap();
+					if((Math.abs(weapon.getDirection()) > 90) && weapon.getFlipped() == 0) weapon.directionSwap();
+					else if((Math.abs(weapon.getDirection()) < 90) && weapon.getFlipped() == 1) weapon.directionSwap();
 					
 					// will rotate nearly the entire screen, but only the weapon is drawn
 					g.rotate(currentChar.getX(), currentChar.getY(), (float) weapon.getDirection());
+					
 					// keep the weapon tracking the player
 					weapon.setPosition(currentChar.getCoarseGrainedMaxX(), currentChar.getY());
 					weapon.render(g);
+					
 					// rotate the screen back to normal, then render the rest, strange, but works
 					g.rotate(currentChar.getX(), currentChar.getY(), 0-(float) weapon.getDirection());
 
-					// #### CHARACTER RENDERING ####
+					// ######## CHARACTER RENDERING ########
+					
 					currentChar.render(g);
 					if (currentChar != thisPlayer) {
 						if (currentChar.hp.display)

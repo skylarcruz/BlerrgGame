@@ -15,7 +15,7 @@ public class Weapon extends Entity{
 	private float y;
 	private double direction;
 	String type;
-	public boolean reversed;
+	private int flipped; // 0 for false, 1 for true
 
 	public Weapon(final float x, final float y, String type, final double direction){
 		
@@ -25,10 +25,15 @@ public class Weapon extends Entity{
 		this.direction = direction;
 		
 		this.type = type;
-		reversed = false;
+		flipped = 0;
+		
 		switch(this.type) {
-			case "shotgun": addImage(ResourceManager.getImage(BlerrgGame.WEAPON_SHOTGUN));
-			default: addImage(ResourceManager.getImage(BlerrgGame.WEAPON_SHOTGUN));
+			case BlerrgGame.WEAPON_CROSSBOW: addImage(ResourceManager.getImage(BlerrgGame.WEAPON_CROSSBOW)); break;
+			case BlerrgGame.WEAPON_KNIFE: addImage(ResourceManager.getImage(BlerrgGame.WEAPON_KNIFE)); break;
+			case BlerrgGame.WEAPON_RIFLE: addImage(ResourceManager.getImage(BlerrgGame.WEAPON_RIFLE)); break;
+			case BlerrgGame.WEAPON_SHOTGUN: addImage(ResourceManager.getImage(BlerrgGame.WEAPON_SHOTGUN)); break;
+			case BlerrgGame.WEAPON_SMG: addImage(ResourceManager.getImage(BlerrgGame.WEAPON_SMG)); break;
+			default: addImage(ResourceManager.getImage(BlerrgGame.WEAPON_KNIFE));
 		}
 	}
 	
@@ -37,9 +42,14 @@ public class Weapon extends Entity{
 		this.y = weapon.y;
 		this.direction = weapon.direction;
 		this.type = weapon.type;
+		
 		switch(this.type) {
-			case "shotgun": addImage(ResourceManager.getImage(BlerrgGame.WEAPON_SHOTGUN));
-			default: addImage(ResourceManager.getImage(BlerrgGame.WEAPON_SHOTGUN));
+			case BlerrgGame.WEAPON_CROSSBOW: addImage(ResourceManager.getImage(BlerrgGame.WEAPON_CROSSBOW)); break;
+			case BlerrgGame.WEAPON_KNIFE: addImage(ResourceManager.getImage(BlerrgGame.WEAPON_KNIFE)); break;
+			case BlerrgGame.WEAPON_RIFLE: addImage(ResourceManager.getImage(BlerrgGame.WEAPON_RIFLE)); break;
+			case BlerrgGame.WEAPON_SHOTGUN: addImage(ResourceManager.getImage(BlerrgGame.WEAPON_SHOTGUN)); break;
+			case BlerrgGame.WEAPON_SMG: addImage(ResourceManager.getImage(BlerrgGame.WEAPON_SMG)); break;
+			default: addImage(ResourceManager.getImage(BlerrgGame.WEAPON_KNIFE));
 		}
 	}
 	
@@ -60,17 +70,76 @@ public class Weapon extends Entity{
 	}
 	
 	public void directionSwap(){
-		if(type == "shotgun") {
-			if(reversed == false) {
-				removeImage(ResourceManager.getImage(BlerrgGame.WEAPON_SHOTGUN));
-				addImage(ResourceManager.getImage(BlerrgGame.WEAPON_SHOTGUN_R));
-				reversed = true;
-			}
-			else {
-				removeImage(ResourceManager.getImage(BlerrgGame.WEAPON_SHOTGUN_R));
-				addImage(ResourceManager.getImage(BlerrgGame.WEAPON_SHOTGUN));
-				reversed = false;
-			}
+		switch(type) {
+			case BlerrgGame.WEAPON_CROSSBOW: 
+				
+				switch(flipped) {
+					case 0: removeImage(ResourceManager.getImage(BlerrgGame.WEAPON_CROSSBOW));
+							addImage(ResourceManager.getImage(BlerrgGame.WEAPON_CROSSBOW_R));
+							flipped = 1;
+							break;
+					case 1: removeImage(ResourceManager.getImage(BlerrgGame.WEAPON_CROSSBOW_R));
+							addImage(ResourceManager.getImage(BlerrgGame.WEAPON_CROSSBOW));
+							flipped = 0;
+							break;
+				}
+				break;
+				
+			case BlerrgGame.WEAPON_KNIFE: 
+				
+				switch(flipped) {
+					case 0: removeImage(ResourceManager.getImage(BlerrgGame.WEAPON_KNIFE));
+							addImage(ResourceManager.getImage(BlerrgGame.WEAPON_KNIFE_R));
+							flipped = 1;
+							break;
+					case 1: removeImage(ResourceManager.getImage(BlerrgGame.WEAPON_KNIFE_R));
+							addImage(ResourceManager.getImage(BlerrgGame.WEAPON_KNIFE));
+							flipped = 0;
+							break;
+				}
+				break;
+				
+			case BlerrgGame.WEAPON_RIFLE: 
+				
+				switch(flipped) {
+					case 0: removeImage(ResourceManager.getImage(BlerrgGame.WEAPON_RIFLE));
+							addImage(ResourceManager.getImage(BlerrgGame.WEAPON_RIFLE_R));
+							flipped = 1;
+							break;
+					case 1: removeImage(ResourceManager.getImage(BlerrgGame.WEAPON_RIFLE_R));
+							addImage(ResourceManager.getImage(BlerrgGame.WEAPON_RIFLE));
+							flipped = 0;
+							break;
+				}
+				break;
+			
+			case BlerrgGame.WEAPON_SHOTGUN: 
+				
+				switch(flipped) {
+					case 0: removeImage(ResourceManager.getImage(BlerrgGame.WEAPON_SHOTGUN));
+							addImage(ResourceManager.getImage(BlerrgGame.WEAPON_SHOTGUN_R));
+							flipped = 1;
+							break;
+					case 1: removeImage(ResourceManager.getImage(BlerrgGame.WEAPON_SHOTGUN_R));
+							addImage(ResourceManager.getImage(BlerrgGame.WEAPON_SHOTGUN));
+							flipped = 0;
+							break;
+				}
+				break;
+			
+			case BlerrgGame.WEAPON_SMG: 
+				
+				switch(flipped) {
+					case 0: removeImage(ResourceManager.getImage(BlerrgGame.WEAPON_SMG));
+							addImage(ResourceManager.getImage(BlerrgGame.WEAPON_SMG_R));
+							flipped = 1;
+							break;
+					case 1: removeImage(ResourceManager.getImage(BlerrgGame.WEAPON_SMG_R));
+							addImage(ResourceManager.getImage(BlerrgGame.WEAPON_SMG));
+							flipped = 0;
+							break;
+				}
+				break;
 		}
 	}
 	/*
@@ -85,6 +154,9 @@ public class Weapon extends Entity{
 	 */
 	public void setDirection(double direction) {
 		this.direction = direction;
+	}
+	public int getFlipped() {
+		return flipped;
 	}
 	
 }
