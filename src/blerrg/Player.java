@@ -27,16 +27,24 @@ public class Player extends Entity {
 	
 	public Healthbar hp;
 	public int score = 0;
-	public double rotation;
 	
-//	public Animation walk;
-//	private SpriteSheet walking;
+	public Animation walk;
+	public SpriteSheet walking;
 
 
 	public Player(final float x, final float y, final float vx, final float vy, int characterType) {
 		super(x, y);
 		
 		addImageWithBoundingBox(ResourceManager.getImage(BlerrgGame.CHAR1_TOP_DOWN));
+		
+		try {
+			switch(characterType) {
+				case 0: walking = new SpriteSheet(BlerrgGame.CHAR1_TOP_DOWN_SPRITESHEET, 32, 32); break;
+				default: walking = new SpriteSheet(BlerrgGame.CHAR1_TOP_DOWN_SPRITESHEET, 32, 32);
+			}
+		} catch (SlickException e) {
+			e.printStackTrace();
+		}
 
 		
 		velocity = new Vector(vx, vy);
@@ -46,13 +54,12 @@ public class Player extends Entity {
 		//weapons.add(new Weapon(x, y, "shotgun", 45));
 		hp = new Healthbar(x - 50, y - 25);
 		
-//		walk = new Animation(walking, 150);
-//		walk.stop();
+		walk = new Animation(walking, 150);
+		walk.stop();
 		isStopped = true;
 		direction = 0;
-		rotation = 0;
-
 	}
+	
 	public int getCurrentWeapon() {
 		return cur_weapon;
 	}
@@ -333,28 +340,26 @@ public class Player extends Entity {
 		return cU;
 	}
 	
-//	public void getAnimation(boolean s) {
-//		if (s) {
-//			walk.stop();
-//			walk.setCurrentFrame(1);
-//		} else {
-//			walk.stop();
-//			walk.start();
-//			}
-//		}
-//	}
+	public void getAnimation(boolean s) {
+		if (s) {
+			walk.setCurrentFrame(0);
+			walk.stop();
+		} else {
+			walk.start();
+		}
+	}
 	
 	public void setStopped(boolean s) {
 		if (s != isStopped) {
 			isStopped = s;
-//			getAnimation(s);
+			getAnimation(s);
 		}
 	}
 	
 	public boolean setDirection(final int d) {
 		if (d != direction) {
 			direction = d;
-//			getAnimation(false);
+			getAnimation(false);
 			return true;
 		}
 		else {
@@ -374,6 +379,7 @@ public class Player extends Entity {
 	public void setPrevPosition(float xCoord, float yCoord) {
 		prevPosition = new Vector(xCoord, yCoord);
 	}
+	
 	
 	public void update(final int delta) {
 		translate(velocity.scale(delta));
@@ -474,4 +480,5 @@ public class Player extends Entity {
 			return health;
 		}
 	}
+
 }
