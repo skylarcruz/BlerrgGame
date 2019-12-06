@@ -30,45 +30,13 @@ public class Player extends Entity {
 	public double rotation;
 	
 //	public Animation walk;
-//	private SpriteSheet dir0;
-//	private SpriteSheet dir1;
-//	private SpriteSheet dir2;
-//	private SpriteSheet dir3;
-//	private SpriteSheet dir4;
-//	private SpriteSheet dir5;
-//	private SpriteSheet dir6;
-//	private SpriteSheet dir7;
+//	private SpriteSheet walking;
 
 
 	public Player(final float x, final float y, final float vx, final float vy, int characterType) {
 		super(x, y);
 		
 		addImageWithBoundingBox(ResourceManager.getImage(BlerrgGame.CHAR1_TOP_DOWN));
-		
-//		try {
-//			if (characterType == 0) {
-//				dir0 = new SpriteSheet(BlerrgGame.CHAR1_DIR0, 32, 32);
-//				dir1 = new SpriteSheet(BlerrgGame.CHAR1_DIR1, 32, 32);
-//				dir2 = new SpriteSheet(BlerrgGame.CHAR1_DIR2, 32, 32);
-//				dir3 = new SpriteSheet(BlerrgGame.CHAR1_DIR3, 32, 32);
-//				dir4 = new SpriteSheet(BlerrgGame.CHAR1_DIR4, 32, 32);
-//				dir5 = new SpriteSheet(BlerrgGame.CHAR1_DIR5, 32, 32);
-//				dir6 = new SpriteSheet(BlerrgGame.CHAR1_DIR6, 32, 32);
-//				dir7 = new SpriteSheet(BlerrgGame.CHAR1_DIR7, 32, 32);
-//			} else { //TODO other chars need other sprite sheets..
-//				dir0 = new SpriteSheet(BlerrgGame.CHAR1_DIR0, 32, 32);
-//				dir1 = new SpriteSheet(BlerrgGame.CHAR1_DIR1, 32, 32);
-//				dir2 = new SpriteSheet(BlerrgGame.CHAR1_DIR2, 32, 32);
-//				dir3 = new SpriteSheet(BlerrgGame.CHAR1_DIR3, 32, 32);
-//				dir4 = new SpriteSheet(BlerrgGame.CHAR1_DIR4, 32, 32);
-//				dir5 = new SpriteSheet(BlerrgGame.CHAR1_DIR5, 32, 32);
-//				dir6 = new SpriteSheet(BlerrgGame.CHAR1_DIR6, 32, 32);
-//				dir7 = new SpriteSheet(BlerrgGame.CHAR1_DIR7, 32, 32);
-//			}
-//			
-//		} catch (SlickException e) {
-//			e.printStackTrace();
-//		}
 
 		
 		velocity = new Vector(vx, vy);
@@ -78,7 +46,7 @@ public class Player extends Entity {
 		//weapons.add(new Weapon(x, y, "shotgun", 45));
 		hp = new Healthbar(x - 50, y - 25);
 		
-//		walk = new Animation(dir0, 150);
+//		walk = new Animation(walking, 150);
 //		walk.stop();
 		isStopped = true;
 		direction = 0;
@@ -353,16 +321,7 @@ public class Player extends Entity {
 //			walk.setCurrentFrame(1);
 //		} else {
 //			walk.stop();
-//			switch(direction) {
-//				case 0: walk = new Animation(dir0, 150); walk.start(); break;
-//				case 1: walk = new Animation(dir1, 150); walk.start(); break;
-//				case 2: walk = new Animation(dir2, 150); walk.start(); break;
-//				case 3: walk = new Animation(dir3, 150); walk.start(); break;
-//				case 4: walk = new Animation(dir4, 150); walk.start(); break;
-//				case 5: walk = new Animation(dir5, 150); walk.start(); break;
-//				case 6: walk = new Animation(dir6, 150); walk.start(); break;
-//				case 7: walk = new Animation(dir7, 150); walk.start(); break;
-//				default: walk.start(); break;
+//			walk.start();
 //			}
 //		}
 //	}

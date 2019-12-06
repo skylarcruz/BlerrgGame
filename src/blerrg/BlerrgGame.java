@@ -41,14 +41,6 @@ public class BlerrgGame extends StateBasedGame {
 	
 	//PLAYER
 	public final static String CHARACTER_PLACEHOLDER = "blerrg/resource/character_placeholder.png";
-	public final static String CHAR1_DIR0 = "blerrg/resource/char1_dir0.png";
-	public final static String CHAR1_DIR1 = "blerrg/resource/char1_dir1.png";
-	public final static String CHAR1_DIR2 = "blerrg/resource/char1_dir2.png";
-	public final static String CHAR1_DIR3 = "blerrg/resource/char1_dir3.png";
-	public final static String CHAR1_DIR4 = "blerrg/resource/char1_dir4.png";
-	public final static String CHAR1_DIR5 = "blerrg/resource/char1_dir5.png";
-	public final static String CHAR1_DIR6 = "blerrg/resource/char1_dir6.png";
-	public final static String CHAR1_DIR7 = "blerrg/resource/char1_dir7.png";
 
 	public final static String PROJECTILE_PLACEHOLDER = "blerrg/resource/projectile_placeholder.png";
 	public final static String CHAR1_TOP_DOWN = "blerrg/resource/Player/char1_topdown.png";
@@ -98,14 +90,6 @@ public class BlerrgGame extends StateBasedGame {
 		//Load Player Resources
 		ResourceManager.loadImage(CHARACTER_PLACEHOLDER);
 		ResourceManager.loadImage(CHAR1_TOP_DOWN);
-		ResourceManager.loadImage(CHAR1_DIR0);
-		ResourceManager.loadImage(CHAR1_DIR1);
-		ResourceManager.loadImage(CHAR1_DIR2);
-		ResourceManager.loadImage(CHAR1_DIR3);
-		ResourceManager.loadImage(CHAR1_DIR4);
-		ResourceManager.loadImage(CHAR1_DIR5);
-		ResourceManager.loadImage(CHAR1_DIR6);
-		ResourceManager.loadImage(CHAR1_DIR7);
 
 		ResourceManager.loadImage(PROJECTILE_PLACEHOLDER);
 		ResourceManager.loadImage(HEALTHBORDER_PLACEHOLDER);
