@@ -58,12 +58,12 @@ public class Player extends Entity {
 	}
 	
 	public void changeWeaponUp() {
-		if(cur_weapon != (weapons.size() - 1)) cur_weapon++;
-		else cur_weapon = 0;
-	}
-	public void changeWeaponDown() {
 		if(cur_weapon != 0) cur_weapon--;
 		else cur_weapon = (weapons.size() - 1);
+	}
+	public void changeWeaponDown() {
+		if(cur_weapon != (weapons.size() - 1)) cur_weapon++;
+		else cur_weapon = 0;
 	}
 	
 	public String processInput(Input input, StateBasedGame game) {
@@ -75,8 +75,8 @@ public class Player extends Entity {
 		
 		// ALEX'S NEW STUFF
 		
-		if(input.isKeyPressed(Input.KEY_E)) {changeWeaponUp();}
-		else if(input.isKeyPressed(Input.KEY_Q)) {changeWeaponDown();}
+//		if(input.isKeyPressed(Input.KEY_E)) {changeWeaponUp();}
+//		else if(input.isKeyPressed(Input.KEY_Q)) {changeWeaponDown();}
 		
 		// END ALEX'S NEW STUFF
 		
@@ -106,8 +106,8 @@ public class Player extends Entity {
 		boolean q = input.isKeyPressed(Input.KEY_Q) ? true : false;
 		boolean e = input.isKeyPressed(Input.KEY_E) ? true : false;
 		
-		if (q) { bg.world.pHUD.shiftWeapon("Left"); }
-		if (e) { bg.world.pHUD.shiftWeapon("Right"); }
+		if (q) { bg.world.pHUD.shiftWeapon("Left"); changeWeaponUp();}
+		if (e) { bg.world.pHUD.shiftWeapon("Right"); changeWeaponDown();}
 		
 		
 		if (a) { //moving left, top-left, bottom-left

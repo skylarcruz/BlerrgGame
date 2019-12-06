@@ -99,9 +99,9 @@ public class HUD extends Entity {
 		}
 		
 		if (isNew) {
-			for(int i = 0; i < HUDweapons.size(); i++) {
-				HUDweapons.get(i).active = false;
-			}
+//			for(int i = 0; i < HUDweapons.size(); i++) {
+//				HUDweapons.get(i).active = false;
+//			}
 			WeaponIcon newW = new WeaponIcon(w);
 			HUDweapons.add(newW);
 		}
@@ -149,12 +149,27 @@ public class HUD extends Entity {
 		
 		public WeaponIcon (Weapon w) {
 			type = w.type;
-			active = true;
+			active = false;
 			switch (type) {
 				case "shotgun": iconNA = ResourceManager.getImage(BlerrgGame.SHOTGUN_ICON_NA);
 								iconA = ResourceManager.getImage(BlerrgGame.SHOTGUN_ICON_A); break;
 				default:  iconNA = ResourceManager.getImage(BlerrgGame.SHOTGUN_ICON_NA);
 						  iconA = ResourceManager.getImage(BlerrgGame.SHOTGUN_ICON_A); break;
+			}
+			
+			switch(type) {
+				case BlerrgGame.WEAPON_CROSSBOW: iconNA = ResourceManager.getImage(BlerrgGame.CROSSBOW_ICON_NA);
+					iconA = ResourceManager.getImage(BlerrgGame.CROSSBOW_ICON_A); break;
+				case BlerrgGame.WEAPON_KNIFE: iconNA = ResourceManager.getImage(BlerrgGame.KNIFE_ICON_NA);
+					iconA = ResourceManager.getImage(BlerrgGame.KNIFE_ICON_A); break;
+				case BlerrgGame.WEAPON_RIFLE: iconNA = ResourceManager.getImage(BlerrgGame.RIFLE_ICON_NA);
+					iconA = ResourceManager.getImage(BlerrgGame.RIFLE_ICON_A); break;
+				case BlerrgGame.WEAPON_SHOTGUN: iconNA = ResourceManager.getImage(BlerrgGame.SHOTGUN_ICON_NA);
+					iconA = ResourceManager.getImage(BlerrgGame.SHOTGUN_ICON_A); break;
+				case BlerrgGame.WEAPON_SMG: iconNA = ResourceManager.getImage(BlerrgGame.SMG_ICON_NA);
+					iconA = ResourceManager.getImage(BlerrgGame.SMG_ICON_A); break;
+				default: iconNA = ResourceManager.getImage(BlerrgGame.KNIFE_ICON_NA);
+					iconA = ResourceManager.getImage(BlerrgGame.KNIFE_ICON_A); break;
 			}
 		}
 		
@@ -168,6 +183,14 @@ public class HUD extends Entity {
 		
 		public String getType() {
 			return type;
+		}
+		
+		public void setActive(boolean b) {
+			active = b;
+		}
+		
+		public boolean getActive() {
+			return active;
 		}
 		
 	}

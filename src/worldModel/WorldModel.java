@@ -121,7 +121,9 @@ public class WorldModel {
 		default: thisPlayer = player; break;
 		}
 		pHUD = new HUD(thisPlayer);
-		pHUD.addWeapon(thisPlayer.weapons.get(0));
+		for (int i = 0; i < thisPlayer.weapons.size(); i++)
+			pHUD.addWeapon(thisPlayer.weapons.get(i));
+		pHUD.HUDweapons.get(0).setActive(true);
 	}
 	
 	public String getPlayer(Player p) {

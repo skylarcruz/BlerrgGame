@@ -53,6 +53,14 @@ public class BlerrgGame extends StateBasedGame {
 	public final static String HUD_HP_BAR = "blerrg/resource/HUD/HUDhpBar.png";
 	public final static String SHOTGUN_ICON_A = "blerrg/resource/HUD/shotgunIconA.png";
 	public final static String SHOTGUN_ICON_NA = "blerrg/resource/HUD/shotgunIconNA.png";
+	public final static String CROSSBOW_ICON_A = "blerrg/resource/HUD/crossbowIconA.png";
+	public final static String CROSSBOW_ICON_NA = "blerrg/resource/HUD/crossbowIconNA.png";
+	public final static String KNIFE_ICON_A = "blerrg/resource/HUD/knifeIconA.png";
+	public final static String KNIFE_ICON_NA = "blerrg/resource/HUD/knifeIconNA.png";
+	public final static String RIFLE_ICON_A = "blerrg/resource/HUD/rifleIconA.png";
+	public final static String RIFLE_ICON_NA = "blerrg/resource/HUD/rifleIconNA.png";
+	public final static String SMG_ICON_A = "blerrg/resource/HUD/smgIconA.png";
+	public final static String SMG_ICON_NA = "blerrg/resource/HUD/smgIconNA.png";
 	
 	
 	//MENU
@@ -113,6 +121,14 @@ public class BlerrgGame extends StateBasedGame {
 		ResourceManager.loadImage(HUD_HP_BAR);
 		ResourceManager.loadImage(SHOTGUN_ICON_A);
 		ResourceManager.loadImage(SHOTGUN_ICON_NA);
+		ResourceManager.loadImage(CROSSBOW_ICON_A);
+		ResourceManager.loadImage(CROSSBOW_ICON_NA);
+		ResourceManager.loadImage(KNIFE_ICON_A);
+		ResourceManager.loadImage(KNIFE_ICON_NA);
+		ResourceManager.loadImage(RIFLE_ICON_A);
+		ResourceManager.loadImage(RIFLE_ICON_NA);
+		ResourceManager.loadImage(SMG_ICON_A);
+		ResourceManager.loadImage(SMG_ICON_NA);
 		
 		
 		//Load Menu Resources
