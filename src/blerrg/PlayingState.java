@@ -13,6 +13,7 @@ import org.newdawn.slick.geom.Point;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
+import jig.Entity;
 //import jig.ResourceManager;
 import jig.Vector;
 import worldModel.WorldModel;
@@ -28,9 +29,16 @@ public class PlayingState extends BasicGameState {
 	
 	int loadTime;
 	boolean winFlag;
+	
+	private ArrayList<Integer> charTypes;
 
 	@Override
 	public void init(GameContainer container, StateBasedGame game) throws SlickException {		
+		charTypes = new ArrayList<Integer>();
+		charTypes.add(0);
+		charTypes.add(0);
+		charTypes.add(0);
+		charTypes.add(0);
 	}
 	
 	@Override
@@ -40,7 +48,7 @@ public class PlayingState extends BasicGameState {
 		winFlag = false;
 		cUpdate = "";
 		
-		bg.world = new WorldModel(bg.ScreenWidth, bg.ScreenHeight, bg);
+		bg.world = new WorldModel(bg.ScreenWidth, bg.ScreenHeight, bg, charTypes);
 		
 		if(bg.isClient) {
 			
@@ -310,6 +318,13 @@ public class PlayingState extends BasicGameState {
 			bg.bgServer.sendToClient(cUpdate, "4");
 		
 		
+	}
+	
+	public void setCharTypes(int a, int b, int c, int d) {
+		charTypes.set(0, a);
+		charTypes.set(1, b);
+		charTypes.set(2, c);
+		charTypes.set(3, d);
 	}
 	
 
