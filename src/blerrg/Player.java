@@ -71,11 +71,11 @@ public class Player extends Entity {
 		return cur_weapon;
 	}
 	
-	public void changeWeaponUp() {
+	public void changeWeaponDown() {
 		if(cur_weapon != 0) cur_weapon--;
 		else cur_weapon = (weapons.size() - 1);
 	}
-	public void changeWeaponDown() {
+	public void changeWeaponUp() {
 		if(cur_weapon != (weapons.size() - 1)) cur_weapon++;
 		else cur_weapon = 0;
 	}
@@ -122,8 +122,10 @@ public class Player extends Entity {
 		
 		boolean shift = input.isKeyDown(Input.KEY_LSHIFT) ? true : false;
 		
-		if (q) { bg.world.pHUD.shiftWeapon("Left"); changeWeaponUp();}
-		if (e) { bg.world.pHUD.shiftWeapon("Right"); changeWeaponDown();}
+		if (q) { bg.world.pHUD.shiftWeapon("Left"); changeWeaponUp();
+				 cU += "W:shift&p1&Left|"; }
+		if (e) { bg.world.pHUD.shiftWeapon("Right"); changeWeaponDown();
+				 cU += "W:shift&p1&Left|"; }
 		
 		
 		if (a) { //moving left, top-left, bottom-left
@@ -220,6 +222,12 @@ public class Player extends Entity {
 		boolean w = input.isKeyDown(Input.KEY_W) ? true : false;
 		boolean d = input.isKeyDown(Input.KEY_D) ? true : false;
 		boolean s = input.isKeyDown(Input.KEY_S) ? true : false;
+		
+		boolean q = input.isKeyPressed(Input.KEY_Q) ? true : false;
+		boolean e = input.isKeyPressed(Input.KEY_E) ? true : false;
+		
+		if (q) { msg += "wShift:Left|"; }
+		if (e) { msg += "wShift:Right|"; }
 
 		
 		//Get Movement
@@ -348,6 +356,10 @@ public class Player extends Entity {
 			        // Weapon Rotation
 					case "wRot": weapons.get(cur_weapon).setDirection(Double.valueOf(task[1])); 
 								 cU += "W:rot&p" + num + "&" + task[1] + "|"; break;
+					case "wShift": switch(task[1]) {
+						case "Left": changeWeaponUp(); cU += "W:shift&p" + num + "&Left|"; break;
+						case "Right": changeWeaponDown(); cU += "W:shift&p" + num + "&Right|"; break;
+					} break;
 			        // Disconnect
 					case "!": switch(task[1]) {
 						case "p2": bg.p2Active = false; cU += "!:p2|"; w.removePlayer(2); break;

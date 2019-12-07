@@ -150,6 +150,34 @@ public class PlayingState extends BasicGameState {
 						      case "p3": bg.world.player3.weapons.get(bg.world.player3.getCurrentWeapon()).setDirection(Double.valueOf(p[2])); break;
 						      case "p4": bg.world.player4.weapons.get(bg.world.player4.getCurrentWeapon()).setDirection(Double.valueOf(p[2])); break;
 						    } break;
+						    // Shift Weapon
+						    case "shift": switch (p[1]) {
+						      case "p1": switch(p[2]) {
+						        case "Left": bg.world.player.changeWeaponUp(); break;
+						        case "Right": bg.world.player.changeWeaponDown(); break;
+						      } break;
+						      
+						      case "p2": switch(p[2]) {
+						        case "Left": bg.world.player2.changeWeaponUp(); if (bg.world.player2 == bg.world.thisPlayer) {
+						        			 bg.world.pHUD.shiftWeapon("Left"); } break;
+						        case "Right": bg.world.player2.changeWeaponDown(); if (bg.world.player2 == bg.world.thisPlayer) {
+				        			          bg.world.pHUD.shiftWeapon("Right"); } break;
+						      } break;
+						      
+						      case "p3": switch(p[2]) {
+						        case "Left": bg.world.player3.changeWeaponUp(); if (bg.world.player3 == bg.world.thisPlayer) {
+						        			 bg.world.pHUD.shiftWeapon("Left"); } break;
+						        case "Right": bg.world.player3.changeWeaponDown(); if (bg.world.player3 == bg.world.thisPlayer) {
+				        			          bg.world.pHUD.shiftWeapon("Right"); } break;
+						      } break;
+						      
+						      case "p4": switch(p[2]) {
+						        case "Left": bg.world.player4.changeWeaponUp(); if (bg.world.player4 == bg.world.thisPlayer) {
+						        			 bg.world.pHUD.shiftWeapon("Left"); } break;
+						        case "Right": bg.world.player4.changeWeaponDown(); if (bg.world.player4 == bg.world.thisPlayer) {
+				        			          bg.world.pHUD.shiftWeapon("Right"); } break;
+						      } break;
+						    } break;
 						  } break;
 						  // Get Dir
 						  case 'D': switch (task[0]) {
