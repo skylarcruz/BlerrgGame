@@ -71,11 +71,11 @@ public class Player extends Entity {
 		return cur_weapon;
 	}
 	
-	public void changeWeaponDown() {
+	public void changeWeaponUp() {
 		if(cur_weapon != 0) cur_weapon--;
 		else cur_weapon = (weapons.size() - 1);
 	}
-	public void changeWeaponUp() {
+	public void changeWeaponDown() {
 		if(cur_weapon != (weapons.size() - 1)) cur_weapon++;
 		else cur_weapon = 0;
 	}
@@ -125,7 +125,7 @@ public class Player extends Entity {
 		if (q) { bg.world.pHUD.shiftWeapon("Left"); changeWeaponUp();
 				 cU += "W:shift&p1&Left|"; }
 		if (e) { bg.world.pHUD.shiftWeapon("Right"); changeWeaponDown();
-				 cU += "W:shift&p1&Left|"; }
+				 cU += "W:shift&p1&Right|"; }
 		
 		
 		if (a) { //moving left, top-left, bottom-left
@@ -226,6 +226,8 @@ public class Player extends Entity {
 		boolean q = input.isKeyPressed(Input.KEY_Q) ? true : false;
 		boolean e = input.isKeyPressed(Input.KEY_E) ? true : false;
 		
+		boolean shift = input.isKeyDown(Input.KEY_LSHIFT) ? true : false;
+		
 		if (q) { msg += "wShift:Left|"; }
 		if (e) { msg += "wShift:Right|"; }
 
@@ -279,6 +281,21 @@ public class Player extends Entity {
 		double theta = getAngle(mouseX, bg.world.thisPlayer.getX(), mouseY, bg.world.thisPlayer.getY());
 		weapons.get(cur_weapon).setDirection(Math.toDegrees(theta));
 		msg += "wRot:" + String.valueOf(Math.toDegrees(theta)) + "|";
+		
+		if (shift) {
+			if (stam.getRunDelay()) {
+				if (stam.getStat() > 1) {
+					stam.setStat(stam.getStat() - 3);
+//					float x = (float) (getVelocity().getX()*1.4);
+//					float y = (float) (getVelocity().getY()*1.4);
+//					setVelocity(new Vector(x, y));
+					//setVelocity(new Vector((float) (getVelocity().getX()*1.4),(float) (getVelocity().getY()*1.4)));
+					msg += "run:run|";
+				} else {
+					stam.setRunDelay();
+				}
+			}
+		}
 		
 		if(!msg.equalsIgnoreCase("")) {
 			//System.out.println("Client Input Request: "+msg);			
@@ -353,6 +370,8 @@ public class Player extends Entity {
 
 						cU += "Fp" + num + ":" + p[0] + "&" +
 							       p[1] + "|"; break;
+			        // Run Action
+					case "run": setVelocity(new Vector((float) (getVelocity().getX()*1.4),(float) (getVelocity().getY()*1.4))); break;
 			        // Weapon Rotation
 					case "wRot": weapons.get(cur_weapon).setDirection(Double.valueOf(task[1])); 
 								 cU += "W:rot&p" + num + "&" + task[1] + "|"; break;
