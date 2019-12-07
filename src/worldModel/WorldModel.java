@@ -53,7 +53,7 @@ public class WorldModel {
 	
 	public HUD pHUD;
 	
-	public WorldModel(int screenWidth, int screenHeight, BlerrgGame bg) {
+	public WorldModel(int screenWidth, int screenHeight, BlerrgGame bg, ArrayList<Integer> c) {
 		
 		//simple test map for now
 		map = new TileMap();
@@ -71,7 +71,7 @@ public class WorldModel {
 		
 		
 		//TODO: Determine starting position from map
-		player = new Player(screenWidth/2, screenHeight/2, 0, 0, 0);
+		player = new Player(screenWidth/2, screenHeight/2, 0, 0, c.get(0));
 		characters.add(player);
 		player.weapons.add(new Weapon(player.getX(), player.getY(), BlerrgGame.WEAPON_KNIFE, 45));
 		player.weapons.add(new Weapon(player.getX(), player.getY(), BlerrgGame.WEAPON_SHOTGUN, 45));
@@ -80,7 +80,7 @@ public class WorldModel {
 		player.weapons.add(new Weapon(player.getX(), player.getY(), BlerrgGame.WEAPON_SMG, 45));
 		
 		if (bg.clientCount >= 1 && bg.p2Active) {
-			player2 = new Player(bg.ScreenWidth/2 + 50, bg.ScreenHeight/2, 0, 0, 0);
+			player2 = new Player(bg.ScreenWidth/2 + 50, bg.ScreenHeight/2, 0, 0,c.get(1));
 			characters.add(player2);
 			player2.weapons.add(new Weapon(player2.getX(), player2.getY(), BlerrgGame.WEAPON_KNIFE, 45));
 			player2.weapons.add(new Weapon(player2.getX(), player2.getY(), BlerrgGame.WEAPON_SHOTGUN, 45));
@@ -89,12 +89,12 @@ public class WorldModel {
 			player2.weapons.add(new Weapon(player2.getX(), player2.getY(), BlerrgGame.WEAPON_SMG, 45));
 		}
 		if (bg.clientCount >= 2 && bg.p3Active) {
-			player3 = new Player(bg.ScreenWidth/2, bg.ScreenHeight/2 + 50, 0, 0, 0);
+			player3 = new Player(bg.ScreenWidth/2, bg.ScreenHeight/2 + 50, 0, 0, c.get(2));
 			characters.add(player3);
 			player3.weapons.add(new Weapon(player3.getX(), player3.getY(), BlerrgGame.WEAPON_SHOTGUN, 45));
 		}
 		if (bg.clientCount == 3 && bg.p4Active) {
-			player4 = new Player(bg.ScreenWidth/2 + 50, bg.ScreenHeight/2 + 50, 0, 0, 0);
+			player4 = new Player(bg.ScreenWidth/2 + 50, bg.ScreenHeight/2 + 50, 0, 0, c.get(3));
 			characters.add(player4);
 			player4.weapons.add(new Weapon(player4.getX(), player4.getY(), BlerrgGame.WEAPON_SHOTGUN, 45));
 		}

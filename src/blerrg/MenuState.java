@@ -16,11 +16,6 @@ import worldModel.WorldModel;
 
 public class MenuState extends BasicGameState {
 	
-	private String p1Image = BlerrgGame.CHAR1_MENU;
-	private String p2Image = BlerrgGame.CHAR2_MENU;
-	private String p3Image = BlerrgGame.CHAR3_MENU;
-	private String p4Image = BlerrgGame.CHAR4_MENU;
-	
 	private int charChoicep1 = 0;
 	private int charChoicep2 = 1;
 	private int charChoicep3 = 2;
@@ -119,7 +114,10 @@ public class MenuState extends BasicGameState {
 		boolean spc = input.isKeyPressed(Input.KEY_SPACE) ? true : false;
 		
 		if (bg.isServer) {
-			if (gameStart) { bg.enterState(BlerrgGame.PLAYINGSTATE); }
+			if (gameStart) { 
+				((PlayingState)game.getState(BlerrgGame.PLAYINGSTATE)).setCharTypes(charChoicep1, charChoicep2, charChoicep3, charChoicep4);
+				bg.enterState(BlerrgGame.PLAYINGSTATE); 
+			}
 			
 			// Get Updates From Clients
 			if (bg.p2Active) {
@@ -197,7 +195,10 @@ public class MenuState extends BasicGameState {
 					default: break;
 				}
 			}
-			if (gameStart) { bg.enterState(BlerrgGame.PLAYINGSTATE); }
+			if (gameStart) { 
+				((PlayingState)game.getState(BlerrgGame.PLAYINGSTATE)).setCharTypes(charChoicep1, charChoicep2, charChoicep3, charChoicep4);
+				bg.enterState(BlerrgGame.PLAYINGSTATE); 
+			}
 			
 			if (Sel == "CharSel") {
 				if (s) {Sel = "ReadySel";}
@@ -210,9 +211,9 @@ public class MenuState extends BasicGameState {
 					bg.clientNum == 4 & !p4Ready) { Sel = "CharSel"; }
 				}
 				if (spc) {
-					if (bg.clientNum == 2) { p2Ready = true; netUpdate += "p2:Ready|";}
-					if (bg.clientNum == 3) { p3Ready = true; netUpdate += "p3:Ready|";}
-					if (bg.clientNum == 4) { p4Ready = true; netUpdate += "p4:Ready|";}
+					if (bg.clientNum == 2) { p2Ready = true; netUpdate += "p2Ready|";}
+					if (bg.clientNum == 3) { p3Ready = true; netUpdate += "p3Ready|";}
+					if (bg.clientNum == 4) { p4Ready = true; netUpdate += "p4Ready|";}
 				}
 			}
 			
@@ -234,13 +235,6 @@ public class MenuState extends BasicGameState {
 	
 	public void processClientInput(StateBasedGame game, String in) {
 		BlerrgGame bg = (BlerrgGame)game;
-		
-		if (in.equals("p2Ready")) { p2Ready = true; netUpdate += "p2Ready|"; }
-		else if (in.equals("p3Ready")) { p3Ready = true; netUpdate += "p3Ready|"; }
-		else if (in.equals("p4Ready")) { p4Ready = true; netUpdate += "p4Ready|"; }
-		else if (in.equals("!:p2|")) { bg.p2Active = false; p2Ready = true; netUpdate += "!p2|"; }
-		else if (in.equals("!:p3|")) { bg.p3Active = false; p3Ready = true; netUpdate += "!p3|"; }
-		else if (in.equals("!:p4|")) { bg.p4Active = false; p4Ready = true; netUpdate += "!p4|"; }
 		
 		String arr[] = in.split("\\|");
 		for (int i = 0; i < arr.length; i++) {
