@@ -40,11 +40,12 @@ public class BlerrgGame extends StateBasedGame {
 	public int winScore = 10;
 	
 	//PLAYER
-	public final static String CHARACTER_PLACEHOLDER = "blerrg/resource/character_placeholder.png";
+	public final static String CHAR1_TOP_DOWN_SHEET = "blerrg/resource/Player/char1_topdown_sheet.png";
+	public final static String CHAR2_TOP_DOWN_SHEET = "blerrg/resource/Player/char2_topdown_sheet.png";
+	public final static String CHAR3_TOP_DOWN_SHEET = "blerrg/resource/Player/char3_topdown_sheet.png";
+	public final static String CHAR4_TOP_DOWN_SHEET = "blerrg/resource/Player/char4_topdown_sheet.png";
+	public final static String CHAR5_TOP_DOWN_SHEET = "blerrg/resource/Player/char5_topdown_sheet.png";
 
-	public final static String PROJECTILE_PLACEHOLDER = "blerrg/resource/pellet.png";
-	public final static String CHAR1_TOP_DOWN = "blerrg/resource/Player/char1_topdown.png";
-	public final static String CHAR1_TOP_DOWN_SPRITESHEET = "blerrg/resource/Player/char1_topdown_spritesheet.png";
 
 	public final static String HEALTHBORDER_PLACEHOLDER = "blerrg/resource/Player/hpBorder.png";
 	public final static String HEALTH_PLACEHOLDER = "blerrg/resource/Player/health.png";
@@ -69,6 +70,13 @@ public class BlerrgGame extends StateBasedGame {
 	//MENU
 	public final static String CHEVRON_LEFT = "blerrg/resource/Menu/leftChevron.png";
 	public final static String CHEVRON_RIGHT = "blerrg/resource/Menu/rightChevron.png";
+	public final static String CHAR1_MENU = "blerrg/resource/Menu/char1_menu.png";
+	public final static String CHAR2_MENU = "blerrg/resource/Menu/char1_menu.png";
+	public final static String CHAR3_MENU = "blerrg/resource/Menu/char1_menu.png";
+	public final static String CHAR4_MENU = "blerrg/resource/Menu/char1_menu.png";
+	public final static String CHAR5_MENU = "blerrg/resource/Menu/char1_menu.png";
+
+
 	
 	//TILES
 	public final static String TILE_1 = "blerrg/resource/tile1.png";
@@ -77,6 +85,7 @@ public class BlerrgGame extends StateBasedGame {
 	public static final String GUN_1_SND = "blerrg/resource/sfx/gunshot1.wav";
 	
 	//WEAPONS
+	public final static String PROJECTILE_PLACEHOLDER = "blerrg/resource/Weapons/pellet.png";
 	public static final String WEAPON_CROSSBOW = "blerrg/resource/Weapons/Crossbow.png";
 	public static final String WEAPON_CROSSBOW_R = "blerrg/resource/Weapons/Crossbow_R.png";
 	
@@ -112,9 +121,11 @@ public class BlerrgGame extends StateBasedGame {
 		addState(new EndState());
 		
 		//Load Player Resources
-		ResourceManager.loadImage(CHARACTER_PLACEHOLDER);
-		ResourceManager.loadImage(CHAR1_TOP_DOWN);
-		ResourceManager.loadImage(CHAR1_TOP_DOWN_SPRITESHEET);
+		ResourceManager.loadImage(CHAR1_TOP_DOWN_SHEET);
+		ResourceManager.loadImage(CHAR2_TOP_DOWN_SHEET);
+		ResourceManager.loadImage(CHAR3_TOP_DOWN_SHEET);
+		ResourceManager.loadImage(CHAR4_TOP_DOWN_SHEET);
+		ResourceManager.loadImage(CHAR5_TOP_DOWN_SHEET);
 		
 
 		ResourceManager.loadImage(PROJECTILE_PLACEHOLDER);
@@ -140,6 +151,12 @@ public class BlerrgGame extends StateBasedGame {
 		//Load Menu Resources
 		ResourceManager.loadImage(CHEVRON_LEFT);
 		ResourceManager.loadImage(CHEVRON_RIGHT);
+		ResourceManager.loadImage(CHAR1_MENU);
+		ResourceManager.loadImage(CHAR2_MENU);
+		ResourceManager.loadImage(CHAR3_MENU);
+		ResourceManager.loadImage(CHAR4_MENU);
+		ResourceManager.loadImage(CHAR5_MENU);
+
 		
 		//Load Tile Resources
 		ResourceManager.loadImage(TILE_1);

@@ -15,10 +15,10 @@ import worldModel.WorldModel;
 
 public class MenuState extends BasicGameState {
 	
-	private String p1Image = BlerrgGame.CHARACTER_PLACEHOLDER;
-	private String p2Image = BlerrgGame.CHARACTER_PLACEHOLDER;
-	private String p3Image = BlerrgGame.CHARACTER_PLACEHOLDER;
-	private String p4Image = BlerrgGame.CHARACTER_PLACEHOLDER;
+	private String p1Image = BlerrgGame.CHAR1_MENU;
+	private String p2Image = BlerrgGame.CHAR1_MENU;
+	private String p3Image = BlerrgGame.CHAR1_MENU;
+	private String p4Image = BlerrgGame.CHAR1_MENU;
 	
 	private boolean p2Ready = true;
 	private boolean p3Ready = true;

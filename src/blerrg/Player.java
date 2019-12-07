@@ -36,12 +36,17 @@ public class Player extends Entity {
 	public Player(final float x, final float y, final float vx, final float vy, int characterType) {
 		super(x, y);
 		
-		addImageWithBoundingBox(ResourceManager.getImage(BlerrgGame.CHAR1_TOP_DOWN));
+		//just to create a 32x32 bounding box. we do not render this image..
+		addImageWithBoundingBox(ResourceManager.getImage(BlerrgGame.CHAR1_MENU));
 		
 		try {
 			switch(characterType) {
-				case 0: walking = new SpriteSheet(BlerrgGame.CHAR1_TOP_DOWN_SPRITESHEET, 32, 32); break;
-				default: walking = new SpriteSheet(BlerrgGame.CHAR1_TOP_DOWN_SPRITESHEET, 32, 32);
+				case 0: walking = new SpriteSheet(BlerrgGame.CHAR1_TOP_DOWN_SHEET, 32, 32); break;
+				case 1: walking = new SpriteSheet(BlerrgGame.CHAR2_TOP_DOWN_SHEET, 32, 32); break;
+				case 2: walking = new SpriteSheet(BlerrgGame.CHAR3_TOP_DOWN_SHEET, 32, 32); break;
+				case 3: walking = new SpriteSheet(BlerrgGame.CHAR4_TOP_DOWN_SHEET, 32, 32); break;
+				case 4: walking = new SpriteSheet(BlerrgGame.CHAR5_TOP_DOWN_SHEET, 32, 32); break;
+				default: break;
 			}
 		} catch (SlickException e) {
 			e.printStackTrace();
