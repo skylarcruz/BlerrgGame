@@ -15,6 +15,9 @@ public class HUD extends Entity {
 	private Image hpBar;
 	private int HUDhp;
 	
+	private Image stamBar;
+	private int HUDstam;
+	
 	private int p1Score;
 	private int p2Score;
 	private int p3Score;
@@ -24,11 +27,16 @@ public class HUD extends Entity {
 	
 	public HUD(Player p) {
 		super(p.getX(), p.getY());
-		HUDhp = p.hp.getHealth();
+		HUDhp = p.hp.getStat();
+		HUDstam = p.stam.getStat();
 		
 		addImage(ResourceManager.getImage(BlerrgGame.HUD_HP_BORDER), new Vector (560, 335));
 		hpBar = ResourceManager.getImage(BlerrgGame.HUD_HP_BAR).getScaledCopy(130 * HUDhp/100, 24);
 		addImage(hpBar, new Vector (560 - (65 - 130 * HUDhp/200), 335));
+		
+		addImage(ResourceManager.getImage(BlerrgGame.HUD_HP_BORDER), new Vector (560, 300));
+		stamBar = ResourceManager.getImage(BlerrgGame.HUD_STAM_BAR).getScaledCopy(130 * HUDstam/100, 24);
+		addImage(stamBar, new Vector (560 - (65 - 130 * HUDstam/200), 300));
 		
 		HUDweapons = new ArrayList<WeaponIcon>();
 	}
@@ -39,11 +47,18 @@ public class HUD extends Entity {
 		addImage(hpBar, new Vector (560 - (65 - 130 * HUDhp/200), 335));
 	}
 	
+	public void setHUDstam(int s) {
+		removeImage(stamBar);
+		stamBar = ResourceManager.getImage(BlerrgGame.HUD_STAM_BAR).getScaledCopy(130 * HUDstam/100, 24);
+		addImage(stamBar, new Vector (560 - (65 - 130 * HUDstam/200), 300));
+	}
+	
 	public void renderHUD(StateBasedGame game, Graphics g, Player p) {
 		BlerrgGame bg = (BlerrgGame)game;
 		
 		render(g);
 		g.drawString(HUDhp + "/100", p.getX() + 530, p.getY() + 327);
+		g.drawString(HUDstam + "/100", p.getX() + 530, p.getY() + 291);
 		
 		g.drawString("P1 Score: " + p1Score, p.getX() + 520, p.getY() - 355);
 		if (bg.p2Active)
@@ -62,9 +77,13 @@ public class HUD extends Entity {
 	}
 	
 	public void update(Player p) {
-		if (HUDhp != p.hp.getHealth()) {
-			HUDhp = p.hp.getHealth();
+		if (HUDhp != p.hp.getStat()) {
+			HUDhp = p.hp.getStat();
 			setHUDhealth(HUDhp);
+		}
+		if (HUDstam != p.stam.getStat()) {
+			HUDstam = p.stam.getStat();
+			setHUDstam(HUDstam);
 		}
 		this.setPosition(new Vector(p.getX(), p.getY()));
 	}

@@ -294,15 +294,29 @@ public class WorldModel {
 	
 	public void renderThisPlayerHPTemp(Graphics g, Player t) {
 		g.setColor(new Color(0, 0, 0));
-		if (t.hp.getHealth() == 100)
+		if (t.hp.getStat() == 100)
 			g.fillRect(t.getX() - 77, t.getY() + 323, 140, 20);
 		else 
 			g.fillRect(t.getX() - 77, t.getY() + 323, 130, 20);
-		if (t.hp.getHealth() > 50)
+		if (t.hp.getStat() > 50)
 			g.setColor(new Color(0, 255, 0));
 		else
 			g.setColor(new Color(255, 0, 0));
-		g.drawString("Health: " + t.hp.getHealth() +  "/100", t.getX() - 75, t.getY() + 325);
+		g.drawString("Health: " + t.hp.getStat() +  "/100", t.getX() - 75, t.getY() + 325);
+		g.setColor(new Color(255, 255, 255));
+	}
+	
+	public void renderThisPlayerStamTemp(Graphics g, Player t) {
+		g.setColor(new Color(0, 0, 0));
+		if (t.stam.getStat() == 100)
+			g.fillRect(t.getX() - 77, t.getY() + 323, 140, 20);
+		else 
+			g.fillRect(t.getX() - 77, t.getY() + 323, 130, 20);
+		if (t.stam.getStat() > 50)
+			g.setColor(new Color(0, 255, 0));
+		else
+			g.setColor(new Color(255, 0, 0));
+		g.drawString("Health: " + t.stam.getStat() +  "/100", t.getX() - 75, t.getY() + 325);
 		g.setColor(new Color(255, 255, 255));
 	}
 

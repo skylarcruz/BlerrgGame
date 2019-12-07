@@ -48,10 +48,12 @@ public class BlerrgGame extends StateBasedGame {
 
 	public final static String HEALTHBORDER_PLACEHOLDER = "blerrg/resource/Player/hpBorder.png";
 	public final static String HEALTH_PLACEHOLDER = "blerrg/resource/Player/health.png";
+	public final static String STAMINA_PLACEHOLDER = "blerrg/resource/Player/stamina.png";
 	
 	//HUD
 	public final static String HUD_HP_BORDER = "blerrg/resource/HUD/HUDhpBorder.png";
 	public final static String HUD_HP_BAR = "blerrg/resource/HUD/HUDhpBar.png";
+	public final static String HUD_STAM_BAR = "blerrg/resource/HUD/HUDstamBar.png";
 	public final static String SHOTGUN_ICON_A = "blerrg/resource/HUD/shotgunIconA.png";
 	public final static String SHOTGUN_ICON_NA = "blerrg/resource/HUD/shotgunIconNA.png";
 	public final static String CROSSBOW_ICON_A = "blerrg/resource/HUD/crossbowIconA.png";
@@ -122,6 +124,7 @@ public class BlerrgGame extends StateBasedGame {
 		//Load HUD Resources
 		ResourceManager.loadImage(HUD_HP_BORDER);
 		ResourceManager.loadImage(HUD_HP_BAR);
+		ResourceManager.loadImage(HUD_STAM_BAR);
 		ResourceManager.loadImage(SHOTGUN_ICON_A);
 		ResourceManager.loadImage(SHOTGUN_ICON_NA);
 		ResourceManager.loadImage(CROSSBOW_ICON_A);

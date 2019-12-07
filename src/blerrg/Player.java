@@ -25,7 +25,8 @@ public class Player extends Entity {
 	private int cur_weapon;
 	public Vector prevPosition;
 	
-	public Healthbar hp;
+	public HUDBar hp;
+	public HUDBar stam;
 	public int score = 0;
 	
 	public Animation walk;
@@ -52,7 +53,8 @@ public class Player extends Entity {
 		cur_weapon = 0;
 		weapons = new ArrayList<Weapon>();
 		//weapons.add(new Weapon(x, y, "shotgun", 45));
-		hp = new Healthbar(x - 50, y - 25);
+		hp = new HUDBar(x - 50, y - 25, 0);
+		stam = new HUDBar(x - 50, y - 55, 1);
 		
 		walk = new Animation(walking, 150);
 		walk.stop();
@@ -112,6 +114,8 @@ public class Player extends Entity {
 		
 		boolean q = input.isKeyPressed(Input.KEY_Q) ? true : false;
 		boolean e = input.isKeyPressed(Input.KEY_E) ? true : false;
+		
+		boolean shift = input.isKeyDown(Input.KEY_LSHIFT) ? true : false;
 		
 		if (q) { bg.world.pHUD.shiftWeapon("Left"); changeWeaponUp();}
 		if (e) { bg.world.pHUD.shiftWeapon("Right"); changeWeaponDown();}
@@ -181,6 +185,19 @@ public class Player extends Entity {
 			setStopped(true);
 			setVelocity(new Vector(0, 0));
 			
+		}
+		
+		if (shift) {
+			if (stam.getRunDelay()) {
+				if (stam.getStat() > 1) {
+					stam.setStat(stam.getStat() - 3);
+					float x = (float) (getVelocity().getX()*1.4);
+					float y = (float) (getVelocity().getY()*1.4);
+					setVelocity(new Vector(x, y));
+				} else {
+					stam.setRunDelay();
+				}
+			}
 		}
 		//END PLAYER MOVEMENT
 		return cU;
@@ -384,6 +401,10 @@ public class Player extends Entity {
 	public void update(final int delta) {
 		translate(velocity.scale(delta));
 		hp.setPosition(getX(), getY());
+		
+		stam.stamRegen();
+		stam.decRunDelay();
+		stam.setPosition(getX(), getY());
 	}
 	
 	public double getAngle(float ax, float bx, float ay, float by) {
@@ -415,13 +436,13 @@ public class Player extends Entity {
 	}
 	
 	public void hit(Player pS, Player pD) {
-		pD.hp.setHealth(pD.hp.getHealth() - 30);
-		System.out.println("Player: " + pD + " was hit! Current health: " + pD.hp.getHealth());
+		pD.hp.setStat(pD.hp.getStat() - 30);
+		System.out.println("Player: " + pD + " was hit! Current health: " + pD.hp.getStat());
 		
-		if (pD.hp.getHealth() <= 0) {
+		if (pD.hp.getStat() <= 0) {
 			// reset player p
 			System.out.println("Player: " + pD + " killed by Player: " + pS);
-			pD.hp.setHealth(100);
+			pD.hp.setStat(100);
 			pS.score += 1;
 		}
 	}
@@ -447,37 +468,76 @@ public class Player extends Entity {
 	}
 	
 	// Healthbar only visible to other players
-	public class Healthbar extends Entity {
-		private int health;
+	public class HUDBar extends Entity {
+		private int stat;
+		private int statType;
+		private String imagePath;
 		private Image bar;
 		private Image border;
 		public boolean display = true;
+		private int runDelay = 0;
 
-		public Healthbar(final float x, final float y) {
+		//statType: 0 - Health, 1 - Stamina 
+		public HUDBar(final float x, final float y, int type) {
 			super(x, y);
-			health = 100;
+			stat = 100;
+			statType = type;
+			
+			switch(statType) {
+				case 0: imagePath = BlerrgGame.HEALTH_PLACEHOLDER; break;
+				case 1: imagePath = BlerrgGame.STAMINA_PLACEHOLDER; break;
+				default: break;
+			}
 			
 			border = ResourceManager.getImage(BlerrgGame.HEALTHBORDER_PLACEHOLDER);
 			addImage(border, new Vector(0, -25));
 			
-			bar = ResourceManager.getImage(BlerrgGame.HEALTH_PLACEHOLDER).getScaledCopy(health, 10);
-			addImage(bar, new Vector(0 - (50 - health/2), -25));
+			bar = ResourceManager.getImage(imagePath).getScaledCopy(stat, 10);
+			addImage(bar, new Vector(0 - (50 - stat/2), -25));
 			
 		}
 		
-		public void setHealth(int h) {
+		public void setStat(int h) {
 			if (h >= 0)
-				health = h;
+				stat = h;
 			else
-				health = 0;
+				stat = 0;
 			
 			removeImage(bar);
-			bar = ResourceManager.getImage(BlerrgGame.HEALTH_PLACEHOLDER).getScaledCopy(health, 10);
-			addImage(bar, new Vector(0 - (50 - health/2), -25));
+			bar = ResourceManager.getImage(imagePath).getScaledCopy(stat, 10);
+			addImage(bar, new Vector(0 - (50 - stat/2), -25));
 		}
 		
-		public int getHealth() {
-			return health;
+		public int getStat() {
+			return stat;
+		}
+		
+		public void stamRegen() {
+			if (stat < 100) {
+				stat += 1;
+			}
+		}
+		
+		public void setRunDelay() {
+			if (runDelay == 0) {
+				runDelay = 40;
+			} 
+		}
+		
+		public void decRunDelay() {
+			if (runDelay > 0) {
+				runDelay -= 1;
+			} else {
+				runDelay = 0;
+			}
+		}
+		
+		public boolean getRunDelay() {
+			if (runDelay > 0) {
+				return false;
+			} else {
+				return true;
+			}
 		}
 	}
 
