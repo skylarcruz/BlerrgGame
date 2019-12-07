@@ -71,10 +71,10 @@ public class BlerrgGame extends StateBasedGame {
 	public final static String CHEVRON_LEFT = "blerrg/resource/Menu/leftChevron.png";
 	public final static String CHEVRON_RIGHT = "blerrg/resource/Menu/rightChevron.png";
 	public final static String CHAR1_MENU = "blerrg/resource/Menu/char1_menu.png";
-	public final static String CHAR2_MENU = "blerrg/resource/Menu/char1_menu.png";
-	public final static String CHAR3_MENU = "blerrg/resource/Menu/char1_menu.png";
-	public final static String CHAR4_MENU = "blerrg/resource/Menu/char1_menu.png";
-	public final static String CHAR5_MENU = "blerrg/resource/Menu/char1_menu.png";
+	public final static String CHAR2_MENU = "blerrg/resource/Menu/char2_menu.png";
+	public final static String CHAR3_MENU = "blerrg/resource/Menu/char3_menu.png";
+	public final static String CHAR4_MENU = "blerrg/resource/Menu/char4_menu.png";
+	public final static String CHAR5_MENU = "blerrg/resource/Menu/char5_menu.png";
 
 
 	

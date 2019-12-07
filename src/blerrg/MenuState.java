@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
@@ -16,9 +17,14 @@ import worldModel.WorldModel;
 public class MenuState extends BasicGameState {
 	
 	private String p1Image = BlerrgGame.CHAR1_MENU;
-	private String p2Image = BlerrgGame.CHAR1_MENU;
-	private String p3Image = BlerrgGame.CHAR1_MENU;
-	private String p4Image = BlerrgGame.CHAR1_MENU;
+	private String p2Image = BlerrgGame.CHAR2_MENU;
+	private String p3Image = BlerrgGame.CHAR3_MENU;
+	private String p4Image = BlerrgGame.CHAR4_MENU;
+	
+	private int charChoicep1 = 0;
+	private int charChoicep2 = 1;
+	private int charChoicep3 = 2;
+	private int charChoicep4 = 3;
 	
 	private boolean p2Ready = true;
 	private boolean p3Ready = true;
@@ -44,6 +50,7 @@ public class MenuState extends BasicGameState {
 	public void enter(GameContainer container, StateBasedGame game) {
 		BlerrgGame bg = (BlerrgGame)game;
 		gameStart = false;
+		charChoicep1 = 0;
 		if (bg.clientCount >= 1) { p2Ready = false; }
 		if (bg.clientCount >= 2) { p3Ready = false; }
 		if (bg.clientCount == 3) { p4Ready = false; }
@@ -57,15 +64,15 @@ public class MenuState extends BasicGameState {
 		
 		g.drawString("BLERRG", 600, 50);
 		
-		g.drawImage(ResourceManager.getImage((p1Image)).getScaledCopy(5), 85, 200);
+		g.drawImage(getCharImage(charChoicep1), 85, 200);
 		if (bg.p2Active) {
-			g.drawImage(ResourceManager.getImage((p2Image)).getScaledCopy(5), 405, 200);
+			g.drawImage(getCharImage(charChoicep2), 405, 200);
 			if (p2Ready) { g.drawString("Ready!", 465, 375); }}
 		if (bg.p3Active) {
-			g.drawImage(ResourceManager.getImage((p3Image)).getScaledCopy(5), 725, 200);
+			g.drawImage(getCharImage(charChoicep3), 725, 200);
 			if (p3Ready) { g.drawString("Ready!", 785, 375); }}
 		if (bg.p4Active) {
-			g.drawImage(ResourceManager.getImage((p4Image)).getScaledCopy(5), 1045, 200);
+			g.drawImage(getCharImage(charChoicep4), 1045, 200);
 			if (p4Ready) { g.drawString("Ready!", 1105, 375); }}
 		
 		if (Sel == "CharSel") {
@@ -134,8 +141,8 @@ public class MenuState extends BasicGameState {
 			// Menu Navigation
 			if (Sel == "CharSel") {
 				if (s) {Sel = "LevelSel";}
-				else if (a) {/*ChangeCharLeft*/}
-				else if (d) {/*ChangeCharRight*/}
+				else if (a) {setChar(bg, getCharNum(bg) - 1); netUpdate += "p1c-|"; }
+				else if (d) {setChar(bg, getCharNum(bg) + 1); netUpdate += "p1c+|"; }
 			}
 			else if (Sel == "LevelSel") {
 				if (w) {Sel = "CharSel";}
@@ -179,6 +186,14 @@ public class MenuState extends BasicGameState {
 					case "!p3": { bg.p3Active = false; } break;
 					case "!p4": { bg.p4Active = false; } break;
 					case "!:close": { container.exit(); } break;
+					case "p1c-": setChar(1, charChoicep1 - 1); break;
+					case "p1c+": setChar(1, charChoicep1 + 1); break;
+					case "p2c-": setChar(2, charChoicep2 - 1); break;
+					case "p2c+": setChar(2, charChoicep2 + 1); break;
+					case "p3c-": setChar(3, charChoicep3 - 1); break;
+					case "p3c+": setChar(3, charChoicep3 + 1); break;
+					case "p4c-": setChar(4, charChoicep4 - 1); break;
+					case "p4c+": setChar(4, charChoicep4 + 1); break;
 					default: break;
 				}
 			}
@@ -186,8 +201,8 @@ public class MenuState extends BasicGameState {
 			
 			if (Sel == "CharSel") {
 				if (s) {Sel = "ReadySel";}
-				else if (a) {/*ChangeCharLeft*/}
-				else if (d) {/*ChangeCharRight*/}
+				else if (a) {/*setChar(bg, getCharNum(bg) - 1); */netUpdate += getPlayerNum(bg) + "c-|"; }
+				else if (d) {/*setChar(bg, getCharNum(bg) + 1); */netUpdate += getPlayerNum(bg) + "c+|"; }
 			}
 			else if (Sel == "ReadySel") {
 				if (w){
@@ -195,9 +210,9 @@ public class MenuState extends BasicGameState {
 					bg.clientNum == 4 & !p4Ready) { Sel = "CharSel"; }
 				}
 				if (spc) {
-					if (bg.clientNum == 2) { p2Ready = true; netUpdate = "p2Ready";}
-					if (bg.clientNum == 3) { p3Ready = true; netUpdate = "p3Ready";}
-					if (bg.clientNum == 4) { p4Ready = true; netUpdate = "p4Ready";}
+					if (bg.clientNum == 2) { p2Ready = true; netUpdate += "p2:Ready|";}
+					if (bg.clientNum == 3) { p3Ready = true; netUpdate += "p3:Ready|";}
+					if (bg.clientNum == 4) { p4Ready = true; netUpdate += "p4:Ready|";}
 				}
 			}
 			
@@ -226,6 +241,87 @@ public class MenuState extends BasicGameState {
 		else if (in.equals("!:p2|")) { bg.p2Active = false; p2Ready = true; netUpdate += "!p2|"; }
 		else if (in.equals("!:p3|")) { bg.p3Active = false; p3Ready = true; netUpdate += "!p3|"; }
 		else if (in.equals("!:p4|")) { bg.p4Active = false; p4Ready = true; netUpdate += "!p4|"; }
+		
+		String arr[] = in.split("\\|");
+		for (int i = 0; i < arr.length; i++) {
+			switch(arr[i]) {
+			  case "p2Ready": p2Ready = true; netUpdate += "p2Ready|"; break;
+			  case "p3Ready": p3Ready = true; netUpdate += "p3Ready|"; break;
+			  case "p4Ready": p4Ready = true; netUpdate += "p4Ready|"; break;
+			  case "!:p2": bg.p2Active = false; p2Ready = true; netUpdate += "!p2|"; break;
+			  case "!:p3": bg.p3Active = false; p3Ready = true; netUpdate += "!p3|"; break;
+			  case "!:p4": bg.p4Active = false; p4Ready = true; netUpdate += "!p4|"; break;
+			  case "p2c-": setChar(2, charChoicep2 - 1); netUpdate += "p2c-|"; break;
+			  case "p2c+": setChar(2, charChoicep2 + 1); netUpdate += "p2c+|"; break;
+			  case "p3c-": setChar(3, charChoicep3 - 1); netUpdate += "p3c-|"; break;
+			  case "p3c+": setChar(3, charChoicep3 + 1); netUpdate += "p3c+|"; break;
+			  case "p4c-": setChar(4, charChoicep4 - 1); netUpdate += "p4c-|"; break;
+			  case "p4c+": setChar(4, charChoicep4 + 1); netUpdate += "p4c+|"; break;
+			}
+		}
+	}
+	
+	public void setChar(StateBasedGame game, int c) {
+		BlerrgGame bg = (BlerrgGame)game;
+		if (c < 0)
+			c = 4;
+		if (c > 4)
+			c = 0;
+		switch(bg.clientNum) {
+		  case 1: charChoicep1 =  c; break;
+		  case 2: charChoicep2 =  c; break;
+		  case 3: charChoicep3 =  c; break;
+		  case 4: charChoicep4 =  c; break;
+		}
+	}
+	
+	public void setChar(int p, int c) {
+		if (c < 0)
+			c = 4;
+		if (c > 4)
+			c = 0;
+		switch(p) {
+		  case 1: charChoicep1 =  c; break;
+		  case 2: charChoicep2 =  c; break;
+		  case 3: charChoicep3 =  c; break;
+		  case 4: charChoicep4 =  c; break;
+		}
+	}
+	
+	public int getCharNum(StateBasedGame game) {
+		BlerrgGame bg = (BlerrgGame)game;
+		switch(bg.clientNum) {
+		  case 1: return charChoicep1;
+		  case 2: return charChoicep2;
+		  case 3: return charChoicep3;
+		  case 4: return charChoicep4;
+		  default: return charChoicep1;
+		}
+	}
+	
+	private String getPlayerNum(StateBasedGame game) {
+		BlerrgGame bg = (BlerrgGame)game;
+		switch(bg.clientNum) {
+		  case 1: return "p1";
+		  case 2: return "p2";
+		  case 3: return "p3";
+		  case 4: return "p4";
+		  default: return "p1";
+		}
+	}
+	
+	public Image getCharImage(int c) {
+		Image r;
+		switch(c) {
+		  case 0: r = ResourceManager.getImage(BlerrgGame.CHAR1_MENU).getScaledCopy(5); break;
+		  case 1: r = ResourceManager.getImage(BlerrgGame.CHAR2_MENU).getScaledCopy(5); break;
+		  case 2: r = ResourceManager.getImage(BlerrgGame.CHAR3_MENU).getScaledCopy(5); break;
+		  case 3: r = ResourceManager.getImage(BlerrgGame.CHAR4_MENU).getScaledCopy(5); break;
+		  case 4: r = ResourceManager.getImage(BlerrgGame.CHAR5_MENU).getScaledCopy(5); break;
+		  default: r =  ResourceManager.getImage(BlerrgGame.CHAR1_MENU).getScaledCopy(5); break;
+		}
+		System.out.println(c);
+		return r;
 	}
 
 	@Override
