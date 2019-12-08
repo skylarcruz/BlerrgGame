@@ -18,6 +18,9 @@ public class HUD extends Entity {
 	private Image stamBar;
 	private int HUDstam;
 	
+	private int ammoRemaining;
+	private int maxAmmo;
+	
 	private int p1Score;
 	private int p2Score;
 	private int p3Score;
@@ -38,6 +41,9 @@ public class HUD extends Entity {
 		stamBar = ResourceManager.getImage(BlerrgGame.HUD_STAM_BAR).getScaledCopy(130 * HUDstam/100, 24);
 		addImage(stamBar, new Vector (560 - (65 - 130 * HUDstam/200), 300));
 		
+		ammoRemaining = p.weapons.get(p.getCurrentWeapon()).getBullets();
+		maxAmmo = p.weapons.get(p.getCurrentWeapon()).getMaxAmmo();
+		
 		HUDweapons = new ArrayList<WeaponIcon>();
 	}
 	
@@ -53,12 +59,19 @@ public class HUD extends Entity {
 		addImage(stamBar, new Vector (560 - (65 - 130 * HUDstam/200), 300));
 	}
 	
+	
 	public void renderHUD(StateBasedGame game, Graphics g, Player p) {
 		BlerrgGame bg = (BlerrgGame)game;
 		
 		render(g);
 		g.drawString(HUDhp + "/100", p.getX() + 530, p.getY() + 327);
 		g.drawString(HUDstam + "/100", p.getX() + 530, p.getY() + 291);
+		
+		if (ammoRemaining > 200 && maxAmmo > 200) { //knife.. no bullets.. should we get ∞ rendered here instead?
+			g.drawString("Inf/Inf", p.getX() + 530, p.getY() + 265);
+		} else {
+			g.drawString(ammoRemaining + "/" + maxAmmo, p.getX() + 530, p.getY() + 265);
+		}
 		
 		g.drawString("P1 Score: " + p1Score, p.getX() + 520, p.getY() - 355);
 		if (bg.p2Active)
@@ -84,6 +97,12 @@ public class HUD extends Entity {
 		if (HUDstam != p.stam.getStat()) {
 			HUDstam = p.stam.getStat();
 			setHUDstam(HUDstam);
+		}
+		if (ammoRemaining != p.weapons.get(p.getCurrentWeapon()).getBullets()) {
+			ammoRemaining = p.weapons.get(p.getCurrentWeapon()).getBullets();
+		}
+		if (maxAmmo != p.weapons.get(p.getCurrentWeapon()).getMaxAmmo()) {
+			maxAmmo = p.weapons.get(p.getCurrentWeapon()).getBullets();
 		}
 		this.setPosition(new Vector(p.getX(), p.getY()));
 	}

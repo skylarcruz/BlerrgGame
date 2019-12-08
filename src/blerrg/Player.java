@@ -447,63 +447,66 @@ public class Player extends Entity {
 		double speed = 1.0;
 		double angle = Math.atan2(mouseX - originX, mouseY - originY);
 		
-		if(this.weapons.get(getCurrentWeapon()).getType() == BlerrgGame.WEAPON_RIFLE) {
-			speed = 2.0;
-			float vx = (float) (speed * Math.sin(angle));
-			float vy = (float) (speed * Math.cos(angle));
-			
-			projectiles.add(new Projectile(originX, originY, vx, vy, speed, 0, 30));
-		}
-		else if(this.weapons.get(getCurrentWeapon()).getType() == BlerrgGame.WEAPON_SHOTGUN){
-			float vx = (float) (speed * Math.sin(angle));
-			float vy = (float) (speed * Math.cos(angle));
-			
-			float vxl1 = (float) (speed * Math.sin(angle - Math.PI/12));
-			float vyl1 = (float) (speed * Math.cos(angle - Math.PI/12));
-			float vxl2 = (float) (speed * Math.sin(angle - Math.PI/6));
-			float vyl2 = (float) (speed * Math.cos(angle - Math.PI/6));
+		if (this.weapons.get(getCurrentWeapon()).reloadDone()) { //make sure we are not reloading
+			if (this.weapons.get(getCurrentWeapon()).getBullets() > 0) { //make sure we have bullets, else reload
+				this.weapons.get(getCurrentWeapon()).shootBullets();
+				if(this.weapons.get(getCurrentWeapon()).getType() == BlerrgGame.WEAPON_RIFLE) {
+					speed = 2.0;
+					float vx = (float) (speed * Math.sin(angle));
+					float vy = (float) (speed * Math.cos(angle));
+					
+					projectiles.add(new Projectile(originX, originY, vx, vy, speed, 0, 30));
+				}
+				else if(this.weapons.get(getCurrentWeapon()).getType() == BlerrgGame.WEAPON_SHOTGUN){
+					float vx = (float) (speed * Math.sin(angle));
+					float vy = (float) (speed * Math.cos(angle));
+					
+					float vxl1 = (float) (speed * Math.sin(angle - Math.PI/12));
+					float vyl1 = (float) (speed * Math.cos(angle - Math.PI/12));
+					float vxl2 = (float) (speed * Math.sin(angle - Math.PI/6));
+					float vyl2 = (float) (speed * Math.cos(angle - Math.PI/6));
 
-			float vxr1 = (float) (speed * Math.sin(angle + Math.PI/12));
-			float vyr1 = (float) (speed * Math.cos(angle + Math.PI/12));
-			float vxr2 = (float) (speed * Math.sin(angle + Math.PI/6));
-			float vyr2 = (float) (speed * Math.cos(angle + Math.PI/6));
-			
-			projectiles.add(new Projectile(originX, originY, vx, vy, speed, 0, 20));
-			projectiles.add(new Projectile(originX, originY, vxl1, vyl1, speed, 0, 20));
-			projectiles.add(new Projectile(originX, originY, vxr1, vyr1, speed, 0, 20));
-			projectiles.add(new Projectile(originX, originY, vxl2, vyl2, speed, 0, 20));
-			projectiles.add(new Projectile(originX, originY, vxr2, vyr2, speed, 0, 20));
+					float vxr1 = (float) (speed * Math.sin(angle + Math.PI/12));
+					float vyr1 = (float) (speed * Math.cos(angle + Math.PI/12));
+					float vxr2 = (float) (speed * Math.sin(angle + Math.PI/6));
+					float vyr2 = (float) (speed * Math.cos(angle + Math.PI/6));
+					
+					projectiles.add(new Projectile(originX, originY, vx, vy, speed, 0, 20));
+					projectiles.add(new Projectile(originX, originY, vxl1, vyl1, speed, 0, 20));
+					projectiles.add(new Projectile(originX, originY, vxr1, vyr1, speed, 0, 20));
+					projectiles.add(new Projectile(originX, originY, vxl2, vyl2, speed, 0, 20));
+					projectiles.add(new Projectile(originX, originY, vxr2, vyr2, speed, 0, 20));
+				}
+				else if(this.weapons.get(getCurrentWeapon()).getType() == BlerrgGame.WEAPON_CROSSBOW) {
+					speed = 0.5;
+					float vx = (float) (speed * Math.sin(angle));
+					float vy = (float) (speed * Math.cos(angle));
+					
+					projectiles.add(new Projectile(originX, originY, vx, vy, speed, 0, 20));
+				}
+				else if(this.weapons.get(getCurrentWeapon()).getType() == BlerrgGame.WEAPON_SMG) {
+					float vx = (float) (speed * Math.sin(angle));
+					float vy = (float) (speed * Math.cos(angle));
+					
+					projectiles.add(new Projectile(originX, originY, vx, vy, speed, 0, 10));
+					projectiles.add(new Projectile(originX, originY, vx, vy, speed, 100, 10));
+					projectiles.add(new Projectile(originX, originY, vx, vy, speed, 200, 10));
+				}
+				
+				float dX = (p.getX() - this.getX());
+				float dY = (p.getY() - this.getY());
+				float d = (float) Math.sqrt((dX * dX) + (dY * dY));
+				d = d/500 + 1;
+				if (d < 3)  d = 1/d ; 
+				else d = 0;
+				
+				ResourceManager.getSound(BlerrgGame.GUN_1_SND).play(1, d/4);
+				
+			} else {
+				this.weapons.get(getCurrentWeapon()).reload();
+				ResourceManager.getSound(BlerrgGame.RELOAD_1_SND).play(1, (float) 0.5);
+			}
 		}
-		else if(this.weapons.get(getCurrentWeapon()).getType() == BlerrgGame.WEAPON_CROSSBOW) {
-			speed = 0.5;
-			float vx = (float) (speed * Math.sin(angle));
-			float vy = (float) (speed * Math.cos(angle));
-			
-			projectiles.add(new Projectile(originX, originY, vx, vy, speed, 0, 20));
-		}
-		else if(this.weapons.get(getCurrentWeapon()).getType() == BlerrgGame.WEAPON_SMG) {
-			float vx = (float) (speed * Math.sin(angle));
-			float vy = (float) (speed * Math.cos(angle));
-			
-			projectiles.add(new Projectile(originX, originY, vx, vy, speed, 0, 10));
-			projectiles.add(new Projectile(originX, originY, vx, vy, speed, 100, 10));
-			projectiles.add(new Projectile(originX, originY, vx, vy, speed, 200, 10));
-		}
-		
-		//projectiles.add(new Projectile(originX, originY, vx, vy));
-		
-		
-		
-		float dX = (p.getX() - this.getX());
-		float dY = (p.getY() - this.getY());
-		float d = (float) Math.sqrt((dX * dX) + (dY * dY));
-		d = d/500 + 1;
-		if (d < 3)  d = 1/d ; 
-		else d = 0;
-		
-		ResourceManager.getSound(BlerrgGame.GUN_1_SND).play(1, d/4);
-		
-//		p.hp.setHealth(p.hp.getHealth() - 5);
 	}
 	
 	public void hit(Player pS, Player pD, int damage) {

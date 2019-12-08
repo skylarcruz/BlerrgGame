@@ -162,7 +162,8 @@ public class WorldModel {
 			Player player = (Player) character;
 			player.setPrevPosition(player.getX(), player.getY());
 			player.update(delta);
-			Weapon weapon = player.weapons.get(0);
+			Weapon weapon = player.weapons.get(player.getCurrentWeapon());
+			weapon.update(delta);
 			player.walk.update(delta);
 			player.walk.getCurrentFrame().setRotation((float) weapon.getDirection());
 			for(Player.Projectile p : player.projectiles) {
