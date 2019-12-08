@@ -125,7 +125,7 @@ public class PlayingState extends BasicGameState {
 			try {
 				cUpdate = bg.bgClient.getUpdates();
 				
-				//System.out.println(cUpdate);
+				System.out.println(cUpdate);
 	
 				String p[];
 				String arr[] = cUpdate.split("\\|");

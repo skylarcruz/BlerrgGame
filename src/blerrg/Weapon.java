@@ -16,7 +16,14 @@ public class Weapon extends Entity{
 	private double direction;
 	String type;
 	private int flipped; // 0 for false, 1 for true
-	private int cooldown = 100;
+	private int cooldown;
+	
+	private int clipSize = 1;
+	private int currClip = 1;
+	
+	private int weaponReload;
+	private int reloadTimer;
+	private int reloadMax;
 
 	public Weapon(final float x, final float y, String type, final double direction){
 		
@@ -31,9 +38,12 @@ public class Weapon extends Entity{
 		switch(this.type) {
 			case BlerrgGame.WEAPON_CROSSBOW: addImage(ResourceManager.getImage(BlerrgGame.WEAPON_CROSSBOW)); break;
 			case BlerrgGame.WEAPON_KNIFE: addImage(ResourceManager.getImage(BlerrgGame.WEAPON_KNIFE)); break;
-			case BlerrgGame.WEAPON_RIFLE: addImage(ResourceManager.getImage(BlerrgGame.WEAPON_RIFLE)); break;
-			case BlerrgGame.WEAPON_SHOTGUN: addImage(ResourceManager.getImage(BlerrgGame.WEAPON_SHOTGUN)); break;
-			case BlerrgGame.WEAPON_SMG: addImage(ResourceManager.getImage(BlerrgGame.WEAPON_SMG)); break;
+			case BlerrgGame.WEAPON_RIFLE: addImage(ResourceManager.getImage(BlerrgGame.WEAPON_RIFLE)); 
+				clipSize = 8; currClip = 8; weaponReload = 800; break;
+			case BlerrgGame.WEAPON_SHOTGUN: addImage(ResourceManager.getImage(BlerrgGame.WEAPON_SHOTGUN)); 
+				clipSize = 4; currClip = 4; weaponReload = 1600; break;
+			case BlerrgGame.WEAPON_SMG: addImage(ResourceManager.getImage(BlerrgGame.WEAPON_SMG)); 
+				clipSize = 24; currClip = 24; weaponReload = 1200; break;
 			default: addImage(ResourceManager.getImage(BlerrgGame.WEAPON_KNIFE));
 		}
 	}
@@ -47,9 +57,12 @@ public class Weapon extends Entity{
 		switch(this.type) {
 			case BlerrgGame.WEAPON_CROSSBOW: addImage(ResourceManager.getImage(BlerrgGame.WEAPON_CROSSBOW)); break;
 			case BlerrgGame.WEAPON_KNIFE: addImage(ResourceManager.getImage(BlerrgGame.WEAPON_KNIFE)); break;
-			case BlerrgGame.WEAPON_RIFLE: addImage(ResourceManager.getImage(BlerrgGame.WEAPON_RIFLE)); break;
-			case BlerrgGame.WEAPON_SHOTGUN: addImage(ResourceManager.getImage(BlerrgGame.WEAPON_SHOTGUN)); break;
-			case BlerrgGame.WEAPON_SMG: addImage(ResourceManager.getImage(BlerrgGame.WEAPON_SMG)); break;
+			case BlerrgGame.WEAPON_RIFLE: addImage(ResourceManager.getImage(BlerrgGame.WEAPON_RIFLE)); 
+				clipSize = 8; currClip = 8; weaponReload = 40; break;
+			case BlerrgGame.WEAPON_SHOTGUN: addImage(ResourceManager.getImage(BlerrgGame.WEAPON_SHOTGUN)); 
+				clipSize = 4; currClip = 4; weaponReload = 80; break;
+			case BlerrgGame.WEAPON_SMG: addImage(ResourceManager.getImage(BlerrgGame.WEAPON_SMG)); 
+				clipSize = 24; currClip = 24; weaponReload = 30; break;
 			default: addImage(ResourceManager.getImage(BlerrgGame.WEAPON_KNIFE));
 		}
 	}
@@ -159,10 +172,57 @@ public class Weapon extends Entity{
 	public int getFlipped() {
 		return flipped;
 	}
-	public void update(int delta) {
-		if(cooldown < 0) cooldown -= delta;
-		else cooldown = 100;
-		
+	
+	public boolean isReady() {
+		if (cooldown <= 0 && reloadTimer <= 0 && currClip > 0)
+			return true;
+		else
+			return false;
 	}
 	
+	public int getCooldown() {
+		return cooldown;
+	}
+	
+	public void setCooldown(int c) {
+		cooldown = c;
+	}
+	
+	public int getClipSize() {
+		return clipSize;
+	}
+	
+	public void currClipDown() {
+		currClip -= 1;
+	}
+	
+	public int getCurrClip() {
+		return currClip;
+	}
+	
+	public void startReload() {
+		if (reloadTimer <= 0 && currClip != clipSize) {
+			ResourceManager.getSound(BlerrgGame.GUN_RELOAD_1).play(1, (float) .1);
+			reloadTimer = weaponReload;
+		}
+	}
+	
+	public int getReloadTimer() {
+		return reloadTimer;
+	}
+	
+	public int getWeaponReload() {
+		return weaponReload;
+	}
+	
+	public void update(int delta) {
+		if(cooldown > 0) cooldown -= delta;
+		//else cooldown = 100;
+		if (reloadTimer > 0) {
+			reloadTimer -= delta;
+			if (reloadTimer <= 0) {
+				currClip = clipSize;
+			}
+		}
+	}
 }

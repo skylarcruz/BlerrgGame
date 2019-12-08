@@ -169,6 +169,10 @@ public class WorldModel {
 				p.update(delta);
 			}
 		}
+		pHUD.setClip(thisPlayer.weapons.get(thisPlayer.getCurrentWeapon()).getCurrClip(), 
+				thisPlayer.weapons.get(thisPlayer.getCurrentWeapon()).getClipSize());
+		pHUD.setReload(thisPlayer.weapons.get(thisPlayer.getCurrentWeapon()).getReloadTimer(),
+				thisPlayer.weapons.get(thisPlayer.getCurrentWeapon()).getWeaponReload());
 		pHUD.update(thisPlayer);
 		
 		return cUp;

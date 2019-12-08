@@ -18,10 +18,19 @@ public class HUD extends Entity {
 	private Image stamBar;
 	private int HUDstam;
 	
+	private Image reloadBorder;
+	private Image reloadBar;
+	
 	private int p1Score;
 	private int p2Score;
 	private int p3Score;
 	private int p4Score;
+	
+	private int clipMax;
+	private int currClip;
+	
+	private int reload;
+	private int reloadMax;
 	
 	public ArrayList<WeaponIcon> HUDweapons;
 	
@@ -37,6 +46,8 @@ public class HUD extends Entity {
 		addImage(ResourceManager.getImage(BlerrgGame.HUD_HP_BORDER), new Vector (560, 300));
 		stamBar = ResourceManager.getImage(BlerrgGame.HUD_STAM_BAR).getScaledCopy(130 * HUDstam/100, 24);
 		addImage(stamBar, new Vector (560 - (65 - 130 * HUDstam/200), 300));
+		
+		reloadBorder = ResourceManager.getImage(BlerrgGame.HUD_HP_BORDER).getScaledCopy((float) .6);
 		
 		HUDweapons = new ArrayList<WeaponIcon>();
 	}
@@ -74,6 +85,20 @@ public class HUD extends Entity {
 			else
 				g.drawImage(HUDweapons.get(i).getIconNA(), p.getX() - 625 + (i * 60),p.getY() + 300);
 		}
+		
+		g.drawString("Ammo:",  p.getX() - 625, p.getY() + 250);
+		g.drawString(currClip + "/" + clipMax,  p.getX() - 625, p.getY() + 275);
+		
+		if (reload > 0)
+			renderReload(g, p);
+			
+	}
+	
+	public void renderReload(Graphics g, Player p) {
+		reloadBar = ResourceManager.getImage(BlerrgGame.HUD_STAM_BAR).getScaledCopy(80 - (80 * reload/reloadMax), 12);
+		
+		g.drawImage(reloadBorder, p.getX() - 570 , p.getY() + 275);
+		g.drawImage(reloadBar, p.getX() - 565 , p.getY() + 278);
 	}
 	
 	public void update(Player p) {
@@ -154,6 +179,16 @@ public class HUD extends Entity {
 			else
 				HUDweapons.get(i).active = true;
 		}
+	}
+	
+	public void setClip(int c, int max) {
+		currClip = c;
+		clipMax = max;
+	}
+	
+	public void setReload(int r, int rMax) {
+		reload = r;
+		reloadMax = rMax;
 	}
 	
 	public class WeaponIcon extends Entity {

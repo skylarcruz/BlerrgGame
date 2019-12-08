@@ -99,7 +99,8 @@ public class Player extends Entity {
 		float mouseX = input.getMouseX() + bg.world.cameraX;
 		float mouseY = input.getMouseY() + bg.world.cameraY;
 		//START PLAYER SHOOTING
-		if (input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+		if (input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) & 
+				bg.world.thisPlayer.weapons.get(getCurrentWeapon()).isReady()) {
 			shoot(mouseX, mouseY, getX(), getY(), this);
 			cU += "Fp1:" + String.valueOf(mouseX) + "&" +
 				    String.valueOf(mouseY) + "|";
@@ -122,7 +123,12 @@ public class Player extends Entity {
 		boolean q = input.isKeyPressed(Input.KEY_Q) ? true : false;
 		boolean e = input.isKeyPressed(Input.KEY_E) ? true : false;
 		
+		boolean r = input.isKeyPressed(Input.KEY_R) ? true : false;
+		
 		boolean shift = input.isKeyDown(Input.KEY_LSHIFT) ? true : false;
+		
+		// RELOAD
+		if (r) { bg.world.thisPlayer.weapons.get(getCurrentWeapon()).startReload(); }
 		
 		if (q) { bg.world.pHUD.shiftWeapon("Left"); changeWeaponUp();
 				 cU += "W:shift&p1&Left|"; }
@@ -228,11 +234,30 @@ public class Player extends Entity {
 		boolean q = input.isKeyPressed(Input.KEY_Q) ? true : false;
 		boolean e = input.isKeyPressed(Input.KEY_E) ? true : false;
 		
+		boolean r = input.isKeyPressed(Input.KEY_R) ? true : false;
+		
 		boolean shift = input.isKeyDown(Input.KEY_LSHIFT) ? true : false;
+		
+		// RELOAD
+		if (r) { bg.world.thisPlayer.weapons.get(getCurrentWeapon()).startReload(); }
 		
 		if (q) { msg += "wShift:Left|"; }
 		if (e) { msg += "wShift:Right|"; }
 
+		float mouseX = input.getMouseX() + bg.world.cameraX;
+		float mouseY = input.getMouseY() + bg.world.cameraY;
+		// Get Shots Fired
+		if (input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) & 
+				bg.world.thisPlayer.weapons.get(getCurrentWeapon()).isReady()) {
+			bg.world.thisPlayer.weapons.get(getCurrentWeapon()).setCooldown(50); // prevents double fire
+			msg += "fire:" + String.valueOf(mouseX) + "&" + 
+					String.valueOf(mouseY) + "|";
+		}
+		
+		// Get Weapon Rotation
+		double theta = getAngle(mouseX, bg.world.thisPlayer.getX(), mouseY, bg.world.thisPlayer.getY());
+		weapons.get(cur_weapon).setDirection(Math.toDegrees(theta));
+		msg += "wRot:" + String.valueOf(Math.toDegrees(theta)) + "|";
 		
 		//Get Movement
 		if (a) { 
@@ -270,19 +295,6 @@ public class Player extends Entity {
 		} else {
 			msg += "mov:stop|";
 		} // End of Movement
-
-		float mouseX = input.getMouseX() + bg.world.cameraX;
-		float mouseY = input.getMouseY() + bg.world.cameraY;
-		// Get Shots Fired
-		if (input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
-			msg += "fire:" + String.valueOf(mouseX) + "&" + 
-					String.valueOf(mouseY) + "|";
-		}
-		
-		// Get Weapon Rotation
-		double theta = getAngle(mouseX, bg.world.thisPlayer.getX(), mouseY, bg.world.thisPlayer.getY());
-		weapons.get(cur_weapon).setDirection(Math.toDegrees(theta));
-		msg += "wRot:" + String.valueOf(Math.toDegrees(theta)) + "|";
 		
 		if (shift) {
 			if (stam.getRunDelay()) {
@@ -433,6 +445,10 @@ public class Player extends Entity {
 		stam.stamRegen();
 		stam.decRunDelay();
 		stam.setPosition(getX(), getY());
+		
+		for (int i = 0; i < weapons.size(); i ++) {
+			weapons.get(i).update(delta);
+		}
 	}
 	
 	public double getAngle(float ax, float bx, float ay, float by) {
@@ -453,6 +469,8 @@ public class Player extends Entity {
 			float vy = (float) (speed * Math.cos(angle));
 			
 			projectiles.add(new Projectile(originX, originY, vx, vy, speed, 0, 30));
+			this.weapons.get(getCurrentWeapon()).setCooldown(500);
+			this.weapons.get(getCurrentWeapon()).currClipDown();
 		}
 		else if(this.weapons.get(getCurrentWeapon()).getType() == BlerrgGame.WEAPON_SHOTGUN){
 			float vx = (float) (speed * Math.sin(angle));
@@ -473,6 +491,8 @@ public class Player extends Entity {
 			projectiles.add(new Projectile(originX, originY, vxr1, vyr1, speed, 0, 20));
 			projectiles.add(new Projectile(originX, originY, vxl2, vyl2, speed, 0, 20));
 			projectiles.add(new Projectile(originX, originY, vxr2, vyr2, speed, 0, 20));
+			this.weapons.get(getCurrentWeapon()).setCooldown(800);
+			this.weapons.get(getCurrentWeapon()).currClipDown();
 		}
 		else if(this.weapons.get(getCurrentWeapon()).getType() == BlerrgGame.WEAPON_CROSSBOW) {
 			speed = 0.5;
@@ -480,14 +500,17 @@ public class Player extends Entity {
 			float vy = (float) (speed * Math.cos(angle));
 			
 			projectiles.add(new Projectile(originX, originY, vx, vy, speed, 0, 20));
+			this.weapons.get(getCurrentWeapon()).setCooldown(400);
 		}
 		else if(this.weapons.get(getCurrentWeapon()).getType() == BlerrgGame.WEAPON_SMG) {
 			float vx = (float) (speed * Math.sin(angle));
 			float vy = (float) (speed * Math.cos(angle));
 			
-			projectiles.add(new Projectile(originX, originY, vx, vy, speed, 0, 10));
-			projectiles.add(new Projectile(originX, originY, vx, vy, speed, 100, 10));
-			projectiles.add(new Projectile(originX, originY, vx, vy, speed, 200, 10));
+			projectiles.add(new Projectile(originX, originY, vx, vy, speed, 0, 5));
+			//projectiles.add(new Projectile(originX, originY, vx, vy, speed, 100, 10));
+			//projectiles.add(new Projectile(originX, originY, vx, vy, speed, 200, 10));
+			this.weapons.get(getCurrentWeapon()).setCooldown(125);
+			this.weapons.get(getCurrentWeapon()).currClipDown();
 		}
 		
 		//projectiles.add(new Projectile(originX, originY, vx, vy));

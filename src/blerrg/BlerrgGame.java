@@ -83,6 +83,7 @@ public class BlerrgGame extends StateBasedGame {
 	
 	//SFX
 	public static final String GUN_1_SND = "blerrg/resource/sfx/gunshot1.wav";
+	public static final String GUN_RELOAD_1 = "blerrg/resource/sfx/reload_1.wav";
 	
 	//WEAPONS
 	public final static String PROJECTILE_PLACEHOLDER = "blerrg/resource/Weapons/pellet.png";
@@ -163,6 +164,7 @@ public class BlerrgGame extends StateBasedGame {
 		
 		//Load SFX
 		ResourceManager.loadSound(GUN_1_SND);
+		ResourceManager.loadSound(GUN_RELOAD_1);
 		
 		//Load Weapons
 		ResourceManager.loadImage(WEAPON_CROSSBOW);
