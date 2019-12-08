@@ -9,6 +9,8 @@ import org.newdawn.slick.SpriteSheet;
 import org.newdawn.slick.state.StateBasedGame;
 
 import java.util.ArrayList;
+import java.util.Timer;
+
 import jig.Entity;
 import jig.ResourceManager;
 import jig.Shape;
@@ -387,14 +389,57 @@ public class Player extends Entity {
 		return Math.atan2((a), (b));
 	}
 	
-	public void shoot(float mouseX, float mouseY, float originX, float originY, Player p) {
+	public void shoot(float mouseX, float mouseY, float originX, float originY, Player p){
 
 		double speed = 1.0;
 		double angle = Math.atan2(mouseX - originX, mouseY - originY);
-		float vx = (float) (speed * Math.sin(angle));
-		float vy = (float) (speed * Math.cos(angle));
 		
-		projectiles.add(new Projectile(originX, originY, vx, vy));
+		if(this.weapons.get(getCurrentWeapon()).getType() == BlerrgGame.WEAPON_RIFLE) {
+			speed = 2.0;
+			float vx = (float) (speed * Math.sin(angle));
+			float vy = (float) (speed * Math.cos(angle));
+			
+			projectiles.add(new Projectile(originX, originY, vx, vy, speed, 0));
+		}
+		else if(this.weapons.get(getCurrentWeapon()).getType() == BlerrgGame.WEAPON_SHOTGUN){
+			float vx = (float) (speed * Math.sin(angle));
+			float vy = (float) (speed * Math.cos(angle));
+			
+			float vxl1 = (float) (speed * Math.sin(angle - Math.PI/12));
+			float vyl1 = (float) (speed * Math.cos(angle - Math.PI/12));
+			float vxl2 = (float) (speed * Math.sin(angle - Math.PI/6));
+			float vyl2 = (float) (speed * Math.cos(angle - Math.PI/6));
+
+			float vxr1 = (float) (speed * Math.sin(angle + Math.PI/12));
+			float vyr1 = (float) (speed * Math.cos(angle + Math.PI/12));
+			float vxr2 = (float) (speed * Math.sin(angle + Math.PI/6));
+			float vyr2 = (float) (speed * Math.cos(angle + Math.PI/6));
+			
+			projectiles.add(new Projectile(originX, originY, vx, vy, speed, 0));
+			projectiles.add(new Projectile(originX, originY, vxl1, vyl1, speed, 0));
+			projectiles.add(new Projectile(originX, originY, vxr1, vyr1, speed, 0));
+			projectiles.add(new Projectile(originX, originY, vxl2, vyl2, speed, 0));
+			projectiles.add(new Projectile(originX, originY, vxr2, vyr2, speed, 0));
+		}
+		else if(this.weapons.get(getCurrentWeapon()).getType() == BlerrgGame.WEAPON_CROSSBOW) {
+			speed = 0.5;
+			float vx = (float) (speed * Math.sin(angle));
+			float vy = (float) (speed * Math.cos(angle));
+			
+			projectiles.add(new Projectile(originX, originY, vx, vy, speed, 0));
+		}
+		else if(this.weapons.get(getCurrentWeapon()).getType() == BlerrgGame.WEAPON_SMG) {
+			float vx = (float) (speed * Math.sin(angle));
+			float vy = (float) (speed * Math.cos(angle));
+			
+			projectiles.add(new Projectile(originX, originY, vx, vy, speed, 0));
+			projectiles.add(new Projectile(originX, originY, vx, vy, speed, 100));
+			projectiles.add(new Projectile(originX, originY, vx, vy, speed, 200));
+		}
+		
+		//projectiles.add(new Projectile(originX, originY, vx, vy));
+		
+		
 		
 		float dX = (p.getX() - this.getX());
 		float dY = (p.getY() - this.getY());
@@ -423,10 +468,14 @@ public class Player extends Entity {
 	
 	public class Projectile extends Entity {
 		private Vector velocity;
+		private int timer;
+		private double speed;
 		
-		
-		public Projectile(final float x, final float y, final float vx, final float vy) {
+		public Projectile(final float x, final float y, final float vx, final float vy, double speed, int timer) {
 			super(x, y);
+			this.timer = timer;
+			this.speed = speed;
+			
 			addImageWithBoundingBox(ResourceManager.getImage(BlerrgGame.PROJECTILE_PLACEHOLDER).getScaledCopy(1));
 			velocity = new Vector(vx, vy);
 		}
@@ -435,8 +484,19 @@ public class Player extends Entity {
 			velocity = v;
 		}
 		
+		public int getTimer() {
+			return timer;
+		}
+		
+		public double getSpeed() {
+			return speed;
+		}
+		
 		public void update(final int delta) {
-			translate(velocity.scale(delta));
+			if(timer <= 0) {
+				translate(velocity.scale(delta));
+			}
+			else timer -= delta;
 		}
 	}
 	

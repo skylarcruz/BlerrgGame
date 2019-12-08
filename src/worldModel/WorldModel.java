@@ -205,7 +205,7 @@ public class WorldModel {
 							if (getPlayer(thisPlayer) == "p1") {
 								thisPlayer.hit((Player) player, (Player) cTest);
 								cUp += "Cshot:" + getPlayer(player) + "&" + getPlayer((Player) cTest) + "|";
-								System.out.println(cUp);
+								//System.out.println(cUp);
 							}
 							itr.remove();
 							break;
@@ -247,7 +247,7 @@ public class WorldModel {
 					// ######## WEAPON RENDERING ########
 					
 					Weapon weapon = new Weapon(currentChar.weapons.get(currentChar.getCurrentWeapon()));
-					System.out.println(currentChar.getX() + " / weapon: " + currentChar.getCurrentWeapon());
+					//System.out.println(currentChar.getX() + " / weapon: " + currentChar.getCurrentWeapon());
 					
 					// first if checks if gun pointed towards the right, next is if pointed to the left
 					if((Math.abs(weapon.getDirection()) > 90) && weapon.getFlipped() == 0) weapon.directionSwap();
@@ -282,10 +282,22 @@ public class WorldModel {
 					}
 						
 				}
+							
 				for(Player.Projectile p : currentChar.projectiles) {
 					if(points.get(i).getX()*32 <= p.getX() && p.getX() <= (points.get(i).getX()*32) + 32
-							&&points.get(i).getY()*32 <= p.getY() && p.getY() <= (points.get(i).getY()*32) + 32) {
+						&&points.get(i).getY()*32 <= p.getY() && p.getY() <= (points.get(i).getY()*32) + 32) {
+
+						float mx = bg.getContainer().getInput().getMouseX() - bg.ScreenWidth/2;
+						float my = bg.getContainer().getInput().getMouseY() - bg.ScreenHeight/2;
+						double angle = Math.atan2(mx, my);
+						
+						if(p.getTimer() <= 0) {
 							p.render(g);
+						}
+						else {
+							p.setPosition(currentChar.getX(), currentChar.getY());
+							p.setVelocity(new Vector((float)(p.getSpeed()* Math.sin(angle)), (float)(p.getSpeed() * Math.cos(angle))));
+						}
 					}
 				}
 			}
