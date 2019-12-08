@@ -16,6 +16,7 @@ public class Weapon extends Entity{
 	private double direction;
 	String type;
 	private int flipped; // 0 for false, 1 for true
+	private int cooldown = 100;
 
 	public Weapon(final float x, final float y, String type, final double direction){
 		
@@ -157,6 +158,11 @@ public class Weapon extends Entity{
 	}
 	public int getFlipped() {
 		return flipped;
+	}
+	public void update(int delta) {
+		if(cooldown < 0) cooldown -= delta;
+		else cooldown = 100;
+		
 	}
 	
 }
