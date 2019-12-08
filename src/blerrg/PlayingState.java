@@ -208,7 +208,7 @@ public class PlayingState extends BasicGameState {
 					      // Player Shot
 						  case 'C': switch (task[0]) {
 						  	case "Cshot": Player pS = bg.world.getPlayer(p[0]); Player pD = bg.world.getPlayer(p[1]);
-						  				  bg.world.thisPlayer.hit(pS, pD); break;
+						  				  bg.world.thisPlayer.hit(pS, pD, Integer.valueOf(p[2])); break;
 						  	default: break; } break;			  
 						  // Server/Client Disconnects
 						  case '!': switch(task[1]) {

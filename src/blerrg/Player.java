@@ -288,19 +288,11 @@ public class Player extends Entity {
 			if (stam.getRunDelay()) {
 				if (stam.getStat() > 1) {
 					stam.setStat(stam.getStat() - 3);
-//					float x = (float) (getVelocity().getX()*1.4);
-//					float y = (float) (getVelocity().getY()*1.4);
-//					setVelocity(new Vector(x, y));
-					//setVelocity(new Vector((float) (getVelocity().getX()*1.4),(float) (getVelocity().getY()*1.4)));
 					msg += "run:run|";
 				} else {
 					stam.setRunDelay();
 				}
 			}
-		}
-		
-		if(!msg.equalsIgnoreCase("")) {
-			//System.out.println("Client Input Request: "+msg);			
 		}
 		
 		return msg;
@@ -321,8 +313,6 @@ public class Player extends Entity {
 			System.out.println("Blank client request");
 			return cU;
 		}
-		
-		//System.out.println("Recieved request: "+in);
 	
 		String p[];
 		String arr[] = in.split("\\|");
@@ -462,7 +452,7 @@ public class Player extends Entity {
 			float vx = (float) (speed * Math.sin(angle));
 			float vy = (float) (speed * Math.cos(angle));
 			
-			projectiles.add(new Projectile(originX, originY, vx, vy, speed, 0));
+			projectiles.add(new Projectile(originX, originY, vx, vy, speed, 0, 30));
 		}
 		else if(this.weapons.get(getCurrentWeapon()).getType() == BlerrgGame.WEAPON_SHOTGUN){
 			float vx = (float) (speed * Math.sin(angle));
@@ -478,26 +468,26 @@ public class Player extends Entity {
 			float vxr2 = (float) (speed * Math.sin(angle + Math.PI/6));
 			float vyr2 = (float) (speed * Math.cos(angle + Math.PI/6));
 			
-			projectiles.add(new Projectile(originX, originY, vx, vy, speed, 0));
-			projectiles.add(new Projectile(originX, originY, vxl1, vyl1, speed, 0));
-			projectiles.add(new Projectile(originX, originY, vxr1, vyr1, speed, 0));
-			projectiles.add(new Projectile(originX, originY, vxl2, vyl2, speed, 0));
-			projectiles.add(new Projectile(originX, originY, vxr2, vyr2, speed, 0));
+			projectiles.add(new Projectile(originX, originY, vx, vy, speed, 0, 20));
+			projectiles.add(new Projectile(originX, originY, vxl1, vyl1, speed, 0, 20));
+			projectiles.add(new Projectile(originX, originY, vxr1, vyr1, speed, 0, 20));
+			projectiles.add(new Projectile(originX, originY, vxl2, vyl2, speed, 0, 20));
+			projectiles.add(new Projectile(originX, originY, vxr2, vyr2, speed, 0, 20));
 		}
 		else if(this.weapons.get(getCurrentWeapon()).getType() == BlerrgGame.WEAPON_CROSSBOW) {
 			speed = 0.5;
 			float vx = (float) (speed * Math.sin(angle));
 			float vy = (float) (speed * Math.cos(angle));
 			
-			projectiles.add(new Projectile(originX, originY, vx, vy, speed, 0));
+			projectiles.add(new Projectile(originX, originY, vx, vy, speed, 0, 20));
 		}
 		else if(this.weapons.get(getCurrentWeapon()).getType() == BlerrgGame.WEAPON_SMG) {
 			float vx = (float) (speed * Math.sin(angle));
 			float vy = (float) (speed * Math.cos(angle));
 			
-			projectiles.add(new Projectile(originX, originY, vx, vy, speed, 0));
-			projectiles.add(new Projectile(originX, originY, vx, vy, speed, 100));
-			projectiles.add(new Projectile(originX, originY, vx, vy, speed, 200));
+			projectiles.add(new Projectile(originX, originY, vx, vy, speed, 0, 10));
+			projectiles.add(new Projectile(originX, originY, vx, vy, speed, 100, 10));
+			projectiles.add(new Projectile(originX, originY, vx, vy, speed, 200, 10));
 		}
 		
 		//projectiles.add(new Projectile(originX, originY, vx, vy));
@@ -516,8 +506,8 @@ public class Player extends Entity {
 //		p.hp.setHealth(p.hp.getHealth() - 5);
 	}
 	
-	public void hit(Player pS, Player pD) {
-		pD.hp.setStat(pD.hp.getStat() - 30);
+	public void hit(Player pS, Player pD, int damage) {
+		pD.hp.setStat(pD.hp.getStat() - damage);
 		System.out.println("Player: " + pD + " was hit! Current health: " + pD.hp.getStat());
 		
 		if (pD.hp.getStat() <= 0) {
@@ -532,19 +522,22 @@ public class Player extends Entity {
 	public class Projectile extends Entity {
 		private Vector velocity;
 		private int timer;
+		private int damage;
 		private double speed;
 		
-		public Projectile(final float x, final float y, final float vx, final float vy, double speed, int timer) {
+		public Projectile(final float x, final float y, final float vx, final float vy, double speed, int timer, int d) {
 			super(x, y);
 			this.timer = timer;
 			this.speed = speed;
+			this.damage = d;
 			
 			addImageWithBoundingBox(ResourceManager.getImage(BlerrgGame.PROJECTILE_PLACEHOLDER).getScaledCopy(1));
 			velocity = new Vector(vx, vy);
 		}
 		
 		public void setVelocity(final Vector v) {
-			velocity = v;
+			if (timer <= 0)	
+				velocity = v;
 		}
 		
 		public int getTimer() {
@@ -553,6 +546,10 @@ public class Player extends Entity {
 		
 		public double getSpeed() {
 			return speed;
+		}
+		
+		public int getDamage() {
+			return damage;
 		}
 		
 		public void update(final int delta) {

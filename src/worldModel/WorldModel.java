@@ -205,8 +205,8 @@ public class WorldModel {
 					if (player != cTest) {
 						if (shot.collides(cTest) != null) {
 							if (getPlayer(thisPlayer) == "p1") {
-								thisPlayer.hit((Player) player, (Player) cTest);
-								cUp += "Cshot:" + getPlayer(player) + "&" + getPlayer((Player) cTest) + "|";
+								thisPlayer.hit((Player) player, (Player) cTest, shot.getDamage());
+								cUp += "Cshot:" + getPlayer(player) + "&" + getPlayer((Player) cTest) +  "&" + shot.getDamage() + "|";
 								//System.out.println(cUp);
 							}
 							itr.remove();
