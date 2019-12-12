@@ -13,7 +13,7 @@ public class Client {
 	private BufferedReader in;
 
   public Client() throws IOException {
-      String hostName = "127.0.0.1";
+      String hostName = BlerrgGame.hostIP;
       int portNumber = 42069;
       echoSocket = new Socket(hostName, portNumber);
       out = new PrintWriter(echoSocket.getOutputStream(), true);

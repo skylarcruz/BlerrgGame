@@ -52,11 +52,17 @@ public class TileMap {
 	
 
 	//Super basic constructor, just for testing.
-	public TileMap() {
-		//createTestMap(0, 50, 50);
+	public TileMap(int l) {
+		String lvl = "";
+		switch(l) {
+		case 1: lvl = "blerrg/resource/TiledMaps/Experimental_4.tmx"; break;
+		case 2: lvl = "blerrg/resource/TiledMaps/LargeLevel.tmx"; break;
+		case 3: lvl = "blerrg/resource/TiledMaps/LargeLevel.tmx"; break;
+		default: lvl = "blerrg/resource/TiledMaps/Experimental_4.tmx"; break;
+		}
 		
 		spawnPoints = new ArrayList<Tile>();
-		loadMap("blerrg/resource/TiledMaps/Experimental_4.tmx");
+		loadMap(lvl);
 		createSpawnPoints();
 	}
 	

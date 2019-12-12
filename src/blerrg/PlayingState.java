@@ -31,6 +31,7 @@ public class PlayingState extends BasicGameState {
 	boolean winFlag;
 	
 	private ArrayList<Integer> charTypes;
+	private int lvl;
 
 	@Override
 	public void init(GameContainer container, StateBasedGame game) throws SlickException {		
@@ -48,7 +49,7 @@ public class PlayingState extends BasicGameState {
 		winFlag = false;
 		cUpdate = "";
 		
-		bg.world = new WorldModel(bg.ScreenWidth, bg.ScreenHeight, bg, charTypes);
+		bg.world = new WorldModel(bg.ScreenWidth, bg.ScreenHeight, bg, charTypes, lvl);
 		
 		if(bg.isClient) {
 			
@@ -75,7 +76,7 @@ public class PlayingState extends BasicGameState {
 			g.setColor(new Color(0, 0, 0));
 			g.fillRect(0 + bg.world.cameraX, 0 + bg.world.cameraY, 1280, 720);
 			g.setColor(new Color(255, 255, 255));
-			g.drawString("Loading...", 600, 360);
+			g.drawString("Loading...", bg.world.thisPlayer.getX(), bg.world.thisPlayer.getY());
 		}
 
 	}
@@ -104,6 +105,7 @@ public class PlayingState extends BasicGameState {
 				String arr[] = w.split("\\|");
 				String task[] = arr[0].split(":");
 				((EndState)game.getState(BlerrgGame.ENDSTATE)).setWinner(task[1]);
+				((EndState)game.getState(BlerrgGame.ENDSTATE)).setFinalScore(bg);
 				bg.enterState(BlerrgGame.ENDSTATE);
 			}
 				
@@ -219,6 +221,7 @@ public class PlayingState extends BasicGameState {
 							default: break; } break;
 						  // End Game, set Winner
 						  case 'E': ((EndState)game.getState(BlerrgGame.ENDSTATE)).setWinner(task[1]);
+						  			((EndState)game.getState(BlerrgGame.ENDSTATE)).setFinalScore(bg);
 						  			bg.enterState(BlerrgGame.ENDSTATE); break;
 						default: break;
 						}
@@ -325,6 +328,10 @@ public class PlayingState extends BasicGameState {
 		charTypes.set(1, b);
 		charTypes.set(2, c);
 		charTypes.set(3, d);
+	}
+	
+	public void setLevel(int l) {
+		lvl = l;
 	}
 	
 

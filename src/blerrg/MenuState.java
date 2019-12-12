@@ -57,7 +57,8 @@ public class MenuState extends BasicGameState {
 	public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
 		BlerrgGame bg = (BlerrgGame)game;
 		
-		g.drawString("BLERRG", 600, 50);
+		//g.drawString("BLERRG", 600, 50);
+		g.drawImage(ResourceManager.getImage(BlerrgGame.BLERRG_LOGO).getScaledCopy((float) 0.5), 425, 50);
 		
 		g.drawImage(getCharImage(charChoicep1), 85, 200);
 		if (bg.p2Active) {
@@ -116,6 +117,7 @@ public class MenuState extends BasicGameState {
 		if (bg.isServer) {
 			if (gameStart) { 
 				((PlayingState)game.getState(BlerrgGame.PLAYINGSTATE)).setCharTypes(charChoicep1, charChoicep2, charChoicep3, charChoicep4);
+				((PlayingState)game.getState(BlerrgGame.PLAYINGSTATE)).setLevel(level);
 				bg.enterState(BlerrgGame.PLAYINGSTATE); 
 			}
 			
@@ -145,8 +147,8 @@ public class MenuState extends BasicGameState {
 			else if (Sel == "LevelSel") {
 				if (w) {Sel = "CharSel";}
 				else if (s) {Sel = "WinSel";}
-				else if (a) {/*ChangelvlLeft*/}
-				else if (d) {/*ChangelvlRight*/}
+				else if (a) {if (level > 1) {level -= 1;} else {level = 3;} netUpdate += "lvl-|";}
+				else if (d) {if (level < 3) {level += 1;} else {level = 1;} netUpdate += "lvl+|";}
 			}
 			else if (Sel == "WinSel") {
 				if (w) {Sel = "LevelSel";}
@@ -192,11 +194,14 @@ public class MenuState extends BasicGameState {
 					case "p3c+": setChar(3, charChoicep3 + 1); break;
 					case "p4c-": setChar(4, charChoicep4 - 1); break;
 					case "p4c+": setChar(4, charChoicep4 + 1); break;
+					case "lvl-": if (level > 1) {level -= 1;} else {level = 3;} break;
+					case "lvl+": if (level < 3) {level += 1;} else {level = 1;} break;
 					default: break;
 				}
 			}
 			if (gameStart) { 
 				((PlayingState)game.getState(BlerrgGame.PLAYINGSTATE)).setCharTypes(charChoicep1, charChoicep2, charChoicep3, charChoicep4);
+				((PlayingState)game.getState(BlerrgGame.PLAYINGSTATE)).setLevel(level);
 				bg.enterState(BlerrgGame.PLAYINGSTATE); 
 			}
 			
@@ -314,7 +319,6 @@ public class MenuState extends BasicGameState {
 		  case 4: r = ResourceManager.getImage(BlerrgGame.CHAR5_MENU).getScaledCopy(5); break;
 		  default: r =  ResourceManager.getImage(BlerrgGame.CHAR1_MENU).getScaledCopy(5); break;
 		}
-		System.out.println(c);
 		return r;
 	}
 

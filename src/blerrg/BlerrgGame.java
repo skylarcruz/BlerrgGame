@@ -15,6 +15,8 @@ import worldModel.WorldModel;
 
 public class BlerrgGame extends StateBasedGame {
 	
+	public final static String hostIP = "127.0.0.1";
+	
 	public final static boolean DEBUG = true;
 	
 	public final static int STARTSTATE = 0;
@@ -76,6 +78,9 @@ public class BlerrgGame extends StateBasedGame {
 	public final static String CHAR3_MENU = "blerrg/resource/Menu/char3_menu.png";
 	public final static String CHAR4_MENU = "blerrg/resource/Menu/char4_menu.png";
 	public final static String CHAR5_MENU = "blerrg/resource/Menu/char5_menu.png";
+	
+	// Logo image from https://fontmeme.com/fonts/exquisite-corpse-font/
+	public final static String BLERRG_LOGO = "blerrg/resource/Menu/BlerrgLogo.png";
 
 
 	
@@ -160,6 +165,7 @@ public class BlerrgGame extends StateBasedGame {
 		ResourceManager.loadImage(CHAR3_MENU);
 		ResourceManager.loadImage(CHAR4_MENU);
 		ResourceManager.loadImage(CHAR5_MENU);
+		ResourceManager.loadImage(BLERRG_LOGO);
 
 		
 		//Load Tile Resources

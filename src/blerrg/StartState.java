@@ -9,6 +9,8 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
+import jig.ResourceManager;
+
 public class StartState extends BasicGameState {
 	
 	private String state = "init";
@@ -28,23 +30,31 @@ public class StartState extends BasicGameState {
 	public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
 		BlerrgGame bg = (BlerrgGame)game;
 		
+		g.drawImage(ResourceManager.getImage(BlerrgGame.BLERRG_LOGO).getScaledCopy((float) 0.5), 425, 50);
+		
 		if (state == "init") {
-			g.drawString("Press S to start as server", bg.ScreenWidth/2 - 30, bg.ScreenHeight/2);
-			g.drawString("Press C to connect as client", bg.ScreenWidth/2 - 30, bg.ScreenHeight/2 + 30);
+			g.drawString("Press S to start as server", bg.ScreenWidth/2 - 100, bg.ScreenHeight/2);
+			g.drawString("Press C to connect as client", bg.ScreenWidth/2 - 100, bg.ScreenHeight/2 + 30);
 		}
 		if (state == "server") {
 			if (getClient == false && bg.clientCount < 3)
-				g.drawString("Press C to wait for new client", bg.ScreenWidth/2 - 30, bg.ScreenHeight/2);
+				g.drawString("Press C to wait for new client", bg.ScreenWidth/2 - 100, bg.ScreenHeight/2);
 			else if (bg.clientCount < 3)
-				g.drawString("Waiting for clients...", bg.ScreenWidth/2 - 30, bg.ScreenHeight/2);
+				g.drawString("Waiting for clients...", bg.ScreenWidth/2 - 100, bg.ScreenHeight/2);
 			else
-				g.drawString("No More Players", bg.ScreenWidth/2 - 30, bg.ScreenHeight/2);
-			g.drawString(bg.clientCount + " Clients Connected", bg.ScreenWidth/2 - 30, bg.ScreenHeight/2 + 30);
-			g.drawString("Press Space to Start", bg.ScreenWidth/2 - 30, bg.ScreenHeight/2 + 60);
+				g.drawString("No More Players", bg.ScreenWidth/2 - 100, bg.ScreenHeight/2);
+			g.drawString(bg.clientCount + " Clients Connected", bg.ScreenWidth/2 - 100, bg.ScreenHeight/2 + 30);
+			if (getClient == false)
+				g.drawString("Press Space to Start", bg.ScreenWidth/2 - 100, bg.ScreenHeight/2 + 90);
 		}
 		if (state == "clientConnect") {
-			g.drawString("Connecting...", bg.ScreenWidth/2 - 30, bg.ScreenHeight/2);
-			g.drawString("Player: " + bg.clientNum, bg.ScreenWidth/2 - 30, bg.ScreenHeight/2 + 30);
+			if (isConnecting)
+				g.drawString("Connecting...", bg.ScreenWidth/2 - 100, bg.ScreenHeight/2);
+			else {
+				g.drawString("Connected as", bg.ScreenWidth/2 - 100, bg.ScreenHeight/2);
+				g.drawString("Player " + bg.clientNum, bg.ScreenWidth/2 - 100, bg.ScreenHeight/2 + 30);
+				g.drawString("Waiting for Server to Start...", bg.ScreenWidth/2 - 100, bg.ScreenHeight/2 + 90);
+			}
 		}
 		
 	}

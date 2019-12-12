@@ -57,10 +57,10 @@ public class WorldModel {
 	float spawnX;
 	float spawnY;
 	
-	public WorldModel(int screenWidth, int screenHeight, BlerrgGame bg, ArrayList<Integer> c) {
+	public WorldModel(int screenWidth, int screenHeight, BlerrgGame bg, ArrayList<Integer> c, int l) {
 		
 		//simple test map for now
-		map = new TileMap();
+		map = new TileMap(l);
 		
 		quadTree = new QuadTree((int)(map.columns*Tile.TILE_BASE_SIZE),
 				(int)(map.rows*Tile.TILE_BASE_SIZE));
