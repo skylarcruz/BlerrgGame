@@ -35,6 +35,10 @@ public class Player extends Entity {
 	public Animation walk;
 	public SpriteSheet walking;
 
+	public boolean invincible = false;
+	public int invinTimer;
+	int blinkTimer = 3;
+	public boolean renderMe = true;
 
 	public Player(Vector v, final float vx, final float vy, int characterType) {
 		super(v.getX(), v.getY());
@@ -479,6 +483,11 @@ public class Player extends Entity {
 		prevPosition = new Vector(xCoord, yCoord);
 	}
 	
+	public void setInvincibility(int t) {
+		invincible = true;
+		invinTimer = t;
+	}
+	
 	
 	public void update(final int delta) {
 		translate(velocity.scale(delta));
@@ -491,6 +500,26 @@ public class Player extends Entity {
 		for (int i = 0; i < weapons.size(); i ++) {
 			weapons.get(i).update(delta);
 		}
+		
+		if (invinTimer >= 0) {
+			invinTimer -= delta;
+			if (invinTimer <= 0){
+				invincible = false;
+				blinkTimer = 3;
+				setRender(true);
+			}
+			else {
+				blinkTimer -= 1;
+				if (blinkTimer == 0) {
+					blinkTimer = 3;
+					setRender(!renderMe);
+				}
+			}
+		}
+	}
+	
+	public void setRender(boolean b) {
+		renderMe = b;
 	}
 	
 	public double getAngle(float ax, float bx, float ay, float by) {
@@ -581,6 +610,7 @@ public class Player extends Entity {
 			pD.hp.setStat(100);
 			pS.score += 1;
 			pD.bloodPools.add(new Blood(pD.getX(), pD.getY()));
+			pD.setInvincibility(2500);
 			
 			if (BlerrgGame.isServer == true) {
 				pD.setPosition(wm.map.getRandomSpawnV());

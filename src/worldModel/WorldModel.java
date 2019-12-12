@@ -211,7 +211,7 @@ public class WorldModel {
 				Player.Projectile shot = (Projectile) itr.next();
 				for (Entity cTest : characters) {
 					if (player != cTest) {
-						if (shot.collides(cTest) != null) {
+						if (shot.collides(cTest) != null && isInvin((Player) cTest) == false) {
 							if (getPlayer(thisPlayer) == "p1") {
 								thisPlayer.hit((Player) player, (Player) cTest, shot.getDamage(), this);
 								cUp += "Cshot:" + getPlayer(player) + "&" + getPlayer((Player) cTest) +  "&" + shot.getDamage() + "|";
@@ -228,7 +228,9 @@ public class WorldModel {
 		return cUp;
 	}
 	
-	
+	public boolean isInvin(Player p) {
+		return p.invincible;
+	}
 	
 	public void render(StateBasedGame game, Graphics g) {
 		BlerrgGame bg = (BlerrgGame)game;
@@ -275,7 +277,11 @@ public class WorldModel {
 
 
 					// #### CHARACTER RENDERING ####
-					currentChar.walk.draw(currentChar.getX() - 16, currentChar.getY() - 16);
+					if (isRender((Player) currentChar)) {
+						currentChar.walk.draw(currentChar.getX() - 16, currentChar.getY() - 16);
+					}
+					else
+						currentChar.walk.draw(currentChar.getX() - 16, currentChar.getY() - 16, 0, 0);
 					if (currentChar != thisPlayer) {
 						if (currentChar.hp.display)
 							currentChar.hp.render(g);
@@ -317,6 +323,10 @@ public class WorldModel {
 			}
 		}
 
+	}
+	
+	public boolean isRender(Player p) {
+		return p.renderMe;
 	}
 	
 	public void renderThisPlayerHPTemp(Graphics g, Player t) {
