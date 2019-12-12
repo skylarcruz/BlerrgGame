@@ -24,6 +24,7 @@ public class Player extends Entity {
 	private int direction;
 	public ArrayList<Projectile> projectiles;
 	public ArrayList<Weapon> weapons;
+	public ArrayList<Blood> bloodPools;
 	private int cur_weapon;
 	public Vector prevPosition;
 	
@@ -57,6 +58,7 @@ public class Player extends Entity {
 		
 		velocity = new Vector(vx, vy);
 		projectiles = new ArrayList<Projectile>(10);
+		bloodPools = new ArrayList<Blood>();
 		cur_weapon = 0;
 		weapons = new ArrayList<Weapon>();
 		//weapons.add(new Weapon(x, y, "shotgun", 45));
@@ -569,7 +571,7 @@ public class Player extends Entity {
 //		p.hp.setHealth(p.hp.getHealth() - 5);
 	}
 	
-	public void hit(Player pS, Player pD, int damage) {
+	public void hit(Player pS, Player pD, int damage, WorldModel wm) {
 		pD.hp.setStat(pD.hp.getStat() - damage);
 		System.out.println("Player: " + pD + " was hit! Current health: " + pD.hp.getStat());
 		
@@ -578,6 +580,11 @@ public class Player extends Entity {
 			System.out.println("Player: " + pD + " killed by Player: " + pS);
 			pD.hp.setStat(100);
 			pS.score += 1;
+			pD.bloodPools.add(new Blood(pD.getX(), pD.getY()));
+			
+			if (BlerrgGame.isServer == true) {
+				pD.setPosition(wm.map.getRandomSpawnV());
+			}
 		}
 	}
 
@@ -695,6 +702,15 @@ public class Player extends Entity {
 				return true;
 			}
 		}
+	}
+	
+	public class Blood extends Entity {
+		
+		public Blood(final float x, final float y) {
+			super(x, y);
+			addImage(ResourceManager.getImage(BlerrgGame.CHAR_BLOOD));
+		}
+		
 	}
 
 }

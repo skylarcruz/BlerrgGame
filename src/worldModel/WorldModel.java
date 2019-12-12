@@ -213,7 +213,7 @@ public class WorldModel {
 					if (player != cTest) {
 						if (shot.collides(cTest) != null) {
 							if (getPlayer(thisPlayer) == "p1") {
-								thisPlayer.hit((Player) player, (Player) cTest, shot.getDamage());
+								thisPlayer.hit((Player) player, (Player) cTest, shot.getDamage(), this);
 								cUp += "Cshot:" + getPlayer(player) + "&" + getPlayer((Player) cTest) +  "&" + shot.getDamage() + "|";
 								//System.out.println(cUp);
 							}
@@ -305,6 +305,13 @@ public class WorldModel {
 							p.setPosition(currentChar.getX(), currentChar.getY());
 							p.setVelocity(new Vector((float)(p.getSpeed()* Math.sin(angle)), (float)(p.getSpeed() * Math.cos(angle))));
 						}
+					}
+				}
+				
+				for(Player.Blood b : currentChar.bloodPools) {
+					if(points.get(i).getX()*32 <= b.getX() && b.getX() <= (points.get(i).getX()*32) + 32
+							&&points.get(i).getY()*32 <= b.getY() && b.getY() <= (points.get(i).getY()*32) + 32) {
+						b.render(g);
 					}
 				}
 			}

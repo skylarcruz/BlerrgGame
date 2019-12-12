@@ -28,7 +28,7 @@ public class BlerrgGame extends StateBasedGame {
 	
 	public int clientCount = 0;
 	Server bgServer;
-	boolean isServer = false;
+	public static boolean isServer = false;
 	Client bgClient;
 	boolean isClient = false;
 	int clientNum = 1;
@@ -45,6 +45,7 @@ public class BlerrgGame extends StateBasedGame {
 	public final static String CHAR3_TOP_DOWN_SHEET = "blerrg/resource/Player/char3_topdown_sheet.png";
 	public final static String CHAR4_TOP_DOWN_SHEET = "blerrg/resource/Player/char4_topdown_sheet.png";
 	public final static String CHAR5_TOP_DOWN_SHEET = "blerrg/resource/Player/char5_topdown_sheet.png";
+	public final static String CHAR_BLOOD = "blerrg/resource/Player/bloodSplatter.png";
 
 
 	public final static String HEALTHBORDER_PLACEHOLDER = "blerrg/resource/Player/hpBorder.png";
@@ -127,6 +128,7 @@ public class BlerrgGame extends StateBasedGame {
 		ResourceManager.loadImage(CHAR3_TOP_DOWN_SHEET);
 		ResourceManager.loadImage(CHAR4_TOP_DOWN_SHEET);
 		ResourceManager.loadImage(CHAR5_TOP_DOWN_SHEET);
+		ResourceManager.loadImage(CHAR_BLOOD);
 		
 
 		ResourceManager.loadImage(PROJECTILE_PLACEHOLDER);
