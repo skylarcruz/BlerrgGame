@@ -132,6 +132,7 @@ public class BlerrgGame extends StateBasedGame {
 		ResourceManager.loadImage(PROJECTILE_PLACEHOLDER);
 		ResourceManager.loadImage(HEALTHBORDER_PLACEHOLDER);
 		ResourceManager.loadImage(HEALTH_PLACEHOLDER);
+		ResourceManager.loadImage(STAMINA_PLACEHOLDER);
 		
 		//Load HUD Resources
 		ResourceManager.loadImage(HUD_HP_BORDER);
@@ -211,7 +212,7 @@ public class BlerrgGame extends StateBasedGame {
 				sb.append(String.valueOf(arg));
 			}
 		
-			System.out.println(sb.toString());
+			//System.out.println(sb.toString());
 		}
 		
 		

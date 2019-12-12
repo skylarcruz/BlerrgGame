@@ -35,6 +35,40 @@ public class Player extends Entity {
 	public SpriteSheet walking;
 
 
+	public Player(Vector v, final float vx, final float vy, int characterType) {
+		super(v.getX(), v.getY());
+		
+		//just to create a 32x32 bounding box. we do not render this image..
+		addImageWithBoundingBox(ResourceManager.getImage(BlerrgGame.CHAR1_MENU));
+		
+		try {
+			switch(characterType) {
+				case 0: walking = new SpriteSheet(BlerrgGame.CHAR1_TOP_DOWN_SHEET, 32, 32); break;
+				case 1: walking = new SpriteSheet(BlerrgGame.CHAR2_TOP_DOWN_SHEET, 32, 32); break;
+				case 2: walking = new SpriteSheet(BlerrgGame.CHAR3_TOP_DOWN_SHEET, 32, 32); break;
+				case 3: walking = new SpriteSheet(BlerrgGame.CHAR4_TOP_DOWN_SHEET, 32, 32); break;
+				case 4: walking = new SpriteSheet(BlerrgGame.CHAR5_TOP_DOWN_SHEET, 32, 32); break;
+				default: break;
+			}
+		} catch (SlickException e) {
+			e.printStackTrace();
+		}
+
+		
+		velocity = new Vector(vx, vy);
+		projectiles = new ArrayList<Projectile>(10);
+		cur_weapon = 0;
+		weapons = new ArrayList<Weapon>();
+		//weapons.add(new Weapon(x, y, "shotgun", 45));
+		hp = new HUDBar(v.getX() - 50, v.getY() - 25, 0);
+		stam = new HUDBar(v.getX() - 50, v.getY() - 55, 1);
+		
+		walk = new Animation(walking, 150);
+		walk.stop();
+		isStopped = true;
+		direction = 0;
+	}
+	
 	public Player(final float x, final float y, final float vx, final float vy, int characterType) {
 		super(x, y);
 		
@@ -126,6 +160,12 @@ public class Player extends Entity {
 		boolean r = input.isKeyPressed(Input.KEY_R) ? true : false;
 		
 		boolean shift = input.isKeyDown(Input.KEY_LSHIFT) ? true : false;
+		
+		boolean t = input.isKeyPressed(Input.KEY_T) ? true : false;
+		
+		if (t) {
+			this.setPosition(bg.world.map.getRandomSpawnV());
+		}
 		
 		// RELOAD
 		if (r) { bg.world.thisPlayer.weapons.get(getCurrentWeapon()).startReload(); }

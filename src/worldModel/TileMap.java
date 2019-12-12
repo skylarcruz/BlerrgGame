@@ -14,6 +14,7 @@ import org.newdawn.slick.tiled.TiledMap;
 import blerrg.BlerrgGame;
 import blerrg.Tile;
 import blerrg.Tile.TileType;
+import jig.Entity;
 import jig.Vector;
 
 
@@ -21,6 +22,9 @@ public class TileMap {
 
 	//Actual tile objects - this is effectively the grid
 	public Tile tiles[][];
+	
+	public ArrayList<Tile> spawnPoints;
+	
 	
 	//Scaling factor for tile images and bounds
 	//TODO: Implement as static variable in Tile class
@@ -51,7 +55,9 @@ public class TileMap {
 	public TileMap() {
 		//createTestMap(0, 50, 50);
 		
+		spawnPoints = new ArrayList<Tile>();
 		loadMap("blerrg/resource/TiledMaps/Experimental_4.tmx");
+		createSpawnPoints();
 	}
 	
 	
@@ -228,6 +234,9 @@ public class TileMap {
 					//Set the image
 					t.setImage(t_image);
 					
+//					if (t_type == TileType.FLOOR) {
+//						spawnPoints.add(t);
+					
 					tiles[c][r] = t;
 
 						
@@ -238,6 +247,45 @@ public class TileMap {
 			}
 		}
 		
+	}
+	
+	public void createSpawnPoints() {
+	    int r = tiles[0].length;
+	    int c = tiles.length;
+	    Tile t;
+	    
+	    boolean isSpawn;
+	    
+	    for (int i = 0; i < r; i ++) {
+	    	for (int j = 0; j < c; j ++) {
+	    		isSpawn = true;
+	    		t = tiles[i][j];
+	    		if(t.type != TileType.FLOOR) {
+	    			isSpawn = false;
+	    			//break;
+	    		}
+	    		for (int k = i - 1; k < i + 2; k ++) {
+	    			for (int l = j - 1; l < j + 2; l ++) {
+	    				if (k >= 0 && k < r && l >= 0 && l < c) {
+	    					t = tiles[k][l];
+	    					if (t.type != TileType.FLOOR) {
+	    						isSpawn = false;
+	    						//break;
+	    					}
+	    				}
+	    				else {
+	    					isSpawn = false;
+	    					//break;
+	    				}
+	    			}
+	    			//if (isSpawn == false)
+	    				//break;
+	    		}
+	    		if (isSpawn == true) {
+	    			spawnPoints.add(tiles[i][j]);
+	    		}
+	    	}
+	    }
 	}
 
 
@@ -444,6 +492,29 @@ public class TileMap {
 		
 		System.out.println(sb);
 		
+	}
+	
+	public Tile getRandomSpawnT() {
+		int r = (int) (Math.random() * spawnPoints.size() + 1);
+		Tile t = spawnPoints.get(r);
+		
+		return t;
+	}
+	
+	public Vector getRandomSpawnV() {
+		int r = (int) (Math.random() * spawnPoints.size() + 1);
+		Tile t = spawnPoints.get(r);
+		
+		Vector v = t.getPosition();
+		return v;
+	}
+	
+	public float getTileX(Tile t) {
+		return t.getX();
+	}
+	
+	public float getTileY(Tile t) {
+		return t.getY();
 	}
 
 	

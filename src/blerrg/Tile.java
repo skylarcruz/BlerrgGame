@@ -49,6 +49,10 @@ public class Tile extends Entity {
 		
 	}
 	
+	public TileType getTypefromTile(Tile t) {
+		return t.type;
+	}
+	
 	
 	public static TileType typeFromGID(int t_gid) {
 		// TODO Auto-generated method stub
