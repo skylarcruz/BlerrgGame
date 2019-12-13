@@ -92,6 +92,12 @@ public class PlayingState extends BasicGameState {
 		
 		if (input.isKeyPressed(Input.KEY_P))
 			container.setSoundOn(false);
+		if(input.isKeyPressed(Input.KEY_1))
+			bg.world.player.getPowerUp(0); // get armor
+		if(input.isKeyPressed(Input.KEY_2))
+			bg.world.player.getPowerUp(1); // get sprint
+		if(input.isKeyPressed(Input.KEY_3))
+			bg.world.player.getPowerUp(2); // open your mind
 		
 		//cUpdate = "";
 		

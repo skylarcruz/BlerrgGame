@@ -54,10 +54,13 @@ public class Raycast {
 
 		points = new ArrayList<Point>();
 		
-		this.angles = half_number_of_rays; // ######## NUMBER OF RAYS EQUAL TO TWICE THIS INT ########
-		firstpass();
-		secondpass();
-		thirdpass();
+		if(p.xrayPwr == false) {
+			this.angles = half_number_of_rays; // ######## NUMBER OF RAYS EQUAL TO TWICE THIS INT ########
+			firstpass();
+			secondpass();
+			thirdpass();
+		}
+		else third_eye_the_xray_eye();
 		
 		
 	}
@@ -307,6 +310,17 @@ public class Raycast {
 			}
 		}
 		points.addAll(extrapoints);
+	}
+	
+	public void third_eye_the_xray_eye() {
+		for(int i = (int)px/32 - 20; i < (int)px/32 + 22; i++) {
+			for(int j = (int)py/32 - 11; j < (int)py/32 + 13; j++) {
+				if(i >= 0 && j >= 0 && i < bg.world.map.tiles.length && j < bg.world.map.tiles[0].length) {
+					Point p = new Point(i, j);
+					points.add(p);
+				}
+			}
+		}
 	}
 	
 	public ArrayList<Point> getPoints(){
