@@ -231,6 +231,7 @@ public class WorldModel {
 			
 			for (Iterator<Projectile> itr = player.projectiles.iterator(); itr.hasNext();) {
 				Player.Projectile shot = (Projectile) itr.next();
+				// Projectile hits Player
 				for (Entity cTest : characters) {
 					if (player != cTest) {
 						if (shot.collides(cTest) != null && isInvin((Player) cTest) == false) {
@@ -242,6 +243,14 @@ public class WorldModel {
 							itr.remove();
 							break;
 						}
+					}
+				}
+				// Projectile hits Wall
+				nearEnts = quadTree.nearbyEntities(shot);
+				for(Entity ent : nearEnts) {
+					if(shot.collides(ent) != null) {
+						itr.remove();			
+						break;
 					}
 				}
 			}
