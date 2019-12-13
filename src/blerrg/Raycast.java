@@ -52,7 +52,6 @@ public class Raycast {
 		this.miny = (int) py/32;
 		this.maxy = (int) py/32; //useful for slightly faster bounds checking
 
-
 		points = new ArrayList<Point>();
 		
 		this.angles = half_number_of_rays; // ######## NUMBER OF RAYS EQUAL TO TWICE THIS INT ########
@@ -91,7 +90,6 @@ public class Raycast {
 								points.add(p);
 								gridpoints[(int)p.getX()][(int)p.getY()] = p;
 								
-								
 								// kinda like the coarseGrained stuff, this sets the bounds of the raycast resultant shape
 								if(p.getX() > maxx) maxx = (int) p.getX();
 								else if(p.getX() < minx) minx = (int) p.getX();
@@ -107,7 +105,7 @@ public class Raycast {
 										// O X
 										// X  
 										if((bg.world.map.tiles[(int) p.getX() +1][(int) p.getY() -0].type == TileType.WALL /*!= TileType.FLOOR*/ || bg.world.map.tiles[(int) p.getX() -0][(int) p.getY() +1].type == TileType.WALL /*!= TileType.FLOOR*/) && bg.world.map.tiles[(int) p.getX() -0][(int) p.getY() -0].type == TileType.FLOOR) {
-											
+
 											break;
 										}
 										if((bg.world.map.tiles[(int) p.getX() +1][(int) p.getY() -0].type == TileType.WALL /*!= TileType.FLOOR*/ || bg.world.map.tiles[(int) p.getX() -0][(int) p.getY() +1].type == TileType.WALL /*!= TileType.FLOOR*/) && bg.world.map.tiles[(int) p.getX() -0][(int) p.getY() -0].type == TileType.WALL) {
@@ -121,7 +119,7 @@ public class Raycast {
 										// X 
 										// O X
 										if((bg.world.map.tiles[(int) p.getX() -0][(int) p.getY() -1].type == TileType.WALL /*!= TileType.FLOOR*/ || bg.world.map.tiles[(int) p.getX() +1][(int) p.getY() +0].type == TileType.WALL /*!= TileType.FLOOR*/) && bg.world.map.tiles[(int) p.getX() -0][(int) p.getY() -0].type == TileType.FLOOR) {
-											
+
 											break;
 										}
 										else if((bg.world.map.tiles[(int) p.getX() -0][(int) p.getY() -1].type == TileType.WALL /*!= TileType.FLOOR*/ || bg.world.map.tiles[(int) p.getX() +1][(int) p.getY() +0].type == TileType.WALL /*!= TileType.FLOOR*/) && bg.world.map.tiles[(int) p.getX() -0][(int) p.getY() -0].type == TileType.WALL) {
@@ -152,7 +150,7 @@ public class Raycast {
 										//   X
 										// X O
 										if((bg.world.map.tiles[(int) p.getX() -0][(int) p.getY() -1].type == TileType.WALL /*!= TileType.FLOOR*/ || bg.world.map.tiles[(int) p.getX() -1][(int) p.getY() -0].type == TileType.WALL /*!= TileType.FLOOR*/) && bg.world.map.tiles[(int) p.getX() -0][(int) p.getY() -0].type == TileType.FLOOR) {
-											
+
 											break;
 										}
 										else if((bg.world.map.tiles[(int) p.getX() -0][(int) p.getY() -1].type == TileType.WALL /*!= TileType.FLOOR*/ || bg.world.map.tiles[(int) p.getX() -1][(int) p.getY() -0].type == TileType.WALL /*!= TileType.FLOOR*/) && bg.world.map.tiles[(int) p.getX() -0][(int) p.getY() -0].type == TileType.WALL) {
@@ -166,11 +164,13 @@ public class Raycast {
 								}
 							}
 				}
-				else break;
+				else {
+					break;
+					}
 				
 				
-				i += 32*Math.cos(Math.PI*trig/angles);
-				j += 32*Math.sin(Math.PI*trig/angles);
+				i += 16*Math.cos(Math.PI*trig/angles);
+				j += 16*Math.sin(Math.PI*trig/angles);
 			}
 		}
 	}

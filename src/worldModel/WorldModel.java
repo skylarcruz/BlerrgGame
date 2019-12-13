@@ -313,15 +313,24 @@ public class WorldModel {
 						}
 					}
 				}
-				
 				for(Player.Blood b : currentChar.bloodPools) {
 					if(points.get(i).getX()*32 <= b.getX() && b.getX() <= (points.get(i).getX()*32) + 32
 							&&points.get(i).getY()*32 <= b.getY() && b.getY() <= (points.get(i).getY()*32) + 32) {
 						b.render(g);
 					}
 				}
+				
 			}
+			
+			
 		}
+		/*
+		for(int i = 0; i < field.edges.size(); i++) {
+			g.setColor(Color.red);
+			g.setLineWidth(2);
+			g.drawLine(thisPlayer.getX(), thisPlayer.getY(), field.edges.get(i).getX()*32, field.edges.get(i).getY()*32);
+		}
+		*/
 
 	}
 	
