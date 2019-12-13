@@ -69,7 +69,7 @@ public class WorldModel {
 		
 		frameWidth = screenWidth;
 		frameHeight = screenHeight;
-		powerUpSpawnDelay = 0;
+		powerUpSpawnDelay = 300;
 		
 		staticCollidables = new ArrayList<Entity>();
 		specialObjects = new ArrayList<Entity>(20);
@@ -156,21 +156,25 @@ public class WorldModel {
 	
 	//Update the game model. All updates should go through this method
 	public String update(StateBasedGame game, int delta) {
+		BlerrgGame bg = (BlerrgGame)game;
 
 		String cUp = "";
 		cUp += collisionTesting(delta);
 		
-		if (powerUpSpawnDelay <= 0) {
-			if (specialObjects.size() < 20) {
-				int type = map.getRandomPowerUpType();
-				Vector pos = map.getRandomSpawnV();
-				PowerUp pwr = new PowerUp(pos.getX(), pos.getY(), type);
-				specialObjects.add(pwr);
-				powerUpSpawnDelay = 300;
-				System.out.println("Power up spawned at - x: " + pos.getX() + ", y: " + pos.getY());
+		if (bg.isServer) {
+			if (powerUpSpawnDelay <= 0) {
+				if (specialObjects.size() < 20) {
+					int type = map.getRandomPowerUpType();
+					Vector pos = map.getRandomSpawnV();
+					PowerUp pwr = new PowerUp(pos.getX(), pos.getY(), type);
+					specialObjects.add(pwr);
+					powerUpSpawnDelay = 300;
+					System.out.println("Power up spawned at - x: " + pos.getX() + ", y: " + pos.getY());
+					cUp += "P:new&" + pos.getX() + "&" + pos.getY() + "&" + pwr.getPowerType() + "|";
+				}
+			} else {
+				powerUpSpawnDelay -= 1;
 			}
-		} else {
-			powerUpSpawnDelay -= 1;
 		}
 
 		
@@ -314,8 +318,11 @@ public class WorldModel {
 					else
 						currentChar.walk.draw(currentChar.getX() - 16, currentChar.getY() - 16, 0, 0);
 					if (currentChar != thisPlayer) {
-						if (currentChar.hp.display)
+						if (currentChar.hp.display) {
 							currentChar.hp.render(g);
+							if (currentChar.armor.getStat() > 0)
+								currentChar.armor.render(g);
+						}
 					}
 					else {
 						pHUD.setScore("p1", player.score);

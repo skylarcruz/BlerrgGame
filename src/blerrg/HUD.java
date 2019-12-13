@@ -18,6 +18,7 @@ public class HUD extends Entity {
 	private Image stamBar;
 	private int HUDstam;
 	
+	private Image armorBorder;
 	private Image armorBar;
 	private int HUDarmor;
 	
@@ -41,6 +42,7 @@ public class HUD extends Entity {
 		super(p.getX(), p.getY());
 		HUDhp = p.hp.getStat();
 		HUDstam = p.stam.getStat();
+		HUDarmor = p.armor.getStat();
 		
 		addImage(ResourceManager.getImage(BlerrgGame.HUD_HP_BORDER), new Vector (560, 335));
 		hpBar = ResourceManager.getImage(BlerrgGame.HUD_HP_BAR).getScaledCopy(130 * HUDhp/100, 24);
@@ -50,9 +52,12 @@ public class HUD extends Entity {
 		stamBar = ResourceManager.getImage(BlerrgGame.HUD_STAM_BAR).getScaledCopy(130 * HUDstam/100, 24);
 		addImage(stamBar, new Vector (560 - (65 - 130 * HUDstam/200), 300));
 		
-		addImage(ResourceManager.getImage(BlerrgGame.HUD_HP_BORDER), new Vector (560, 265));
+		armorBorder = ResourceManager.getImage(BlerrgGame.HUD_ARMOR_BORDER);
 		armorBar = ResourceManager.getImage(BlerrgGame.HUD_ARMOR_BAR).getScaledCopy(130 * HUDarmor/100, 24);
-		addImage(armorBar, new Vector (560 - (65 - 130 * HUDarmor/200), 265));
+		if (HUDarmor > 0) {
+			addImage(armorBorder, new Vector (560, 265));
+			addImage(armorBar, new Vector (560 - (65 - 130 * HUDarmor/200), 265));
+		}
 		
 		reloadBorder = ResourceManager.getImage(BlerrgGame.HUD_HP_BORDER).getScaledCopy((float) .6);
 		
@@ -73,8 +78,12 @@ public class HUD extends Entity {
 	
 	public void setHUDarmor(int a) {
 		removeImage(armorBar);
-		armorBar = ResourceManager.getImage(BlerrgGame.HUD_ARMOR_BAR).getScaledCopy(130 * HUDarmor/100, 24);
-		addImage(armorBar, new Vector (560 - (65 - 130 * HUDarmor/200), 265));
+		removeImage(armorBorder);
+		if (HUDarmor > 0) {
+			armorBar = ResourceManager.getImage(BlerrgGame.HUD_ARMOR_BAR).getScaledCopy(130 * HUDarmor/100, 24);
+			addImage(armorBorder, new Vector (560, 265));
+			addImage(armorBar, new Vector (560 - (65 - 130 * HUDarmor/200), 265));
+		}
 	}
 	
 	public void renderHUD(StateBasedGame game, Graphics g, Player p) {
@@ -83,7 +92,8 @@ public class HUD extends Entity {
 		render(g);
 		g.drawString(HUDhp + "/100", p.getX() + 530, p.getY() + 327);
 		g.drawString(HUDstam + "/100", p.getX() + 530, p.getY() + 291);
-		g.drawString(HUDarmor + "/100", p.getX() + 530, p.getY() + 255);
+		if (HUDarmor > 0)
+			g.drawString(HUDarmor + "/100", p.getX() + 530, p.getY() + 255);
 		
 		g.drawString("P1 Score: " + p1Score, p.getX() + 520, p.getY() - 355);
 		if (bg.p2Active)

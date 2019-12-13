@@ -727,6 +727,7 @@ public class Player extends Entity {
 	public class HUDBar extends Entity {
 		private int stat;
 		private int statType;
+		private int posY;
 		private String imagePath;
 		private Image bar;
 		private Image border;
@@ -739,17 +740,17 @@ public class Player extends Entity {
 			statType = type;
 			
 			switch(statType) {
-				case 0: imagePath = BlerrgGame.HEALTH_PLACEHOLDER; stat = 100; break;
-				case 1: imagePath = BlerrgGame.STAMINA_PLACEHOLDER; stat = 100; break;
-				case 2: imagePath = BlerrgGame.ARMOR_PLACEHOLDER; stat = 0; break;
+				case 0: imagePath = BlerrgGame.HEALTH_PLACEHOLDER; stat = 100; posY = -25; break;
+				case 1: imagePath = BlerrgGame.STAMINA_PLACEHOLDER; stat = 100; posY = -25; break;
+				case 2: imagePath = BlerrgGame.ARMOR_PLACEHOLDER; stat = 0; posY = -33; break;
 				default: break;
 			}
 			
 			border = ResourceManager.getImage(BlerrgGame.HEALTHBORDER_PLACEHOLDER);
-			addImage(border, new Vector(0, -25));
+			addImage(border, new Vector(0, posY));
 			
 			bar = ResourceManager.getImage(imagePath).getScaledCopy(stat, 10);
-			addImage(bar, new Vector(0 - (50 - stat/2), -25));
+			addImage(bar, new Vector(0 - (50 - stat/2), posY));
 			
 		}
 		
@@ -761,7 +762,7 @@ public class Player extends Entity {
 			
 			removeImage(bar);
 			bar = ResourceManager.getImage(imagePath).getScaledCopy(stat, 10);
-			addImage(bar, new Vector(0 - (50 - stat/2), -25));
+			addImage(bar, new Vector(0 - (50 - stat/2), posY));
 		}
 		
 		public int getStat() {
@@ -799,8 +800,10 @@ public class Player extends Entity {
 		public void addArmor() {
 			if (stat < 100) {
 				stat += 50;
+				setStat(getStat());
 			} else {
 				stat = 100;
+				setStat(100);
 			}
 		}
 	}

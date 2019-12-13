@@ -138,6 +138,9 @@ public class PlayingState extends BasicGameState {
 				String p[];
 				String arr[] = cUpdate.split("\\|");
 				
+				// Updates use formatted strings:
+				// "Task:Param1&Param2&Param3|"
+				
 				for (int i = 0; i < arr.length; i++) {
 					if (arr[i].matches("(.*):(.*)")) {
 						String task[] = arr[i].split(":");
@@ -194,6 +197,12 @@ public class PlayingState extends BasicGameState {
 				        			          bg.world.pHUD.shiftWeapon("Right"); } break;
 						      } break;
 						    } break;
+						  } break;
+						  // Power Up Functions
+						  case 'P': switch (p[0]) {
+						  	// New Power Up Added
+						  	case "new": PowerUp pwr = new PowerUp(Float.parseFloat(p[1]), Float.parseFloat(p[2]), Integer.parseInt(p[3]));
+						  				bg.world.specialObjects.add(pwr); break;
 						  } break;
 						  // Get Dir
 						  case 'D': switch (task[0]) {
