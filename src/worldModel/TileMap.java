@@ -1,6 +1,7 @@
 package worldModel;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
@@ -513,6 +514,11 @@ public class TileMap {
 		
 		Vector v = t.getPosition();
 		return v;
+	}
+	
+	public int getRandomPowerUpType() {
+		int r = new Random().nextInt(3); // [0..2]
+		return r;
 	}
 	
 	public float getTileX(Tile t) {
