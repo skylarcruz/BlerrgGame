@@ -13,6 +13,7 @@ import blerrg.BlerrgGame;
 import blerrg.HUD;
 import blerrg.Player;
 import blerrg.Player.Projectile;
+import blerrg.PowerUp;
 import blerrg.Raycast;
 import blerrg.Tile;
 import blerrg.Weapon;
@@ -43,6 +44,7 @@ public class WorldModel {
 	
 	public int frameWidth;
 	public int frameHeight;
+	public int powerUpSpawnDelay;
 	
 	public Player player;
 	public Player player2;
@@ -67,9 +69,10 @@ public class WorldModel {
 		
 		frameWidth = screenWidth;
 		frameHeight = screenHeight;
+		powerUpSpawnDelay = 0;
 		
 		staticCollidables = new ArrayList<Entity>();
-		specialObjects = new ArrayList<Entity>();
+		specialObjects = new ArrayList<Entity>(20);
 		dynamicCollidables = new ArrayList<Entity>();
 		characters = new ArrayList<Entity>();
 		
@@ -106,11 +109,8 @@ public class WorldModel {
 		
 		//Add wall tiles to the quadtree
 		for(Tile t: map.getSolidTiles()) {
-			//staticCollidables.add(t);
-			
 			quadTree.addEntity(t);
 		}
-		
 		
 		quadTree.printTree();
 	}
@@ -159,6 +159,19 @@ public class WorldModel {
 
 		String cUp = "";
 		cUp += collisionTesting(delta);
+		
+		if (powerUpSpawnDelay <= 0) {
+			if (specialObjects.size() < 20) {
+				int type = map.getRandomPowerUpType();
+				Vector pos = map.getRandomSpawnV();
+				PowerUp pwr = new PowerUp(pos.getX(), pos.getY(), type);
+				specialObjects.add(pwr);
+				powerUpSpawnDelay = 300;
+				System.out.println("Power up spawned at - x: " + pos.getX() + ", y: " + pos.getY());
+			}
+		} else {
+			powerUpSpawnDelay -= 1;
+		}
 
 		
 		//Update entities		
@@ -203,6 +216,15 @@ public class WorldModel {
 					player.setPosition(player.prevPosition);
 					
 					//Stop checking for collisions with this character
+					break;
+				}
+			}
+			
+			for (Iterator<Entity> itr = specialObjects.iterator(); itr.hasNext();) {
+				PowerUp pwr = (PowerUp) itr.next();
+				if (player.collides(pwr) != null) {
+					player.getPowerUp(pwr.getPowerType());
+					itr.remove();
 					break;
 				}
 			}
@@ -318,6 +340,13 @@ public class WorldModel {
 					if(points.get(i).getX()*32 <= b.getX() && b.getX() <= (points.get(i).getX()*32) + 32
 							&&points.get(i).getY()*32 <= b.getY() && b.getY() <= (points.get(i).getY()*32) + 32) {
 						b.render(g);
+					}
+				}
+				
+				for (Entity pwr : specialObjects) {
+					if(points.get(i).getX()*32 <= pwr.getX() && pwr.getX() <= (points.get(i).getX()*32) + 32
+							&&points.get(i).getY()*32 <= pwr.getY() && pwr.getY() <= (points.get(i).getY()*32) + 32) {
+						pwr.render(g);
 					}
 				}
 			}

@@ -28,6 +28,7 @@ public class Player extends Entity {
 	private int cur_weapon;
 	public Vector prevPosition;
 	
+	public HUDBar armor;
 	public HUDBar hp;
 	public HUDBar stam;
 	public int score = 0;
@@ -35,6 +36,12 @@ public class Player extends Entity {
 	public Animation walk;
 	public SpriteSheet walking;
 
+	public boolean infStam = false;
+	public int stamPwrTimer = 0;
+	
+	public boolean xrayPwr = false;
+	public int xrayPwrTimer = 0;
+	
 	public boolean invincible = false;
 	public int invinTimer;
 	int blinkTimer = 3;
@@ -68,6 +75,7 @@ public class Player extends Entity {
 		//weapons.add(new Weapon(x, y, "shotgun", 45));
 		hp = new HUDBar(v.getX() - 50, v.getY() - 25, 0);
 		stam = new HUDBar(v.getX() - 50, v.getY() - 55, 1);
+		armor = new HUDBar(v.getX() - 50, v.getY() - 85, 2);
 		
 		walk = new Animation(walking, 150);
 		walk.stop();
@@ -251,7 +259,9 @@ public class Player extends Entity {
 		if (shift) {
 			if (stam.getRunDelay()) {
 				if (stam.getStat() > 1) {
-					stam.setStat(stam.getStat() - 3);
+					if (!infStam) {
+						stam.setStat(stam.getStat() - 3);
+					}
 					float x = (float) (getVelocity().getX()*1.4);
 					float y = (float) (getVelocity().getY()*1.4);
 					setVelocity(new Vector(x, y));
@@ -488,6 +498,30 @@ public class Player extends Entity {
 		invinTimer = t;
 	}
 	
+	// 0 - armor, 1 - stam, 2 - xray
+	public void getPowerUp(int type) {
+		switch(type) {
+			case 0: getArmorPwr(); break;
+			case 1: getStamPwr(); break;
+			case 2: getXrayPwr(); break;
+			default: break;
+		}
+	}
+	
+	public void getArmorPwr() {
+		armor.addArmor();
+	}
+	
+	public void getStamPwr() {
+		stamPwrTimer = 100;
+		infStam = true;
+	}
+	
+	public void getXrayPwr() {
+		xrayPwr = true;
+		xrayPwrTimer = 100;
+	}
+	
 	
 	public void update(final int delta) {
 		translate(velocity.scale(delta));
@@ -496,6 +530,8 @@ public class Player extends Entity {
 		stam.stamRegen();
 		stam.decRunDelay();
 		stam.setPosition(getX(), getY());
+		
+		armor.setPosition(getX(), getY());
 		
 		for (int i = 0; i < weapons.size(); i ++) {
 			weapons.get(i).update(delta);
@@ -514,6 +550,20 @@ public class Player extends Entity {
 					blinkTimer = 3;
 					setRender(!renderMe);
 				}
+			}
+		}
+		
+		if (stamPwrTimer >= 0) {
+			stamPwrTimer -= delta;
+			if (stamPwrTimer <= 0) {
+				infStam = false;
+			}
+		}
+		
+		if (xrayPwrTimer >= 0) {
+			xrayPwrTimer -= delta;
+			if (xrayPwrTimer <= 0) {
+				xrayPwr = false;
 			}
 		}
 	}
@@ -601,8 +651,19 @@ public class Player extends Entity {
 	}
 	
 	public void hit(Player pS, Player pD, int damage, WorldModel wm) {
-		pD.hp.setStat(pD.hp.getStat() - damage);
-		System.out.println("Player: " + pD + " was hit! Current health: " + pD.hp.getStat());
+		
+		if (pD.armor.getStat() > 0) { //check for armor
+			if (pD.armor.getStat() - damage < 0) { //check if damage is more than armor
+				int remainingDmg = (pD.armor.getStat() - damage) * -1; //turn negative to pos
+				pD.armor.setStat(0); //set armor to 0
+				pD.hp.setStat(pD.hp.getStat() - remainingDmg); //hp loses remaining damage
+			} else {
+				pD.armor.setStat(pD.armor.getStat() - damage); //armor > damage, only lose armor, no hp
+			}
+		} else {
+			pD.hp.setStat(pD.hp.getStat() - damage);
+		}
+		System.out.println("Player: " + pD + " was hit! Current armor: " + pD.armor.getStat() + ", health: " + pD.hp.getStat());
 		
 		if (pD.hp.getStat() <= 0) {
 			// reset player p
@@ -670,15 +731,15 @@ public class Player extends Entity {
 		public boolean display = true;
 		private int runDelay = 0;
 
-		//statType: 0 - Health, 1 - Stamina 
+		//statType: 0 - Health, 1 - Stamina, 2 - Armor
 		public HUDBar(final float x, final float y, int type) {
 			super(x, y);
-			stat = 100;
 			statType = type;
 			
 			switch(statType) {
-				case 0: imagePath = BlerrgGame.HEALTH_PLACEHOLDER; break;
-				case 1: imagePath = BlerrgGame.STAMINA_PLACEHOLDER; break;
+				case 0: imagePath = BlerrgGame.HEALTH_PLACEHOLDER; stat = 100; break;
+				case 1: imagePath = BlerrgGame.STAMINA_PLACEHOLDER; stat = 100; break;
+				case 2: imagePath = BlerrgGame.ARMOR_PLACEHOLDER; stat = 0; break;
 				default: break;
 			}
 			
@@ -730,6 +791,14 @@ public class Player extends Entity {
 				return false;
 			} else {
 				return true;
+			}
+		}
+		
+		public void addArmor() {
+			if (stat < 100) {
+				stat += 50;
+			} else {
+				stat = 100;
 			}
 		}
 	}

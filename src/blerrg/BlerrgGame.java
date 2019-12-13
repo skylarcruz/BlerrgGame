@@ -53,11 +53,13 @@ public class BlerrgGame extends StateBasedGame {
 	public final static String HEALTHBORDER_PLACEHOLDER = "blerrg/resource/Player/hpBorder.png";
 	public final static String HEALTH_PLACEHOLDER = "blerrg/resource/Player/health.png";
 	public final static String STAMINA_PLACEHOLDER = "blerrg/resource/Player/stamina.png";
+	public final static String ARMOR_PLACEHOLDER = "blerrg/resource/Player/armor.png";
 	
 	//HUD
 	public final static String HUD_HP_BORDER = "blerrg/resource/HUD/HUDhpBorder.png";
 	public final static String HUD_HP_BAR = "blerrg/resource/HUD/HUDhpBar.png";
 	public final static String HUD_STAM_BAR = "blerrg/resource/HUD/HUDstamBar.png";
+	public final static String HUD_ARMOR_BAR = "blerrg/resource/HUD/HUDarmorBar.png";
 	public final static String SHOTGUN_ICON_A = "blerrg/resource/HUD/shotgunIconA.png";
 	public final static String SHOTGUN_ICON_NA = "blerrg/resource/HUD/shotgunIconNA.png";
 	public final static String CROSSBOW_ICON_A = "blerrg/resource/HUD/crossbowIconA.png";
@@ -86,6 +88,9 @@ public class BlerrgGame extends StateBasedGame {
 	
 	//TILES
 	public final static String TILE_1 = "blerrg/resource/tile1.png";
+	public final static String ARMOR_POWER_UP = "blerrg/resource/armor.png";
+	public final static String STAMINA_POWER_UP = "blerrg/resource/stamina.png";
+	public final static String XRAY_POWER_UP = "blerrg/resource/xray.png";
 	
 	//SFX
 	public static final String GUN_1_SND = "blerrg/resource/sfx/gunshot1.wav";
@@ -140,11 +145,14 @@ public class BlerrgGame extends StateBasedGame {
 		ResourceManager.loadImage(HEALTHBORDER_PLACEHOLDER);
 		ResourceManager.loadImage(HEALTH_PLACEHOLDER);
 		ResourceManager.loadImage(STAMINA_PLACEHOLDER);
+		ResourceManager.loadImage(ARMOR_PLACEHOLDER);
+
 		
 		//Load HUD Resources
 		ResourceManager.loadImage(HUD_HP_BORDER);
 		ResourceManager.loadImage(HUD_HP_BAR);
 		ResourceManager.loadImage(HUD_STAM_BAR);
+		ResourceManager.loadImage(HUD_ARMOR_BAR);
 		ResourceManager.loadImage(SHOTGUN_ICON_A);
 		ResourceManager.loadImage(SHOTGUN_ICON_NA);
 		ResourceManager.loadImage(CROSSBOW_ICON_A);
@@ -170,6 +178,10 @@ public class BlerrgGame extends StateBasedGame {
 		
 		//Load Tile Resources
 		ResourceManager.loadImage(TILE_1);
+		ResourceManager.loadImage(ARMOR_POWER_UP);
+		ResourceManager.loadImage(STAMINA_POWER_UP);
+		ResourceManager.loadImage(XRAY_POWER_UP);
+
 		
 		//Load SFX
 		ResourceManager.loadSound(GUN_1_SND);
