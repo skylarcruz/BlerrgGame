@@ -355,7 +355,9 @@ public class Player extends Entity {
 		if (shift) {
 			if (stam.getRunDelay()) {
 				if (stam.getStat() > 1) {
-					stam.setStat(stam.getStat() - 3);
+					if (!infStam) {
+						stam.setStat(stam.getStat() - 3);
+					}
 					msg += "run:run|";
 				} else {
 					stam.setRunDelay();
