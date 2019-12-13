@@ -260,7 +260,7 @@ public class WorldModel {
 		translateCamera(g);
 
 		// ################ BEGIN RENDERING TILES ################
-
+		
 		Raycast field = new Raycast(game, g, 720, thisPlayer);
 		ArrayList<Point> points = field.getPoints();
 		

@@ -513,13 +513,15 @@ public class Player extends Entity {
 	}
 	
 	public void getStamPwr() {
-		stamPwrTimer = 100;
+		stamPwrTimer = 500;
 		infStam = true;
+		System.out.println("stam powerup");
 	}
 	
 	public void getXrayPwr() {
 		xrayPwr = true;
-		xrayPwrTimer = 100;
+		xrayPwrTimer = 500;
+		System.out.println("xray power up");
 	}
 	
 	
@@ -554,14 +556,14 @@ public class Player extends Entity {
 		}
 		
 		if (stamPwrTimer >= 0) {
-			stamPwrTimer -= delta;
+			stamPwrTimer -= 1;
 			if (stamPwrTimer <= 0) {
 				infStam = false;
 			}
 		}
 		
 		if (xrayPwrTimer >= 0) {
-			xrayPwrTimer -= delta;
+			xrayPwrTimer -= 1;
 			if (xrayPwrTimer <= 0) {
 				xrayPwr = false;
 			}
